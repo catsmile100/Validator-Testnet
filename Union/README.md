@@ -7,6 +7,7 @@
 > - [Twitter](https://twitter.com/union_build)
 
 ### Minimum Hardware Requirements
+- Ubuntu 20.04 LTS
 - CPU: 2vCPU (4 cores)
 - Memory: 8
 - Storage: 250 GB

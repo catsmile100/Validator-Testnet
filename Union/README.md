@@ -80,7 +80,7 @@ curl -s https://rpc.cryptware.io/block | jq -r '.result.block.header.height + "\
 # trust_hash = "DAD8FE1231B030B27D36634C52DEAECCABDB6AA0AFDECC9459E507A254D4D6C9" # Replace with trusted_hash
 # trust_period = "400s"
 ```
-# 10. Start
+# 10: Start
 ```
 uniond start
 ```

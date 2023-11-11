@@ -1,4 +1,5 @@
 # **Welcome!**
+
 We are thrilled to present a guide that will walk you through the steps of running a validator in the Blockchain project during the testing phase. This tutorial is crafted to provide you with a clear understanding and practical steps to ensure the successful execution of the validator.
 
 In the realm of Blockchain projects, the testing phase plays a crucial role in identifying potential issues and ensuring the ongoing performance. This guide is compiled with the goal of empowering the development team (DEV) to efficiently run the validator, making tasks assigned by DEV smoother.

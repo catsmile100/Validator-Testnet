@@ -41,7 +41,8 @@ Merci d'avoir choisi ce guide comme votre ressource. Entrez ensemble dans le mon
 شكرًا لاختيارك هذا الدليل كمورد لك. دعونا نخوض معًا في عالم اختبار مشروعات البلوكشين بثقة ومعرفة معززة. قراءة ممتعة وتشغيل سعيد للمحقق!
 
 
-Welkom!
+# **Welkom !**
+
 We zijn verheugd om u een handleiding te presenteren die u door de stappen zal leiden om een validator uit te voeren in het Blockchain-project tijdens de testfase. Deze tutorial is ontworpen om u een duidelijk begrip en praktische stappen te bieden om de succesvolle uitvoering van de validator te waarborgen.
 
 In de wereld van Blockchain-projecten speelt de testfase een cruciale rol bij het identificeren van mogelijke problemen en het waarborgen van de voortdurende prestaties. Deze handleiding is samengesteld met als doel het ontwikkelingsteam (DEV) in staat te stellen de validator efficiënt uit te voeren, waardoor taken die door DEV zijn toegewezen, soepeler verlopen.
@@ -51,7 +52,8 @@ We geloven dat het juiste gebruik van de validator optimale resultaten zal oplev
 Dank u voor het kiezen van deze handleiding als uw bron. Laten we samen met vertrouwen en verrijkte kennis de wereld van het testen van Blockchain-projecten betreden. Veel leesplezier en succesvolle uitvoering van de validator!
 
 
-Hoş geldiniz!
+# **Hoş geldiniz !**
+
 Sizi, Blockchain projesinde bir doğrulayıcının test aşamasında çalıştırılması adımlarını içeren bir kılavuzla tanıştırmaktan büyük bir memnuniyet duyuyoruz. Bu öğretici, doğrulayıcının başarılı bir şekilde çalıştırılmasını sağlamak için size net bir anlayış ve pratik adımlar sağlamak amacıyla tasarlanmıştır.
 
 Blockchain projelerinin dünyasında, test aşaması potansiyel sorunları belirleme ve sürekli performansı sağlama konusunda kritik bir rol oynar. Bu kılavuz, geliştirme ekibine (DEV) doğrulayıcının etkili bir şekilde çalıştırılmasını sağlamak amacıyla derlenmiştir, böylece DEV tarafından atanan görevler daha sorunsuz hale gelir.
@@ -61,7 +63,8 @@ Doğrulayıcının uygun şekilde kullanılmasının optimal sonuçlar doğuraca
 Bu rehberi kaynak olarak seçtiğiniz için teşekkür ederiz. Blockchain projesi test dünyasına birlikte güvenle ve gelişmiş bilgiyle adım atalım. İyi okumalar ve doğrulayıcıyı başarıyla çalıştırmanızı dileriz!
 
 
-Maligayang pagdating!
+# **Maligayang pagdating !**
+
 Masaya namin na ipakita ang isang gabay na magdadala sa iyo sa mga hakbang ng pagsusuri ng validator sa proyektong Blockchain sa panahon ng pagsusuri. Ang tutorial na ito ay idinisenyo upang magbigay sa iyo ng malinaw na pang-unawa at praktikal na mga hakbang upang matiyak ang matagumpay na pagsasagawa ng validator.
 
 Sa larangan ng mga proyektong Blockchain, ang yugto ng pagsusuri ay naglalaro ng isang kritikal na papel sa pag-identipika ng posibleng isyu at sa pagtitiyak ng patuloy na pagganap. Binuo ang gabay na ito na may layuning bigyan ang koponan ng pag-develop (DEV) ng kakayahan na maayos na patakbuhin ang validator, na ginagawang mas magaan ang mga gawain na itinakda ng DEV.
@@ -71,7 +74,7 @@ Naniniwala kami na ang tamang paggamit ng validator ay magbubunga ng optimal na 
 Salamat sa pagpili mo sa gabay na ito bilang iyong mapagkukunan. Tumakbo tayo nang magkasama sa mundo ng pagsusuri ng proyektong Blockchain na may kumpiyansa at masusing kaalaman. Masayang pagbabasa at masayang pagsasagawa ng validator!
 
 
-स्वागत है!
+# **स्वागत है !**
 हम आपको एक मार्गदर्शिका प्रस्तुत करने के लिए उत्सुक हैं जो आपको ब्लॉकचेन परियोजना के परीक्षण चरण के दौरान वैलीडेटर को चलाने के चरणों की ओर मोड़ने के लिए होगी। यह शिक्षानुभव को समृद्धि और वैलीडेटर की सफल प्रक्रिया सुनिश्चित करने के लिए तैयार किया गया है।
 
 ब्लॉकचेन परियोजनाओं के क्षेत्र में, परीक्षण चरण को संभावित समस्याओं की पहचान और चलती दक्षता की सुनिश्चित करने में एक कुंजीय भूमिका निभाता है। यह मार्गदर्शिका DEV द्वारा परिभाषित कार्यों को सुचारू बनाने के लिए डिज़ाइन किया गया है।
@@ -81,7 +84,8 @@ Salamat sa pagpili mo sa gabay na ito bilang iyong mapagkukunan. Tumakbo tayo na
 इस गाइड को अपनी स्रोत के रूप में चुनने के लिए आपका धन्यवाद। आइए आत्मविश्वास और वृद्धि के साथ ब्लॉकचेन परियोजना के परीक्षण की दुनिया में साथ में कदम बढ़ाएं। खुश पठन और वैलीडेटर को सफलतापूर्वक चलाने की शुभकामनाएँ!
 
 
-欢迎！
+# **欢迎 !**
+
 我们非常高兴为您呈现一份指南，将引导您在区块链项目测试阶段运行验证器的步骤。这个教程旨在为您提供清晰的理解和实际步骤，确保成功执行验证器。
 
 在区块链项目领域，测试阶段在识别潜在问题和确保持续性能方面发挥着至关重要的作用。这个指南的目标是为开发团队（DEV）提供有效地运行验证器的能力，使由DEV分配的任务更加顺利。
@@ -91,7 +95,8 @@ Salamat sa pagpili mo sa gabay na ito bilang iyong mapagkukunan. Tumakbo tayo na
 感谢您选择将这份指南作为您的资源。让我们一起以信心和增强的知识迈入区块链项目测试的世界。祝愉快阅读并成功运行验证器！
 
 
-Selamat datang!
+# **Selamat datang !**
+
 Kami sangat senang untuk menyajikan panduan yang akan membimbing Anda melalui langkah-langkah menjalankan validator dalam proyek Blockchain selama fase pengujian. Tutorial ini dirancang untuk memberikan pemahaman yang jelas dan langkah-langkah praktis guna memastikan eksekusi validator berjalan dengan sukses.
 
 Dalam dunia proyek Blockchain, fase pengujian memainkan peran krusial dalam mengidentifikasi potensi masalah dan memastikan kinerja berkelanjutan. Panduan ini disusun dengan tujuan memberdayakan tim pengembangan (DEV) untuk menjalankan validator dengan efisien, sehingga menjadikan tugas yang diberikan oleh DEV lebih lancar.

@@ -8,35 +8,13 @@ We believe that the proper use of the validator will yield optimal results, and 
 
 Thank you for choosing this guide as your resource. Let's step together into the world of Blockchain project testing with confidence and enhanced knowledge. Happy reading and happy running the validator!
 
-![Test](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ecb7fe8b-21f2-41bf-a515-b59dd91f6e2c)
 
+[<img src='https://github.com/catsmile100/Validator-Testnet/assets/85368621/ecb7fe8b-21f2-41bf-a515-b59dd91f6e2c' alt='TESTNETS'  width='100%'>](https://github.com/catsmile100/Validator-Testnet/tree/main)
 
-[<img src='https://user-images.githubusercontent.com/83868103/229287458-e383ce26-44d0-4321-a4b7-afcc5ad48114.png' alt='TESTNETS'  width='100%'>](https://github.com/testnet-pride)
+[<img src='https://github.com/catsmile100/Validator-Testnet/assets/85368621/6d4d35e6-b541-4e81-bb87-617224da56bc' alt='MANTRACHAIN'  width='24.5%'>](https://github.com/catsmile100/Validator-Testnet/tree/main/Mantra%20Chain)
+[<img src='https://github.com/catsmile100/Validator-Testnet/assets/85368621/f6d40268-3cd0-4cd5-8c7c-a3850b95b374' alt='SUI-FN'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/blob/main/Testnets/Sui/guide.md)
 
-[<img src='https://pbs.twimg.com/profile_images/1668208660269481984/6-eXIfOf_400x400.jpg' alt='MANTRACHAIN'  width='24.5%'>](https://github.com/catsmile100/Validator-Testnet/tree/main/Mantra%20Chain)
-[<img src='https://user-images.githubusercontent.com/83868103/229286605-62736d93-d8ea-4559-bd63-41b7a2a47c65.png' alt='SUI-FN'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/blob/main/Testnets/Sui/guide.md)
-[<img src='https://user-images.githubusercontent.com/83868103/229286517-95e775df-b37d-4dc3-8c5c-7a76d4554880.png' alt='SUI-FNP'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/blob/main/Testnets/Sui/guidePT.md)
-[<img src='https://user-images.githubusercontent.com/83868103/229570828-3af42be5-f205-4176-93ff-11df9df13e0e.png' alt='CELESTIA-BRIDGE'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/tree/main/Testnets/Celestia/blockspacerace-0)
-[<img src='https://user-images.githubusercontent.com/83868103/229583493-98d62976-849b-4e55-812c-efa66294ce7e.png' alt='SUBSPACE-3d'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/tree/main/Testnets/Subspace/Gemini-3d)
-[<img src='https://user-images.githubusercontent.com/83868103/230631410-288fa7e2-37d0-4fac-a349-86b2411080da.png' alt='ARCHWAY-CONSTANTINE-2'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/tree/main/Testnets/Archway/constantine-2) 
-[<img src='https://user-images.githubusercontent.com/83868103/230630367-b1c6002a-19da-41aa-9d1a-4c6e6141a142.png' alt='Defund' width='24.5%'>](https://github.com/testnet-pride/Node-manuals/tree/main/Testnets/Defund/orbit-alpha-1)
-
-
-
-
-[<img src='https://user-images.githubusercontent.com/83868103/229358357-7ac43a1a-8da6-4f25-9905-00e8a9f48c31.png' alt='TESTNETS'  width='100%'>]()
-
-[<img src='https://user-images.githubusercontent.com/83868103/229583178-840a41ed-1e71-4fd3-b7cc-91b71a8cda78.png' alt='SUBSPACE-3c'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/tree/main/Testnets/Subspace/Gemini-3c)
-[<img src='https://user-images.githubusercontent.com/83868103/229582383-1fe24c30-efb0-4474-a440-9ad85130370f.png' alt='ARCHWAY-CONSTANTINE-1'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/blob/main/Testnets/Archway/guide.md)
-
-
-
-
-
-
-
-
-
+![Union]()
 
 
 

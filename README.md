@@ -1,4 +1,4 @@
-Welcome!
+**Welcome!**
 We are thrilled to present a guide that will walk you through the steps of running a validator in the Blockchain project during the testing phase. This tutorial is crafted to provide you with a clear understanding and practical steps to ensure the successful execution of the validator.
 
 In the realm of Blockchain projects, the testing phase plays a crucial role in identifying potential issues and ensuring the ongoing performance. This guide is compiled with the goal of empowering the development team (DEV) to efficiently run the validator, making tasks assigned by DEV smoother.
@@ -8,7 +8,7 @@ We believe that the proper use of the validator will yield optimal results, and 
 Thank you for choosing this guide as your resource. Let's step together into the world of Blockchain project testing with confidence and enhanced knowledge. Happy reading and happy running the validator!
 
 
-Добро пожаловать!
+**Добро пожаловать!**
 Мы в восторге представить вам руководство, которое проведет вас через этапы запуска валидатора в проекте Blockchain во время тестирования. Этот учебник разработан для предоставления вам четкого понимания и практических шагов для обеспечения успешного выполнения валидатора.
 
 В области проектов Blockchain тестирование играет решающую роль в выявлении потенциальных проблем и обеспечении непрерывной производительности. Это руководство составлено с целью предоставления команде разработки (DEV) инструментов для эффективного запуска валидатора, что делает задачи, порученные DEV, более гладкими.
@@ -18,7 +18,7 @@ Thank you for choosing this guide as your resource. Let's step together into the
 Спасибо, что выбрали это руководство в качестве вашего ресурса. Давайте вместе войдем в мир тестирования проектов Blockchain с уверенностью и улучшенными знаниями. Приятного чтения и успешного запуска валидатора!
 
 
-Bienvenue !
+**Bienvenue !**
 Nous sommes ravis de vous présenter un guide qui vous guidera à travers les étapes de l'exécution d'un validateur dans le projet Blockchain pendant la phase de test. Ce tutoriel est conçu pour vous offrir une compréhension claire et des étapes pratiques afin d'assurer l'exécution réussie du validateur.
 
 Dans le domaine des projets Blockchain, la phase de test joue un rôle crucial dans l'identification des problèmes potentiels et la garantie des performances continues. Ce guide est compilé dans le but de donner à l'équipe de développement (DEV) les moyens d'exécuter efficacement le validateur, facilitant ainsi les tâches assignées par DEV.
@@ -27,7 +27,7 @@ Nous croyons que l'utilisation appropriée du validateur produira des résultats
 
 Merci d'avoir choisi ce guide comme votre ressource. Entrez ensemble dans le monde des tests de projets Blockchain avec confiance et une connaissance accrue. Bonne lecture et bon fonctionnement du validateur !
 
-مرحبًا!
+**مرحبًا!**
 
 نحن متحمسون لتقديم دليل سيمشيك خلال خطوات تشغيل محقق في مشروع البلوكشين خلال مرحلة الاختبار. صُمم هذا البرنامج التعليمي لتزويدك بفهم واضح وخطوات عملية لضمان تنفيذ ناجح للمحقق.
 

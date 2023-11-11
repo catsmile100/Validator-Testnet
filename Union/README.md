@@ -1,3 +1,16 @@
+
+![Capture](https://github.com/catsmile100/Validator-Testnet/assets/85368621/36b90569-acc2-43a4-9cee-fddc1a9e4774)
+
+##### Documentation
+> - [Link](https://union.build/)
+> - [Documentation](https://docs.union.build/)
+> - [Twitter](https://twitter.com/union_build)
+
+### Minimum Hardware Requirements
+- CPU: 4vCPU (8 cores)
+- Memory: 8
+- Storage: 250 GB
+
 # 1: Docker Installation
 
 ```

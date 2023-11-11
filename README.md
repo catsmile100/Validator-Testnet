@@ -9,11 +9,10 @@ We believe that the proper use of the validator will yield optimal results, and 
 Thank you for choosing this guide as your resource. Let's step together into the world of Blockchain project testing with confidence and enhanced knowledge. Happy reading and happy running the validator!
 
 
-[<img src='https://github.com/catsmile100/Validator-Testnet/assets/85368621/ecb7fe8b-21f2-41bf-a515-b59dd91f6e2c' alt='TESTNETS'  width='100%'>](https://github.com/catsmile100/Validator-Testnet/tree/main)
+[<img src='https://github.com/catsmile100/Validator-Testnet/blob/main/assets/85368621/ecb7fe8b-21f2-41bf-a515-b59dd91f6e2c.png' alt='TESTNETS'  width='100%'>](https://github.com/catsmile100/Validator-Testnet/tree/main)
 
-[<img src='https://github.com/catsmile100/Validator-Testnet/assets/85368621/6d4d35e6-b541-4e81-bb87-617224da56bc' alt='MANTRACHAIN'  width='24.5%'>](https://github.com/catsmile100/Validator-Testnet/tree/main/Mantra%20Chain)
-[<img src='https://github.com/catsmile100/Validator-Testnet/assets/85368621/f6d40268-3cd0-4cd5-8c7c-a3850b95b374' alt='UNION'  width='24.5%'>](https://github.com/testnet-pride/Node-manuals/blob/main/Testnets/Sui/guide.md)
-
+[<img src='https://github.com/catsmile100/Validator-Testnet/blob/main/assets/85368621/6d4d35e6-b541-4e81-bb87-617224da56bc.png' alt='MANTRACHAIN'  width='24.5%'>](https://github.com/catsmile100/Validator-Testnet/tree/main/Mantra%20Chain)
+[<img src='https://github.com/catsmile100/Validator-Testnet/blob/main/assets/85368621/f6d40268-3cd0-4cd5-8c7c-a3850b95b374.png' alt='UNION'  width='24.5%'>](https://github.com/catsmile100/Validator-Testnet/tree/main/Union)
 
 
 # **Добро пожаловать!**

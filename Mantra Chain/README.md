@@ -1,12 +1,12 @@
 
-
+![mantra](https://github.com/catsmile100/Validator-Testnet/assets/85368621/324f9b74-6b94-4afd-afdc-33f1cc883c95)
 
 # MANTRA Chain Incentivized Testnet (Phase 1)
 
 ##### Documentation
 > - [Documentation](https://docs.mantrachain.io/operate-a-node/initial-setup)
 > - [Explorer](https://explorer.testnet.mantrachain.io/mantrachain)
-> - [Wait For Phase 2](https://alt.jotfor.ms/233022073186044)
+> - [Phase 2]
 
 ### Minimum Hardware Requirements
 - Ubuntu 20.04 LTS
@@ -21,7 +21,7 @@
 
 ## 1. Automatic Installation
 ```
-wget -O autoinstall.sh https://raw.githubusercontent.com/an-node/NODE-TESTNET/main/MantraChain/autoinstall.sh && chmod +x autoinstall.sh && ./autoinstall.sh
+wget -O autoinstall.sh https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Mantra%20Chain/autoinstall.sh && chmod +x autoinstall.sh && ./autoinstall.sh
 ```
 
 ## 2. Check Sync Log

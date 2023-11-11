@@ -8,6 +8,8 @@ We believe that the proper use of the validator will yield optimal results, and 
 
 Thank you for choosing this guide as your resource. Let's step together into the world of Blockchain project testing with confidence and enhanced knowledge. Happy reading and happy running the validator!
 
+![Test](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ecb7fe8b-21f2-41bf-a515-b59dd91f6e2c)
+
 
 [<img src='https://user-images.githubusercontent.com/83868103/229287458-e383ce26-44d0-4321-a4b7-afcc5ad48114.png' alt='TESTNETS'  width='100%'>](https://github.com/testnet-pride)
 

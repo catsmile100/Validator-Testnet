@@ -7,7 +7,7 @@
 > - [Twitter](https://twitter.com/union_build)
 
 ### Minimum Hardware Requirements
-- CPU: 4vCPU (8 cores)
+- CPU: 2vCPU (4 cores)
 - Memory: 8
 - Storage: 250 GB
 

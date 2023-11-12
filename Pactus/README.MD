@@ -65,8 +65,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 <a href="https://discord.com/invite/H5vZkNnXCu">Request</a>
 
 ## Check Balance
-- **Balance Faucet**
-[https://pactusscan.com/validator/[wallet-validator]](https://pactusscan.com/validator/[wallet-validator])
+- **Request Faucet**
+[https://discord.com/channels/795592769300987944/1164022915205972050])
 
 - **Balance Reward**
 [https://www.pactusscan.com/account/[wallet-reward]](https://www.pactusscan.com/account/[wallet-reward])

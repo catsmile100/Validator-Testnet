@@ -59,19 +59,9 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 	docker logs pactus-testnet --tail 1000 -f
 	```
+## Faucet
+[Request Faucet](https://discord.com/channels/795592769300987944/1164022915205972050) - Command: `faucet <address>`
 
-```
-## Faucet 
-[Request Faucet](https://discord.com/invite/H5vZkNnXCu)  
-Address: `tpc1zf9uxfrf4ftyhh8ndmtkyvetpl2wmckqd467all`
-```
-
-In Markdown:
-
-- To create a link, use `[text](URL)`.
-- To display code or inline code, use backticks (`` ` ``). In this case, I used backticks to format the address. 
-
-This should render properly in Markdown with a clickable link and a formatted address.
 ## Check Balance
 - **Request Faucet**
 [https://discord.com/channels/795592769300987944/1164022915205972050]

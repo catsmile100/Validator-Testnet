@@ -61,7 +61,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 ## Faucet 
 <a href="https://discord.com/invite/H5vZkNnXCu">Request</a>
-
+Faucet <address is: tpc1zf9uxfrf4ftyhh8ndmtkyvetpl2wmckqd467all>
 ## Check Balance
 - **Request Faucet**
 [https://discord.com/channels/795592769300987944/1164022915205972050]

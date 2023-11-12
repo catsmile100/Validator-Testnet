@@ -65,29 +65,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 ## Explorer
 [Explorer Link](https://explorer.codeblocklabs.com/pactus/) 
 
-## Fix & Error
-- **Error `Port is already in use`**
-	```
-	docker stop pactus-testnet
-	```
-	```
-	docker rm pactus-testnet
-	```
-	```
-	docker run -it -v ~/pactus/testnet:/pactus -p 8888:8080 -p 21777:21777 --name pactus-testnet pactus/pactus start -w /pactus
-	```
-
-- **Error `Exiced Code / Stalled / Request Password`**
-	```
-	docker stop pactus-testnet
-	```
-	```
-	docker rm pactus-testnet
-	```
-	```
-        docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
-	```
-
 - **Error `Failed to Open Stream`**
 
   To resolve this error, follow these steps:

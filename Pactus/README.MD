@@ -63,7 +63,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 [Request Faucet](https://discord.com/channels/795592769300987944/1164022915205972050) - Command: `faucet <address>`
 
 ## Explorer
-[Explorer](https://explorer.codeblocklabs.com/pactus/) 
+[Explorer Link](https://explorer.codeblocklabs.com/pactus/) 
 
 ## Fix & Error
 - **Error `Port is already in use`**

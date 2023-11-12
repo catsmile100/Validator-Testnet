@@ -62,11 +62,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 ## Faucet
 [Request Faucet](https://discord.com/channels/795592769300987944/1164022915205972050) - Command: `faucet <address>`
 
-## Check Balance
-- **Request Faucet**
-[https://discord.com/channels/795592769300987944/1164022915205972050]
-- **Balance Reward**
-[https://www.pactusscan.com/account/[wallet-reward]](https://www.pactusscan.com/account/[wallet-reward]
+## Explorer
+[Explorer](https://explorer.codeblocklabs.com/pactus/) 
 
 ## Fix & Error
 - **Error `Port is already in use`**

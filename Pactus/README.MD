@@ -89,27 +89,39 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 
 - **Error `Failed to Open Stream`**
-	```
-	docker stop pactus-testnet
-	```
-	```
-	docker rm pactus-testnet
-	```
-	```
- `config.toml` file using nano:
-    ```
-    nano config.toml
-    ```
-    ```
-   **Change `Min connections from 8 to 128`**
-    ```
-    ```
-   **Change `Max connections from 16 to 256`**
-    ```
-    ```
-   **Change enable_relay from true to false`**
-   ```
-   ```
-   docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
-   ```
+
+  To resolve this error, follow these steps:
+
+  1. Stop the Docker container named `pactus-testnet`:
+
+     ```bash
+     docker stop pactus-testnet
+     ```
+
+  2. Remove the Docker container:
+
+     ```bash
+     docker rm pactus-testnet
+     ```
+
+  3. Open the `config.toml` file using nano:
+
+     ```bash
+     nano config.toml
+     ```
+
+  4. Update the following configurations:
+
+     - Change `Min connections` from 8 to 128.
+
+     - Change `Max connections` from 16 to 256.
+
+     - Change `enable_relay` from `true` to `false`.
+
+  5. Run the Docker container again with the updated configurations:
+
+     ```bash
+     docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
+     ```
+
 

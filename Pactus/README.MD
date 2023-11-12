@@ -100,10 +100,16 @@ NODE  | CPU     | RAM      | SSD     | OS     |
     ```
     nano config.toml
     ```
-	**Change `Min connections from 8 to 128`**
-	**Change `Max connections from 16 to 256`**
-	**Change `enable_relay from true to `false`**
+    ```
+   **Change `Min connections from 8 to 128`**
+    ```
+    ```
+   **Change `Max connections from 16 to 256`**
+    ```
+    ```
+   **Change enable_relay from true to false`**
    ```
-      docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
+   ```
+   docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
    ```
 

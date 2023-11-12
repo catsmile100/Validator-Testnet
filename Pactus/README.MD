@@ -60,12 +60,10 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	docker logs pactus-testnet --tail 1000 -f
 	```
 ## Faucet 
-<a href="https://discord.com/invite/H5vZkNnXCu">Request</a>
-Faucet <address is: tpc1zf9uxfrf4ftyhh8ndmtkyvetpl2wmckqd467all>
+<a href="https://discord.com/invite/H5vZkNnXCu">Request</a> Faucet <address is: tpc1zf9uxfrf4ftyhh8ndmtkyvetpl2wmckqd467all>
 ## Check Balance
 - **Request Faucet**
 [https://discord.com/channels/795592769300987944/1164022915205972050]
-
 - **Balance Reward**
 [https://www.pactusscan.com/account/[wallet-reward]](https://www.pactusscan.com/account/[wallet-reward]
 
@@ -103,8 +101,11 @@ Faucet <address is: tpc1zf9uxfrf4ftyhh8ndmtkyvetpl2wmckqd467all>
 	nano config.toml
 	```
 	Change Min connections from 8 to 128
+	```
 	Change Max connections from 16 to 256
+	```
 	Change enable_relay from true to false
+	```
 	```
         docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
 	```

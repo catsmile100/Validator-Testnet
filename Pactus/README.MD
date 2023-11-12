@@ -44,9 +44,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 
 6. **Run Node**
 	```
-	docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 --name pactus-testnet pactus/pactus start -w /pactus
         docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
-
 	```
 ## Useful Commands
 - **Stop Node**
@@ -93,12 +91,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
         docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
 	```
-	```
-	CTRL a + d                                                                                                # Idle Screen
-	```
-	```
-	screen -r                                                                                                 # Back to Screen
-	```
 
 - **Error `Failed to Open Stream`**
 	```
@@ -116,9 +108,4 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
         docker run -it -v ~/pactus/testnet:/pactus -p 8080:8080 -p 21777:21777 -d --name pactus-testnet pactus/pactus start -w /pactus -p {Password}
 	```
-	```
-	CTRL a + d                                                                                                # Idle Screen
-	```
-	```
-	screen -r                                                                                                 # Back to Screen
-	```
+

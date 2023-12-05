@@ -75,7 +75,12 @@ snarkos account new
 ```
 Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+## Detacth Sesion
 ```
-CTRL AD
+CTRL A D
+```
+## Back Screen
+```
+screen -r aleo
 ```
 

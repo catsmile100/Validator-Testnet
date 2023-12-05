@@ -1,12 +1,6 @@
 # Prover Aleo Testnet3
 
 ## Requirements Provers
- 1. Ubuntu 22.04 (LTS)
- 2. 32-cores (64-cores preferred)
- 3. 32GB of memory (64GB or larger preferred)
- 4. 128GB of disk space
- 5. 250Mbps of upload and download bandwidth
- 6. CUDA-enabled GPU (optional)
 
 | No. | Requirements                                 | Specifications                                      |
 |----:|----------------------------------------------|-----------------------------------------------------|

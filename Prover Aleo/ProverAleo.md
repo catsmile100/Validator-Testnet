@@ -1,0 +1,64 @@
+# Prover Aleo Testnet3
+
+## Requirements Provers
+-Ubuntu 22.04 (LTS)
+-32-cores (64-cores preferred)
+-32GB of memory (64GB or larger preferred)
+-128GB of disk space
+-250Mbps of upload and download bandwidth
+-CUDA-enabled GPU (optional)
+
+## Dependecy
+```
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install ufw
+```
+```
+sudo apt install git -y && sudo apt install screen -y
+```
+## Open Port
+```
+sudo ufw allow 4133/tcp && sudo ufw allow 3033/tcp && sudo ufw allow 22
+```
+```
+sudo ufw enable && sudo ufw status
+```
+## Cloning Repository
+```
+git clone https://github.com/AleoHQ/snarkOS.git --depth 1
+```
+## Directory
+```
+cd snarkOS
+```
+## Build
+```
+./build_ubuntu.sh
+```
+## Sett Screen
+```
+screen -S aleo
+```
+## Install 
+```
+cargo install --path .
+```
+## Run an Aleo Client
+```
+./run-client.sh
+```
+## Wait For Synchronize
+## Create Account
+```
+snarkos account new
+```
+## save
+## Run Prover
+```
+./run-prover.sh
+```
+## Input Privatekey
+```
+Enter the Aleo Prover account private key:
+```
+CTRL AD
+

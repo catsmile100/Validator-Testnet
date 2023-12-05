@@ -47,18 +47,35 @@ cargo install --path .
 ./run-client.sh
 ```
 ## Wait For Synchronize
+```
+2023-12-05T00:50:50.779308Z  INFO Synced up to block 36299 of 803850 - 4% complete (est. 374 minutes remaining)
+2023-12-05T00:50:50.779506Z DEBUG Requesting blocks 42650 to 42700 (of 803850)
+2023-12-05T00:50:51.464397Z  INFO Synced up to block 36349 of 803850 - 4% complete (est. 374 minutes remaining)
+2023-12-05T00:50:51.464648Z DEBUG Requesting blocks 42700 to 42750 (of 803850)
+2023-12-05T00:50:52.136740Z  INFO Synced up to block 36399 of 803850 - 4% complete (est. 374 minutes remaining)
+2023-12-05T00:50:52.136872Z DEBUG Requesting blocks 42750 to 42800 (of 803850)
+```
 ## Create Account
 ```
 snarkos account new
 ```
 ## save
+```
+ Attention - Remember to store this account private key and view key.
+
+  Private Key  APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me And Use In The Next Step
+     View Key  AViewKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
+      Address  aleo1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
+```
 ## Run Prover
 ```
 ./run-prover.sh
 ```
 ## Input Privatekey
 ```
-Enter the Aleo Prover account private key:
+Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
 ```
 CTRL AD
+```
 

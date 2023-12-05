@@ -78,8 +78,10 @@ snarkos account new
 ```
 Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-14. **DONE**
-
+14. **Check Prover**
+```
+https://explorer.hamp.app/address?a=<wallet_aleo>
+```
 Detacth Sesion
 ```
 CTRL A D

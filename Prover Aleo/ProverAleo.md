@@ -11,45 +11,45 @@
 |  5. | Network Bandwidth                            | 250Mbps of upload and download bandwidth           |
 |  6. | GPU (optional)                               | CUDA-enabled GPU (optional)                         |
 
-## Install Dependency
+1. **Install Dependency**
 ```
 sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install ufw
 ```
 ```
 sudo apt install git -y && sudo apt install screen -y
 ```
-## Open Port
+2. **Open Port**
 ```
 sudo ufw allow 4133/tcp && sudo ufw allow 3033/tcp && sudo ufw allow 22
 ```
 ```
 sudo ufw enable && sudo ufw status
 ```
-## Cloning Repository
+3. **Cloning Repository**
 ```
 git clone https://github.com/AleoHQ/snarkOS.git --depth 1
 ```
-## Directory
+4. **Directory**
 ```
 cd snarkOS
 ```
-## Build
+5. **Build**
 ```
 ./build_ubuntu.sh
 ```
-## Sett Screen
+6. **Setting Screen**
 ```
 screen -S aleo
 ```
-## Install 
+7. **Install**
 ```
 cargo install --path .
 ```
-## Run an Aleo Client
+8. **Run an Aleo Client**
 ```
 ./run-client.sh
 ```
-## Wait For Synchronize
+9. **Wait For Synchronize**
 ```
 2023-12-05T00:50:50.779308Z  INFO Synced up to block 36299 of 803850 - 4% complete (est. 374 minutes remaining)
 2023-12-05T00:50:50.779506Z DEBUG Requesting blocks 42650 to 42700 (of 803850)
@@ -58,11 +58,11 @@ cargo install --path .
 2023-12-05T00:50:52.136740Z  INFO Synced up to block 36399 of 803850 - 4% complete (est. 374 minutes remaining)
 2023-12-05T00:50:52.136872Z DEBUG Requesting blocks 42750 to 42800 (of 803850)
 ```
-## Create Account
+10. **Create Account**
 ```
 snarkos account new
 ```
-## save
+11. **Save**
 ```
  Attention - Remember to store this account private key and view key.
 
@@ -70,11 +70,11 @@ snarkos account new
      View Key  AViewKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
       Address  aleo1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
 ```
-## Run Prover
+12. **Run Prover**
 ```
 ./run-prover.sh
 ```
-## Input Privatekey
+13. **Input Privatekey**
 ```
 Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```

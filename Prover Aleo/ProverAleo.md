@@ -78,11 +78,12 @@ snarkos account new
 ```
 Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-## Detacth Sesion
+##Cheate Sheet**
+Detacth Sesion
 ```
 CTRL A D
 ```
-## Back Screen
+Back Screen
 ```
 screen -r aleo
 ```

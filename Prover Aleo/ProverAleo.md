@@ -8,7 +8,7 @@
  5. 250Mbps of upload and download bandwidth
  6. CUDA-enabled GPU (optional)
 
-## Dependecy
+## Install Dependency
 ```
 sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install ufw
 ```

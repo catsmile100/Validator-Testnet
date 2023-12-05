@@ -8,6 +8,15 @@
  5. 250Mbps of upload and download bandwidth
  6. CUDA-enabled GPU (optional)
 
+| No. | Requirements                                 | Specifications                                      |
+|----:|----------------------------------------------|-----------------------------------------------------|
+|  1. | Operating System                             | Ubuntu 22.04 (LTS)                                  |
+|  2. | CPU                                          | 32-cores (64-cores preferred)                       |
+|  3. | RAM                                          | 32GB of memory (64GB or larger preferred)           |
+|  4. | Storage                                      | 128GB of disk space                                 |
+|  5. | Network Bandwidth                            | 250Mbps of upload and download bandwidth           |
+|  6. | GPU (optional)                               | CUDA-enabled GPU (optional)                         |
+
 ## Install Dependency
 ```
 sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install ufw

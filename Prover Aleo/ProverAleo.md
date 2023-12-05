@@ -78,6 +78,8 @@ snarkos account new
 ```
 Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+14. **DONE**
+
 Detacth Sesion
 ```
 CTRL A D

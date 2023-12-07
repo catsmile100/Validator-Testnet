@@ -94,7 +94,6 @@ screen -r aleo
 
 ## DELETE
 ```
-```
 CTRL+A D
 ```
 ```

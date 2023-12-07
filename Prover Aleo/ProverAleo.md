@@ -91,3 +91,36 @@ Back Screen
 screen -r aleo
 ```
 
+
+## DELETE
+```
+```
+CTRL+A D
+```
+```
+CTRL C
+```
+```
+cd ~
+```
+```
+rm -rf snarkOS
+```
+```
+sudo apt-get remove --purge ufw
+```
+```
+sudo apt-get remove --purge git
+```
+```
+sudo apt-get remove --purge screen
+```
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --uninstall
+```
+```
+sudo rm -rf /etc/ufw
+```
+```
+rm -rf ~/.gitconfig
+```

@@ -171,7 +171,7 @@ nulink/nulink nulink ursula init \
 
 14. Prepare :
 - New Wallet for Staker with Fee tBNB
-- Fee tBNB for wallet validator
+- Fee tBNB for wallet validator /Worker
 
 15- Launch  Node
 ```

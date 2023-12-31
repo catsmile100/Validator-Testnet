@@ -1,6 +1,6 @@
-# NuLink Testnet Horus 2.0
+# NuLink Testnet
 
-![Nulink](https://github.com/an-node/Testnet/assets/96678356/4f0705f1-7819-40dc-9b4e-44a13caa5033)
+![Capture](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ff88417a-b441-4059-abae-863608584beb)
 
 
 ### Documentation

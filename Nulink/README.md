@@ -131,7 +131,7 @@ export NULINK_OPERATOR_ETH_PASSWORD=12345678
 ```
 12. Create screen
 ```
-screen S nulink
+screen -S nulink
 ```
 
 13- Initialize Node Configuration

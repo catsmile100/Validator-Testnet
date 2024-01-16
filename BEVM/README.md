@@ -66,6 +66,7 @@ WantedBy=multi-user.target
 EOF
 
 ```
+EDIT : "--name=your_node_name" =change with your Wallet ex: "--name=0xxxxxxxxxxxxxx"
 ```
 sudo systemctl daemon-reload
 ```

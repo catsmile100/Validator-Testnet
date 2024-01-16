@@ -59,7 +59,7 @@ Restart=always
 WorkingDirectory=/home/bevm
 RestartSec=3
 LimitNOFILE=65535
-ExecStart=/home/bevm/bevm --chain=testnet --name="0x862cba1fb41fecb3ebd90d9f1195685b0e74c116" --port 12044 --rpc-port 12033 --pruning=archive --telemetry-url "wss://telemetry.bevm.io/submit 0"
+ExecStart=/home/bevm/bevm --chain=testnet --name="name=your_node_name" --port 12044 --rpc-port 12033 --pruning=archive --telemetry-url "wss://telemetry.bevm.io/submit 0"
 
 [Install]
 WantedBy=multi-user.target

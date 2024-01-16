@@ -27,7 +27,8 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 ```
 ```
 sudo sh get-docker.sh
-
+```
+```
 cd /var/lib
 ```
 ```
@@ -86,9 +87,9 @@ docker logs -f YOUR-CONTAINER-ID
 ```
 
 
--https://telemetry.bevm.io/
+- https://telemetry.bevm.io/
 
--ctrl V + (input your wallet EVM
+- ctrl V + (input your wallet EVM)
 
 
 

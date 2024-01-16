@@ -1,7 +1,6 @@
 # BEVM
 
-![Capture](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ff88417a-b441-4059-abae-863608584beb)
-
+![BEVM](https://github.com/catsmile100/Validator-Testnet/assets/85368621/8297af28-4067-4497-a503-453460058a03)
 
 ### Documentation
 > - [Documentation](https://documents.bevm.io/build/run-a-node)

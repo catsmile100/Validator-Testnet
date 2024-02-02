@@ -7,6 +7,14 @@
 
 </h1>
 
+<center>
+
+# NAMADA SHIELDED EXPEDITION
+
+![NAANROIDNAM](https://github.com/catsmile100/Validator-Testnet/assets/85368621/40f8ceab-7c3f-4003-8059-ad9dee7b3c97)
+
+</center>
+
 ### Official
 - [Site](https://namada.net)
 - [X](https://twitter.com/namada)

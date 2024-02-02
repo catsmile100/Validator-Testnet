@@ -11,8 +11,9 @@
 <h1 align="center">NAMADA SHIELDED EXPEDITION</h1>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/assets/85368621/40f8ceab-7c3f-4003-8059-ad9dee7b3c97" alt="NAANROIDNAM">
+  <img src="![NAANROIDNAM](https://github.com/catsmile100/Validator-Testnet/assets/85368621/a74ed429-8ff3-48ff-9f62-f22145b65d54)"alt="NAANROIDNAM">
 </p>
+
 
 
 ### Official

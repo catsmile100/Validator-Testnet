@@ -149,8 +149,8 @@ namadaw find --alias $WALLET
 ~~~
 >Copy the implicit address (starts with tnam...) for the next step
 
-
-- Fund your wallet from [faucet](https://faucet.housefire.luminara.icu/)
+- Fund your wallet from [faucet1](https://faucet.housefire.luminara.icu/)
+- Fund your wallet from [faucet2](https://faucet.heliax.click/)
 
 After a couple of minutes, the check the balance
 

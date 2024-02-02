@@ -34,6 +34,8 @@ OS  | CPU     | RAM      | SSD     |
 | Ubuntu 20.04 | TBD        | TBD         | TBD  | 
 
 ### Manual installation
+### NOTE : 1 EPOCH = 6 HOURS
+
 ~~~
 sudo apt update && sudo apt upgrade -y
 sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler unzip jq

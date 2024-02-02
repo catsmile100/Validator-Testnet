@@ -8,13 +8,13 @@
 </h1>
 
 ### Official
-- Site [Site](https://namada.net)
-- X [X](https://twitter.com/namada)
-- Discord [Discord](https://discord.com/invite/namada)
-- Dashboard [Dashboard](https://namada.net/shielded-expedition)
-- Task [Task](https://namada.net/blog/namada-shielded-expedition-wanted-asteroids-roids-point-system-and-rankings)
-- Explorer [Explorer](https://namada.explorers.guru/validators)
-- Explorer [Explorer](https://namada-explorer.0xgen.online/)
+- [Site](https://namada.net)
+- [X](https://twitter.com/namada)
+- [Discord](https://discord.com/invite/namada)
+- [Dashboard](https://namada.net/shielded-expedition)
+- [Task](https://namada.net/blog/namada-shielded-expedition-wanted-asteroids-roids-point-system-and-rankings)
+- [Explorer](https://namada.explorers.guru/validators)
+- [Explorer](https://namada-explorer.0xgen.online/)
 
 ### Minimum Hardware Requirements 
  - CPU: x86_64 or arm64 processor with at least 4 physical cores

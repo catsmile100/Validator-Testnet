@@ -16,12 +16,23 @@
 - [Explorer](https://namada.explorers.guru/validators)
 - [Explorer](https://namada-explorer.0xgen.online/)
 
-### Minimum Hardware Requirements 
- - CPU: x86_64 or arm64 processor with at least 4 physical cores
- - RAM: 8GB DDR4
- - Storage: 1TB
+### Minimum Hardware 
 
-## Set up your node
+#### Validator
+OS  | CPU     | RAM      | SSD     | 
+| ------------- | ------------- | ------------- | -------- |
+| Ubuntu 20.04 | 4         | 16 GB	         | 1 TB   | 
+
+#### Full Node
+OS  | CPU     | RAM      | SSD     | 
+| ------------- | ------------- | ------------- | -------- |
+| Ubuntu 20.04 | 4        | 8 GB	         | 1 TB  | 
+
+#### Light Node
+OS  | CPU     | RAM      | SSD     | 
+| ------------- | ------------- | ------------- | -------- |
+| Ubuntu 20.04 | TBD        | TBD         | TBD  | 
+
 ### Manual installation
 ~~~
 sudo apt update && sudo apt upgrade -y

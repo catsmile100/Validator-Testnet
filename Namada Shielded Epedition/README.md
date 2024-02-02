@@ -1,7 +1,9 @@
-<h1 align="left"> 
- NAMADA SHIELDED EXPEDITION
+<h1 align="centre"> 
 
  ![NAANROIDNAM](https://github.com/catsmile100/Validator-Testnet/assets/85368621/40f8ceab-7c3f-4003-8059-ad9dee7b3c97)
+
+
+ NAMADA SHIELDED EXPEDITION
 
 </h1>
 

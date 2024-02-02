@@ -287,8 +287,8 @@ Find your wallet address
 ~~~
 namada wallet find --alias ${WALLET}1
 ~~~
-
-- Fund your wallet from [faucet](https://faucet.housefire.luminara.icu/)
+- Fund your wallet from [faucet1](https://faucet.housefire.luminara.icu/)
+- Fund your wallet from [faucet2](https://faucet.heliax.click/)
 
 >After a couple of minutes, the check the balance
 

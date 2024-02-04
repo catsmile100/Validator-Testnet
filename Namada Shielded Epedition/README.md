@@ -15,6 +15,7 @@
 - [Task](https://namada.net/blog/namada-shielded-expedition-wanted-asteroids-roids-point-system-and-rankings)
 - [Explorer](https://namada.explorers.guru/validators)
 - [Explorer](https://namada-explorer.0xgen.online/)
+- [Explorer](https://namada.info/validators)
 
 ### Minimum Hardware 
 

@@ -7,6 +7,8 @@
 
 </h1>
 
+RPC : https://rpc-namada.catsmile.tech
+
 ### Official
 - [Site](https://namada.net)
 - [X](https://twitter.com/namada)

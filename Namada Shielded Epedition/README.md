@@ -159,8 +159,7 @@ Create wallet
 namadaw gen --alias $WALLET
 ~~~
 
-Restore wallet
-Make sure wallet address is on this  [list](https://raw.githubusercontent.com/anoma/namada-shielded-expedition/main/balances.toml)
+Restore wallet : Make sure wallet address is on this  [list](https://raw.githubusercontent.com/anoma/namada-shielded-expedition/main/balances.toml)
 ~~~
 namadaw derive --alias $WALLET
 ~~~

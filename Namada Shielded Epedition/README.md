@@ -270,6 +270,15 @@ namadac bonds --owner $WALLET
 namadac withdraw --source $WALLET --validator $VALIDATOR_ADDRESS
 ~~~
 
+## Send Funds
+namada  transfer --target <RECEIVER-KEY(tnam1..)> --source $WALLET> --amount 100 --token NAM 
+
+## UNJAIL validator
+namadac unjail-validator --validator  $VALIDATOR_ADDRESS
+
+## Claim rewards
+namadac claim-rewards --validator $VALIDATOR_ADDRESS
+
 ## Wallet operations
 
 Create test wallets

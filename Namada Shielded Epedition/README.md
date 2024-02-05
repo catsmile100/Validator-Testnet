@@ -342,6 +342,20 @@ Check Sync status and node info
 curl http://127.0.0.1:26657/status | jq
 ~~~
 
+## Snapshot
+~~~
+sudo systemctl stop namadad.service
+cd $HOME/.local/share/namada
+wget https://files.cryptosj.net/files/namadatestnet/namadatestnet.tar.gz
+cp $HOME/.local/share/namada/shielded-expedition.b40d8e9055/cometbft/data/priv_validator_state.json /$HOME
+rm -rf shielded-expedition.b40d8e9055/db/
+rm -rf shielded-expedition.b40d8e9055/cometbft/data/
+tar -xvf namadatestnet.tar.gz
+cp $HOME/priv_validator_state.json $HOME/.local/share/namada/shielded-expedition.b40d8e9055/cometbft/data/
+sudo systemctl start namadad.service
+sudo journalctl -u namadad.service -f --output cat
+~~~
+
 ## Delete Node
 ~~~
 cd $HOME && mkdir $HOME/namada_backup

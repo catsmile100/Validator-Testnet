@@ -386,7 +386,9 @@ Check List Wallet Validator
 ~~~
 namadac bonded-stake
 ~~~
-## ~~Snapshot~~  <span style="color:red">Maintenance</span>
+## ~~Snapshot~~
+
+<span style="color:red">Maintenance</span>
 ~~~
 sudo systemctl stop namadad.service
 cd $HOME/.local/share/namada

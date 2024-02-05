@@ -197,7 +197,7 @@ Check Sync status, once your node is fully synced, the output from above will sa
 curl http://127.0.0.1:26657/status | jq .result.sync_info.catching_up
 ~~~
 
-Initiate a validator 
+## Initiate a validator 
 ~~~
 namadac init-validator --commission-rate 0.07 --max-commission-rate-change 1 --signing-keys $WALLET --alias $ALIAS --email <EMAIL_ADDRESS> --account-keys $WALLET --memo $MEMO
 ~~~
@@ -221,7 +221,7 @@ Check epoch
 namada client epoch
 ~~~
 
-Delegate tokens
+## Delegate tokens
 ~~~
 namadac bond --validator $ALIAS --source $WALLET --amount 1000 --memo $MEMO
 ~~~
@@ -241,7 +241,7 @@ Find your validator status
 namada client validator-state --validator $VALIDATOR_ADDRESS
 ~~~
 
-Add stake
+## Add stake
 ~~~
 namadac bond --source $WALLET --validator $VALIDATOR_ADDRESS --amount 1000
 ~~~
@@ -261,12 +261,10 @@ Wait for 6 epochs, then check when the unbonded tokens can be withdrawed
 namadac bonds --owner $WALLET
 ~~~
 
-Withdraw the unbonded tokens
-~~~bash
+## Withdraw the unbonded tokens
+~~~
 namadac withdraw --source $WALLET --validator $VALIDATOR_ADDRESS
 ~~~
-
-# 📝 Useful commands
 
 ## Wallet operations
 
@@ -309,7 +307,7 @@ Send payment from your address to other address
 namada client transfer --source ${WALLET}1 --target ${WALLET}2 --token NAM --amount 100 --signing-keys ${WALLET}1
 ~~~
 
-## Validator operations
+## Vote
 
 Check consensus state
 
@@ -329,19 +327,52 @@ Your validator votes (prevote)
 curl -s http://localhost:26657/dump_consensus_state | jq '.result.round_state.votes[0].prevotes' | grep $(curl -s http://localhost:26657/status | jq -r '.result.validator_info.address[:12]')
 ~~~
 
-## Sync and Consensus
-Check logs
-
-~~~
-sudo journalctl -u namadad -f
-~~~
+## Cheat-Sheet
 
 Check Sync status and node info
-
 ~~~
 curl http://127.0.0.1:26657/status | jq
 ~~~
-
+Sync status 
+~~~
+curl -s localhost:26657/status | jq 
+~~~
+Check logs
+~~~
+sudo journalctl -u namadad -f
+~~~
+Sync status (false = node synced)
+~~~
+curl -s localhost:26657/status | jq .result.sync_info.catching_up
+~~~
+Create Wallet
+~~~
+namadaw gen --alias $WALLET
+~~~
+Restore Wallet
+~~~
+namadaw derive --alias $WALLET
+~~~
+Find Wallet
+~~~
+namadaw find --alias $WALLET
+~~~
+List Wallet
+~~~
+namadaw  list
+~~~
+Delete wallet
+~~~
+namadaw remove --alias $WALLET --do-it
+~~~
+Check Balance
+~~~
+namadac balance --owner $WALLET
+~~~
+Check List Wallet Validator
+~~~
+namadac bonded-stake
+~~~
 ## Snapshot
 ~~~
 sudo systemctl stop namadad.service
@@ -355,6 +386,7 @@ cp $HOME/priv_validator_state.json $HOME/.local/share/namada/shielded-expedition
 sudo systemctl start namadad.service
 sudo journalctl -u namadad.service -f --output cat
 ~~~
+source from : cryptosj.net
 
 ## Delete Node
 ~~~

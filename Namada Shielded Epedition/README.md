@@ -160,6 +160,7 @@ namadaw gen --alias $WALLET
 ~~~
 
 Restore wallet
+Make sure wallet address is on this  [list](https://raw.githubusercontent.com/anoma/namada-shielded-expedition/main/balances.toml)
 ~~~
 namadaw derive --alias $WALLET
 ~~~
@@ -374,6 +375,7 @@ Check List Wallet Validator
 namadac bonded-stake
 ~~~
 ## Snapshot
+[Source](cryptosj.net)
 ~~~
 sudo systemctl stop namadad.service
 cd $HOME/.local/share/namada
@@ -386,8 +388,6 @@ cp $HOME/priv_validator_state.json $HOME/.local/share/namada/shielded-expedition
 sudo systemctl start namadad.service
 sudo journalctl -u namadad.service -f --output cat
 ~~~
-source from : cryptosj.net
-
 ## Delete Node
 ~~~
 cd $HOME && mkdir $HOME/namada_backup

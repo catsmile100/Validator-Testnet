@@ -341,3 +341,17 @@ Check Sync status and node info
 ~~~
 curl http://127.0.0.1:26657/status | jq
 ~~~
+
+## Delete Node
+~~~
+cd $HOME && mkdir $HOME/namada_backup
+cp -r $HOME/.local/share/namada/pre-genesis $HOME/namada_backup/
+systemctl stop namadad && systemctl disable namadad
+rm /etc/systemd/system/namada* -rf
+rm $(which namada) -rf
+rm /usr/local/bin/namada* /usr/local/bin/cometbft -rf
+rm $HOME/.namada* -rf
+rm $HOME/.local/share/namada -rf
+rm $HOME/namada -rf
+rm $HOME/cometbft -rf
+~~~

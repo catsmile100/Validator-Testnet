@@ -391,6 +391,16 @@ cp $HOME/priv_validator_state.json $HOME/.local/share/namada/shielded-expedition
 sudo systemctl start namadad.service
 sudo journalctl -u namadad.service -f --output cat
 ~~~
+## Grafana
+~~~
+wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Namada%20Shielded%20Epedition/grafana.sh
+~~~
+~~~
+chmod +x grafana.sh
+~~~
+./grafana.sh
+~~~
+
 ## Delete Node
 ~~~
 cd $HOME && mkdir $HOME/namada_backup

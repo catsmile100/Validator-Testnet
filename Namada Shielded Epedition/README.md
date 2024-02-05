@@ -374,7 +374,7 @@ Check List Wallet Validator
 namadac bonded-stake
 ~~~
 ## Snapshot
-[Source](cryptosj.net)
+Soruce [from](https://www.cryptosj.net)
 ~~~
 sudo systemctl stop namadad.service
 cd $HOME/.local/share/namada

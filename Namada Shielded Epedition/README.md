@@ -398,9 +398,9 @@ wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Namada
 ~~~
 chmod +x grafana.sh
 ~~~
+~~~
 ./grafana.sh
 ~~~
-
 ## Delete Node
 ~~~
 cd $HOME && mkdir $HOME/namada_backup

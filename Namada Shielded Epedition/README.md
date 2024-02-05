@@ -37,7 +37,7 @@ OS  | CPU     | RAM      | SSD     |
 | Ubuntu 20.04 | TBD        | TBD         | TBD  | 
 
 ### Manual installation
-### NOTE : 1 EPOCH ESTIMATE 6 HOURS
+### NOTE : 1 EPOCH ESTIMATE 6-10 HOURS
 
 ~~~
 sudo apt update && sudo apt upgrade -y

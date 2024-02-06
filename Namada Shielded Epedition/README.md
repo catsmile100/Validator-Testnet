@@ -390,17 +390,15 @@ Check List Wallet Validator
 ~~~
 namadac bonded-stake
 ~~~
-## ~~Snapshot~~
-
-<span style="color:red">Maintenance</span>
+## Snapshot
 ~~~
 sudo systemctl stop namadad.service
 cd $HOME/.local/share/namada
-wget http://readmee.tech/snapshot/namada/namada-snapshot.tar.gz
+wget http://catsmile.tech/namada/snapshot/data.tar.lz4
 cp $HOME/.local/share/namada/shielded-expedition.b40d8e9055/cometbft/data/priv_validator_state.json /$HOME
 rm -rf shielded-expedition.b40d8e9055/db/
 rm -rf shielded-expedition.b40d8e9055/cometbft/data/
-tar -xvf namada-snapshot.tar.gz
+lz4 -d data.tar.lz4 | tar -xvf -
 cp $HOME/priv_validator_state.json $HOME/.local/share/namada/shielded-expedition.b40d8e9055/cometbft/data/
 sudo systemctl start namadad.service
 sudo journalctl -u namadad.service -f --output cat

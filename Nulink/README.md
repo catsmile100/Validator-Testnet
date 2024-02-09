@@ -48,8 +48,11 @@ tar -xvzf geth-linux-amd64-1.10.23-d901d853.tar.gz
 cd geth-linux-amd64-1.10.23-d901d853/
 ```
 
-4- Create Ethereum account 
+4- Create Ethereum account
+```
+cd geth-linux-amd64-1.10.23-d901d853
 
+```
 ```
 ./geth account new --keystore ./keystore
 ```

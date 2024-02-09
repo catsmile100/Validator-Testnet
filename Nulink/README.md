@@ -44,10 +44,6 @@ wget https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.23-d90
 ```
 tar -xvzf geth-linux-amd64-1.10.23-d901d853.tar.gz
 ```
-```
-cd geth-linux-amd64-1.10.23-d901d853/
-```
-
 4- Create Ethereum account
 ```
 cd geth-linux-amd64-1.10.23-d901d853

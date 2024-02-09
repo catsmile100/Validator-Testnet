@@ -59,8 +59,10 @@ cd geth-linux-amd64-1.10.23-d901d853
 ```
 Create password
 ```
+Save keystore
 ```
-save data
+/geth-linux-amd64-1.10.23-d901d853/keystore/UTC--2024-02-09T13-33-06.226830019Z--bcb6caf8677408d56d54dba23e7c5879a592e005
+
 ```
 
 5- Pull the latest NuLink image

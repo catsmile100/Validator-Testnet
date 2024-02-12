@@ -1,6 +1,6 @@
 # PRYMZM
 
-![Capture](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ff88417a-b441-4059-abae-863608584beb)
+![prym](https://github.com/catsmile100/Validator-Testnet/assets/85368621/11a1060f-8ad0-45a4-9a30-ee6d58271172)
 
 ### Documentation
 > - [Site](https://pryzm.zone/)

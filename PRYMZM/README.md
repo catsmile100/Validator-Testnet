@@ -8,6 +8,7 @@
 > - [Discord](https://discord.com/invite/pryzm-869587037286715422)
 > - [Github](https://github.com/pryzm-finance)
 > - [Documentation](https://docs.pryzm.zone/overview/maintain-guides/getting-started/what-is-pryzmd)
+> - [Explorer](https://testnet.itrocket.net/pryzm)
 
 ### Minimum Hardware :
 OS  | CPU     | RAM      | SSD     | 

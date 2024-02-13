@@ -1,6 +1,6 @@
 # Entrypoint
 
-![prym](https://github.com/catsmile100/Validator-Testnet/assets/85368621/11a1060f-8ad0-45a4-9a30-ee6d58271172)
+![entrypoint](https://github.com/catsmile100/Validator-Testnet/assets/85368621/7e151689-7730-4d07-9a03-2de5e03a913d)
 
 ### Documentation
 > - [Site](https://entrypoint.zone)

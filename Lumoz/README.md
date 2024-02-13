@@ -1,5 +1,10 @@
-# Lumoz
-![Lumoz](https://github.com/catsmile100/Validator-Testnet/assets/85368621/e19854f8-c081-410c-9182-fc1d880fcd76)
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/e19854f8-c081-410c-9182-fc1d880fcd76">
+
+</p>
+<h1>
+<p align="center"> Lumoz </p>
+</h1>
 
 ### Documentation
 > - [Site](https://lumoz.org/)

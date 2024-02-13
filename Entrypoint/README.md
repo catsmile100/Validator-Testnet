@@ -1,6 +1,10 @@
-# Entrypoint
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/7e151689-7730-4d07-9a03-2de5e03a913d">
 
-![entrypoint](https://github.com/catsmile100/Validator-Testnet/assets/85368621/7e151689-7730-4d07-9a03-2de5e03a913d)
+</p>
+<h1>
+<p align="center"> Entrypoint </p>
+</h1>
 
 ### Documentation
 > - [Site](https://entrypoint.zone)

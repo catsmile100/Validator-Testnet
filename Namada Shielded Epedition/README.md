@@ -1,15 +1,9 @@
-<h1 align="centre"> 
-
-<p align="center">  
-    
-![NAANROIDNAM](https://github.com/catsmile100/Validator-Testnet/assets/85368621/40f8ceab-7c3f-4003-8059-ad9dee7b3c97)
-
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/1de34c44-77d0-4f15-aabd-2e88f87ff81c">
 </p>
-
-<p align="center">  NAMADA SHIELDED EXPEDITION </p>
-
+<h1>
+<p align="center"> NAMADA SHIELDED EXPEDITION </p>
 </h1>
-
 
 RPC : https://rpc-namada.catsmile.tech
 

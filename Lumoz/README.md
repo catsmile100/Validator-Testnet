@@ -1,6 +1,5 @@
 # Lumoz
-
-![prym](https://github.com/catsmile100/Validator-Testnet/assets/85368621/11a1060f-8ad0-45a4-9a30-ee6d58271172)
+![Lumoz](https://github.com/catsmile100/Validator-Testnet/assets/85368621/e19854f8-c081-410c-9182-fc1d880fcd76)
 
 ### Documentation
 > - [Site](https://lumoz.org/)

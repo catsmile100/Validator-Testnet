@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <h1>Validator Installation On Linux Ubuntu 20.04 LTS</h1>
+  <h1>Validator Installation</h1>
 </p>
 
 

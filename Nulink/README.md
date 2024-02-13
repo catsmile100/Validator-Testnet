@@ -1,7 +1,9 @@
-# NuLink Testnet
-
-![Capture](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ff88417a-b441-4059-abae-863608584beb)
-
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/7b2255c4-e8db-44f9-b268-69f09331b322">
+</p>
+<h1>
+<p align="center"> NuLink </p>
+</h1>
 
 ### Documentation
 > - [Link](https://www.nulink.org/)

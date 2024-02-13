@@ -1,6 +1,10 @@
-# BEVM
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/8297af28-4067-4497-a503-453460058a03">
 
-![BEVM](https://github.com/catsmile100/Validator-Testnet/assets/85368621/8297af28-4067-4497-a503-453460058a03)
+</p>
+<h1>
+<p align="center"> BEVM </p>
+</h1>
 
 ### Documentation
 > - [Documentation](https://documents.bevm.io/build/run-a-node)

@@ -6,7 +6,6 @@
 </h1>
 
 
-
 <p align="center">
   <a href="https://discord.com/invite/H5vZkNnXCu">Discord</a> |
   <a href="https://twitter.com/pactuschain">Twitter</a> |

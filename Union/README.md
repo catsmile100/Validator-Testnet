@@ -1,10 +1,16 @@
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/b8181109-abbb-4688-94c1-c83cb8cfb8dd">
+</p>
+<h1>
+<p align="center"> Union </p>
+</h1>
 
-![Capture](https://github.com/catsmile100/Validator-Testnet/assets/85368621/36b90569-acc2-43a4-9cee-fddc1a9e4774)
-
-##### Documentation
-> - [Link](https://union.build/)
-> - [Documentation](https://docs.union.build/)
-> - [Twitter](https://twitter.com/union_build)
+<p align="center">
+  <a href="https://union.build">Link</a> |
+  <a href="https://discord.com/invite/union-build">Discord</a> |
+  <a href="https://twitter.com/union_build">Twitter</a> |
+  <a href="https://docs.union.build">Docs</a> |
+</p>
 
 ### Minimum Hardware Requirements
 - Ubuntu 20.04 LTS

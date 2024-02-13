@@ -9,7 +9,7 @@
   <a href="https://union.build">Link</a> |
   <a href="https://discord.com/invite/union-build">Discord</a> |
   <a href="https://twitter.com/union_build">Twitter</a> |
-  <a href="https://docs.union.build">Docs</a> |
+  <a href="https://docs.union.build">Docs</a> 
 </p>
 
 ### Minimum Hardware Requirements

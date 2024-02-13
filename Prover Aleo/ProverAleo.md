@@ -1,4 +1,9 @@
-# Prover Aleo Testnet3
+<p align="center">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/d1af99ec-cc52-428e-bb68-b39a46df3967">
+</p>
+<h1>
+<p align="center"> Aleo </p>
+</h1>
 
 ## Requirements Provers
 

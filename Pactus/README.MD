@@ -1,6 +1,11 @@
 <p align="center">
-  <img src="https://pactus.org/assets/images/logos/text_logo.png" alt="Pactus Logo">
+  <img height="350" height="350" src="">
 </p>
+<h1>
+<p align="center"> Pactus chain </p>
+</h1>
+
+
 
 <p align="center">
   <a href="https://discord.com/invite/H5vZkNnXCu">Discord</a> |

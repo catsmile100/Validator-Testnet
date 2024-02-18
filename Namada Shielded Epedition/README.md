@@ -565,6 +565,20 @@ Delete snap file
 rm -rf $HOME/namada-snapshot.tar
 ~~~
 
+### Upgrade to v0.31.4
+ ~~~
+cd $HOME
+rm -rf namada
+git clone https://github.com/anoma/namada
+cd namada
+wget https://github.com/anoma/namada/releases/download/v0.31.4/namada-v0.31.4-Linux-x86_64.tar.gz
+tar -xvf namada-v0.31.4-Linux-x86_64.tar.gz
+rm namada-v0.31.4-Linux-x86_64.tar.gz
+cd namada-v0.31.4-Linux-x86_64
+sudo mv namad* /usr/local/bin/
+sudo systemctl restart namadad && sudo journalctl -u namadad -f
+~~~
+
 ### Delete node
 ~~~
 sudo systemctl stop namadad

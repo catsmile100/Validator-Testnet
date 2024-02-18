@@ -220,6 +220,10 @@ Delete wallet
 ~~~
 namadaw remove --alias $WALLET --do-it
 ~~~
+send payment from one address to another
+~~~
+namadac transfer --source $WALLET --target ${WALLET}1 --token NAAN --amount 1 --signing-keys $WALLET --memo $MEMO
+~~~
 Check Sync status
 ~~~
 curl http://127.0.0.1:26657/status | jq 
@@ -272,6 +276,28 @@ namada client bonds --owner $WALLET
 Find your validator status
 ~~~
 namada client validator-state --validator $VALIDATOR_ADDRESS
+
+### Stake
+add a variable with the validator address:
+~~~
+VAL_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # catsmile
+~~~
+export the variable:
+~~~
+echo "export VAL_ADDRESS="$VAL_ADDRESS"" >> $HOME/.bash_profile \
+source $HOME/.bash_profile
+~~~
+delegate tokens
+~~~
+namadac bond --source $WALLET --validator $VAL_ADDRESS --amount 500 --memo $MEMO
+~~~
+check your user bonds
+~~~
+namadac bonds --owner $WALLET 
+~~~
+check all bonded nodes
+~~~
+namadac bonded-stake 
 ~~~
 Add stake
 ~~~
@@ -291,5 +317,198 @@ namadac bonds --owner $WALLET
 ~~~
 Withdraw the unbonded tokens
 ~~~
-namadac withdraw --source $WALLET --validator $VALIDATOR_ADDRESS
+namadac withdraw --source $WALLET --validator $VALIDATOR_ADDRESS --memo $MEMO
+~~~
+redelegate
+~~~
+namadac redelegate --owner $WALLET --source-validator $VAL_ADDRESS --destination-validator <destination-validator-address> --amount 10 --memo $MEMO
+~~~
+claim rewards
+~~~
+namadac claim-rewards --source $WALLET --validator $VAL_ADDRESS --memo $MEMO
+~~~
+query the pending reward tokens without claiming
+~~~
+namadac rewards --source $WALLET --validator $VAL_ADDRESS 
+~~~
+
+### Multisign
+
+generate key_1:
+~~~
+namadaw gen --alias $WALLET
+~~~
+generate key_2
+~~~
+namadaw gen --alias ${WALLET}1
+~~~
+chech your public key
+~~~
+namadaw find --alias $WALLET | awk '/Public key:/ {print $3}'
+~~~
+init non-multisig account (single signer)
+~~~
+namadac init-account --alias ${WALLET}-multisig --public-keys $WALLET --signing-keys $WALLET --memo $MEMO
+~~~
+init multisig account (at least 2 signers)
+~~~
+namadac init-account --alias ${WALLET}1-multisig --public-keys $WALLET,${WALLET}1 --signing-keys $WALLET,${WALLET}1 --threshold 2 --memo $MEMO
+~~~
+create a folder for a transaction
+~~~
+mkdir tx_dumps
+~~~
+create tran~~~saction:
+~~~
+namadac transfer --source ${WALLET}1-multisig --target ${WALLET}1 --token NAAN --amount 10 --signing-keys $WALLET,${WALLET}1 --dump-tx --output-folder-path tx_dumps --memo $MEMO
+~~~
+sign the transaction
+~~~
+namadac sign-tx --tx-path "<path-to-.tx-file>" --signing-keys $WALLET,${WALLET}1 --owner ${WALLET}1-multisig --memo $MEMO
+~~~
+save as a variable offline_signature 1
+
+export SIGNATURE_ONE="<signature-file-name>"
+~~~
+save as a variable offline_signature 2:
+~~~
+export SIGNATURE_TWO="<signature-2-file-name>"
+~~~
+submit transaction
+~~~
+namadac tx --tx-path "<path-to-.tx-file>" --signatures $SIGNATURE_ONE,$SIGNATURE_TWO --owner ${WALLET}1-multisig --gas-payer $WALLET --memo $MEMO
+~~~
+changing the multisig threshold
+~~~
+namadac update-account --address ${WALLET}1-multisig --threshold 1 --signing-keys $WALLET,${WALLET}1 --memo $MEMO
+~~~
+check that the threshold has been updated correctly by running
+~~~
+namadac query-account --owner ${WALLET}1-multisig
+~~~
+changing the public keys of a multisig account
+~~~
+namadac update-account --address ${WALLET}1-multisig --public-keys ${WALLET}2,${WALLET}3,${WALLET}4 --signing-keys $WALLET,${WALLET}1 --memo $MEMO
+~~~
+initialize an established account
+~~~
+namadac init-account --alias ${WALLET}1-multisig --public-keys ${WALLET}2,${WALLET}3,${WALLET}4  --signing-keys $WALLET,${WALLET}1  --threshold 1 --memo $MEMO
+~~~
+
+### MASP
+
+randomly generate a new spending key
+~~~
+namadaw gen --shielded --alias ${WALLET}-shielded
+~~~
+create a new payment address
+~~~
+namadaw gen-payment-addr --key ${WALLET}-shielded --alias ${WALLET}-shielded-addr
+~~~
+send a shielding transfer
+~~~
+namadac transfer --source $WALLET --target ${WALLET}-shielded-addr --token NAAN --amount 10 --memo $MEMO
+~~~
+view balance
+~~~
+namadac balance --owner ${WALLET}-shielded
+~~~
+generate another spending key
+~~~
+namadaw gen --shielded --alias ${WALLET}1-shielded
+~~~
+create a payment address
+~~~
+namadaw gen-payment-addr --key ${WALLET}1-shielded --alias ${WALLET}1-shielded-addr
+~~~
+shielded transfers (once the user has a shielded balance, it can be transferred to another shielded address)
+~~~
+namadac transfer  --source ${WALLET}-shielded --target ${WALLET}1-shielded-addr --token NAAN --amount 4 --signing-keys <your-implicit-account-alias> --memo $MEMO
+~~~
+unshielding transfers (from a shielded to a transparent account)
+~~~
+namadac transfer --source ${WALLET}-shielded --target $WALLET --token NAAN --amount 4 --signing-keys <your-implicit-account-alias> --memo $MEMO
+~~~
+
+### Validator operations
+
+check sync status and node info
+~~~
+curl http://127.0.0.1:26657/status | jq
+~~~
+check balance
+~~~
+namadac balance --owner $ALIAS
+~~~
+check keys
+~~~
+namadaw list
+~~~
+find your validator address
+~~~
+namadac find-validator --tm-address=$(curl -s localhost:26657/status | jq -r .result.validator_info.address) --node localhost:26657
+~~~
+stake funds
+~~~
+namadac bond --source $WALLET --validator $VALIDATOR_ADDRESS --amount 10 --memo $MEMO
+~~~
+self-bonding
+~~~
+namadac bond --validator $VALIDATOR_ADDRESS --amount 10 --memo $MEMO
+~~~
+check your validator bond status
+~~~
+namadac bonds --owner $ALIAS
+~~~
+check your user bonds
+~~~
+namadac bonds --owner $WALLET
+~~~
+check all bonded nodes
+~~~
+namadac bonded-stake
+~~~
+find all the slashes
+~~~
+namadac slashes
+~~~
+non-self unbonding (validator alias can be used instead of address)
+~~~
+namadac unbond --source $WALLET --validator $VALIDATOR_ADDRESS --amount 1.5 --memo $MEMO
+~~~
+self-unbonding
+~~~
+namadac unbond --validator $VALIDATOR_ADDRESS --amount 1.5 --memo $MEMO
+~~~
+withdrawing unbonded tokens (available 6 epochs after unbonding)
+~~~
+namadac withdraw --source $WALLET --validator $VALIDATOR_ADDRESS --memo $MEMO
+~~~
+find your validator status
+~~~
+namadac validator-state --validator $VALIDATOR_ADDRESS
+~~~
+check epoch
+~~~
+namada client epoch
+~~~
+unjail, you need to wait 2 epochs
+~~~
+namada client unjail-validator --validator $VALIDATOR_ADDRESS --node tcp://127.0.0.1:26657 --memo $MEMO
+~~~
+change validator commission rate
+~~~
+namadac change-commission-rate --validator $VALIDATOR_ADDRESS --commission-rate <commission-rate> --memo $MEMO
+~~~
+change validator metadata
+~~~
+namadac change-metadata --validator $VALIDATOR_ADDRESS --memo $MEMO
+~~~
+deactivate validator
+~~~
+namadac deactivate-validator --validator $VALIDATOR_ADDRESS --memo $MEMO
+~~~
+reactivate validator
+~~~
+namadac reactivate-validator --validator $VALIDATOR_ADDRESS --memo $MEMO
 ~~~

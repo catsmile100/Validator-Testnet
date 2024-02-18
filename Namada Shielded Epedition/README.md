@@ -18,9 +18,9 @@
 </p>
 
 ### Public Services
-#### Link
+#### My Official
 ~~~
-https://namada.catsmile.tech/
+https://namada.catsmile.tech
 ~~~
 #### RPC `crew`
 ~~~

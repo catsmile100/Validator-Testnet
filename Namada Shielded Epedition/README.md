@@ -75,10 +75,10 @@ OS  | CPU     | RAM      | SSD     |
 ### Manual installation
 ~~~
 sudo apt update && sudo apt upgrade -y
-sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler
+sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler jq
 ~~~
 
-Install Go, if needed
+Install Go
 ~~~
 cd $HOME
 ! [ -x "$(command -v go)" ] && {

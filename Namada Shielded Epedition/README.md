@@ -728,11 +728,11 @@ sudo rm $(which namada)
 sudo rm -rf $HOME/root/.local/share/namada/shielded-expedition.88f17d1d14
 ~~~
 ### Progress
-Namada Create RPC `status DONE `
-Namada Create Snapshoot `status DONE`
-Namada Indexer `status DONE `
-Namada Interface-SDK `status Setup`
-Namada Relayler `status Setup`
-Namada Interface Osmo `status Setup`
-Namada Explorer `status Setup`
-Namada Build Tool `status Setup` 
+  1.  Namada Create RPC `status DONE `
+  2. Namada Create Snapshoot `status DONE`
+  3. Namada Indexer `status DONE `
+  4. Namada Interface-SDK `status Setup`
+  5. Namada Relayler `status Setup`
+  6. Namada Interface Osmo `status Setup`
+  7. Namada Explorer `status Setup`
+  8. Namada Build Tool `status Setup` 

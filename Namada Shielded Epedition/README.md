@@ -538,7 +538,7 @@ namadac vote-proposal --proposal-id <proposal-id-of-steward-proposal> --vote yay
 ~~~
 
 ### Snapshot
-updates every 4h
+- 'updates every 4h'
 
 Download snapshot:
 ~~~

@@ -32,7 +32,7 @@ https://namada-indexer.catsmile.tech/block/last
 ~~~
 #### Addrbook 
 ~~~
-https://rpc-namada.catsmile.tech](https://files-namada.catsmile.tech/testnet/addrbook.json
+https://files-namada.catsmile.tech/testnet/addrbook.json
 ~~~
 ####  Genesis 
 ~~~

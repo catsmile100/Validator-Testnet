@@ -536,3 +536,28 @@ vote for PGF proposal
 ~~~
 namadac vote-proposal --proposal-id <proposal-id-of-steward-proposal> --vote yay --signing-keys $WALLET --memo $MEMO
 ~~~
+
+### Snapshot
+updates every 4h
+
+Download snapshot:
+~~~
+cd $HOME
+wget -O namada-snapshot.tar https://files-namada.catsmile.tech/testnet/namada-snapshot.tar.lz4
+~~~
+Stop node and unpack snapshot
+~~~
+sudo systemctl stop namadad
+cp $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/data/priv_validator_state.json $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/priv_validator_state.json.backup
+rm -rf $HOME/.local/share/namada/shielded-expedition.88f17d1d14/db $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/data
+tar -xvf $HOME/snap_namada.tar -C $HOME/.local/share/namada/shielded-expedition.88f17d1d14
+mv $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/priv_validator_state.json.backup $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/data/priv_validator_state.json
+~~~
+Restart node
+~~~
+sudo systemctl restart namadad && sudo journalctl -u namadad -f
+~~~
+Delete snap file
+~~~
+rm -rf $HOME/snap_namada.tar
+~~~

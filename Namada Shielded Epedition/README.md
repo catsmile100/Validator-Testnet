@@ -605,35 +605,39 @@ sudo systemctl restart namadad && sudo journalctl -u namadad -f
 ~~~
 
 ### Cheat-Sheet
-Reload
+Reload services
 ~~~
 sudo systemctl daemon-reload
 ~~~
-Enable
+Enable Service
 ~~~
 sudo systemctl enable namadad
 ~~~
-Disable
+Disable Service
 ~~~
 sudo systemctl disable namadad
 ~~~
-Start
+Start service
 ~~~
 sudo systemctl start namadad
 ~~~
-Stop
+Stop service
 ~~~
 sudo systemctl stop namadad
 ~~~
-Restart
+Restart service
 ~~~
 sudo systemctl restart namadad
 ~~~
-Check Logs
+Check service status
+~~~
+sudo systemctl status namadad
+~~~
+Check logs
 ~~~
 sudo journalctl -u namadad -f
 ~~~
-Sync Status
+Sync info
 ~~~
 curl http://127.0.0.1:26657/status | jq
 ~~~

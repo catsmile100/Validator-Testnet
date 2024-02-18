@@ -17,8 +17,14 @@
 </p>
 
 ### Public Services
-
-RPC : https://rpc-namada.catsmile.tech
+#### RPC
+~~~
+https://rpc-namada.catsmile.tech
+~~~
+#### Addrbook 
+~~~
+https://rpc-namada.catsmile.tech](https://files-namada.catsmile.tech/testnet/addrbook.json
+~~~
 
 ### Minimum Hardware 
 

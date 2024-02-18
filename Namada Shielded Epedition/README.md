@@ -188,7 +188,7 @@ sudo ufw allow 26656/tcp
 sudo ufw enable
 ~~~
 
-### Wallet
+### Wallet Operation
 ~~~
 namadaw gen --alias $WALLET
 ~~~

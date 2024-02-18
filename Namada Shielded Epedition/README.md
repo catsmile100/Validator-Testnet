@@ -406,7 +406,7 @@ create a new payment address
 ~~~
 namadaw gen-payment-addr --key ${WALLET}-shielded --alias ${WALLET}-shielded-addr
 ~~~
-send a shielding transfer
+send a shielding transfer `crew`
 ~~~
 namadac transfer --source $WALLET --target ${WALLET}-shielded-addr --token NAAN --amount 10 --memo $MEMO
 ~~~

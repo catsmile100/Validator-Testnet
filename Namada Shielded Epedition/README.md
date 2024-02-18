@@ -100,7 +100,7 @@ source $HOME/.bash_profile
 
 Replace your Validator and Wallet name
 ~~~
-NAMADA_PORT=26
+NAMADA_PORT=30
 echo "export NAMADA_PORT="$NAMADA_PORT"" >> $HOME/.bash_profile
 echo "export ALIAS="CHOOSE_A_NAME_FOR_YOUR_VALIDATOR"" >> $HOME/.bash_profile
 echo "export MEMO="CHOOSE_YOUR_tpknam_ADDRESS"" >> $HOME/.bash_profile

@@ -604,6 +604,44 @@ sudo mv namad* /usr/local/bin/
 sudo systemctl restart namadad && sudo journalctl -u namadad -f
 ~~~
 
+### Cheat-Sheet
+Reload
+~~~
+sudo systemctl daemon-reload
+~~~
+Enable
+~~~
+sudo systemctl enable namadad
+~~~
+Disable
+~~~
+sudo systemctl disable namadad
+~~~
+Start
+~~~
+sudo systemctl start namadad
+~~~
+Stop
+~~~
+sudo systemctl stop namadad
+~~~
+Restart
+~~~
+sudo systemctl restart namadad
+~~~
+Check Logs
+~~~
+sudo journalctl -u namadad -f
+~~~
+Sync Status
+~~~
+curl http://127.0.0.1:26657/status | jq
+~~~
+Check Balance
+~~~
+namadac balance --owner $WALLET
+~~~
+
 ### Delete node
 ~~~
 sudo systemctl stop namadad

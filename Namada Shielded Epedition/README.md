@@ -638,9 +638,9 @@ sudo systemctl status grafana-server
 ~~~
 http://SERVER_IP:3000/
 ~~~
-- `go to grafana [dashboard](https://grafana.com/grafana/dashboards)`
+- go to grafana [dashboard](https://grafana.com/grafana/dashboards)
 - `search for namada , or chose ID 19014 then import it to your grafana dashboard`
-- `[Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)`
+- Request2 [Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)
 
 ### Cheat-Sheet
 Reload services

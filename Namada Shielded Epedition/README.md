@@ -427,7 +427,10 @@ unshielding transfers (from a shielded to a transparent account)
 ~~~
 namadac transfer --source ${WALLET}-shielded --target $WALLET --token NAAN --amount 4 --signing-keys <your-implicit-account-alias> --memo $MEMO
 ~~~
-
+IBC shielded transfers
+~~~
+namadac ibc-transfer --amount xxxx --source $WALLET --receiver <Wallet Chain IBC> --token naan --channel-id <channel-ChainIBC> --memo $MEMO
+~~~
 ### Validator operations
 
 check sync status and node info

@@ -13,7 +13,8 @@
   <a href="https://namada.net/shielded-expedition">Dashboard</a> |
   <a href="https://namada.net/blog/namada-shielded-expedition-wanted-asteroids-roids-point-system-and-rankings">Task</a> |
   <a href="https://namada.explorers.guru/validators">Explorer1</a> |
-  <a href="https://namada-explorer.0xgen.online">Explorer2</a> 
+  <a href="https://namada-explorer.0xgen.online">Explorer2</a> |
+  <a href="https://faucet.heliax.click">Faucet</a>
 </p>
 
 ### Public Services

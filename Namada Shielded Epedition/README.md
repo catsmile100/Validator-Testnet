@@ -510,3 +510,29 @@ reactivate validator
 ~~~
 namadac reactivate-validator --validator $VALIDATOR_ADDRESS --memo $MEMO
 ~~~
+
+### Governance
+all proposals list
+~~~
+namadac query-proposal
+~~~
+edit proposal
+~~~
+namadac query-proposal --proposal-id <PROPOSAL_ID>
+~~~
+save wallet address
+~~~
+WALLET_ADDRESS=$(namadaw find --alias $WALLET | grep "Implicit" | awk '{print $3}')
+~~~
+import the variable into system
+~~~
+echo "export WALLET_ADDRESS="$WALLET_ADDRESS"" >> $HOME/.bash_profile source $HOME/.bash_profile
+~~~
+vote
+~~~
+namadac vote-proposal --proposal-id <proposal-id> --vote yay --address $WALLET_ADDRESS --memo $MEMO
+~~~
+vote for PGF proposal
+~~~
+namadac vote-proposal --proposal-id <proposal-id-of-steward-proposal> --vote yay --signing-keys $WALLET --memo $MEMO
+~~~

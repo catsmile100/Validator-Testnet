@@ -58,6 +58,7 @@ https://files-namada.catsmile.tech/testnet/namada-snapshot.tar.lz4
 ~~~
 VALIDATOR_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # catsmile
 ~~~
+`address of validator you want to stake to tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul`
 ####  Alias
 ~~~
 catsmile

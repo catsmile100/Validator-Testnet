@@ -73,7 +73,7 @@ OS  | CPU     | RAM      | SSD     |
 
 ~~~
 sudo apt update && sudo apt upgrade -y
-sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler unzip jq
+sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler
 ~~~
 
 Install Go, if needed
@@ -92,22 +92,24 @@ source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 ~~~
 
+Replace your Validator and Wallet name
+~~~
+NAMADA_PORT=26
+echo "export NAMADA_PORT="$NAMADA_PORT"" >> $HOME/.bash_profile
+echo "export ALIAS="CHOOSE_A_NAME_FOR_YOUR_VALIDATOR"" >> $HOME/.bash_profile
+echo "export MEMO="CHOOSE_YOUR_tpknam_ADDRESS"" >> $HOME/.bash_profile
+echo "export WALLET="wallet"" >> $HOME/.bash_profile
+echo "export PUBLIC_IP=$(wget -qO- eth0.me)" >> $HOME/.bash_profile
+echo "export TM_HASH="v0.1.4-abciplus"" >> $HOME/.bash_profile
+echo "export CHAIN_ID="shielded-expedition.88f17d1d14"" >> $HOME/.bash_profile
+echo "export BASE_DIR="$HOME/.local/share/namada"" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+~~~
+
 Install Rust & Cargo
 ~~~
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
-~~~
-
-Replace your Validator and Wallet name
-~~~
-echo "export ALIAS="CHOOSE_A_NAME_FOR_YOUR_VALIDATOR"" >> $HOME/.bash_profile
-echo "export MEMO="YOUR_tpknam1_ADDR"" >> $HOME/.bash_profile
-echo "export WALLET="wallet"" >> $HOME/.bash_profile
-echo "export PUBLIC_IP=$(wget -qO- eth0.me)" >> $HOME/.bash_profile
-echo "export TM_HASH="v0.1.4-abciplus"" >> $HOME/.bash_profile
-echo "export CHAIN_ID="shielded-expedition.b40d8e9055"" >> $HOME/.bash_profile
-echo "export BASE_DIR="$HOME/.local/share/namada"" >> $HOME/.bash_profile
-source $HOME/.bash_profile
 ~~~
 
 Install CometBFT
@@ -128,10 +130,10 @@ cd $HOME
 rm -rf namada
 git clone https://github.com/anoma/namada
 cd namada
-wget https://github.com/anoma/namada/releases/download/v0.31.1/namada-v0.31.1-Linux-x86_64.tar.gz
-tar -xvf namada-v0.31.1-Linux-x86_64.tar.gz
-rm namada-v0.31.1-Linux-x86_64.tar.gz
-cd namada-v0.31.1-Linux-x86_64
+wget https://github.com/anoma/namada/releases/download/v0.31.4/namada-v0.31.4-Linux-x86_64.tar.gz
+tar -xvf namada-v0.31.4-Linux-x86_64.tar.gz
+rm namada-v0.31.4-Linux-x86_64.tar.gz
+cd namada-v0.31.4-Linux-x86_64
 sudo mv namad* /usr/local/bin/
 if [ ! -d "$BASE_DIR" ]; then
     mkdir -p "$BASE_DIR"
@@ -188,21 +190,44 @@ sudo ufw allow 26656/tcp
 sudo ufw enable
 ~~~
 
+
 Create wallet
 ~~~
 namadaw gen --alias $WALLET
 ~~~
-
-Restore wallet : 
-- *Make sure wallet address is on this  [list](https://raw.githubusercontent.com/anoma/namada-shielded-expedition/main/balances.toml)*
-- *No Change Alias (`$WALLET`) & Skip Password (`Enter`)= `Default Address`*
+Restore existing wallet
 ~~~
 namadaw derive --alias $WALLET
 ~~~
-
 Find your wallet address
 ~~~
 namadaw find --alias $WALLET
+~~~
+
+Request Faucet
+
+- Fund your wallet from [faucet1](https://faucet.housefire.luminara.icu/)
+- Fund your wallet from [faucet2](https://faucet.heliax.click/)
+
+After a couple of minutes, the check the balance
+
+Check Balance
+~~~
+namadac balance --owner $WALLET
+~~~
+List wallet
+~~~
+namadaw list
+~~~
+Delete wallet
+~~~
+namadaw remove --alias $WALLET --do-it
+~~~
+Check Sync status
+~~~
+curl http://127.0.0.1:26657/status | jq 
+~~~
+
 ~~~
 >Copy the implicit address (starts with tnam...) for the next step
 

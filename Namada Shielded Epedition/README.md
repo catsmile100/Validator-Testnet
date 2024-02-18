@@ -56,8 +56,13 @@ https://files-namada.catsmile.tech/testnet/namada-snapshot.tar.lz4
 ~~~
 ####  Validator Address
 ~~~
-VALIDATOR_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # alias=catsmile
+VALIDATOR_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # catsmile
 ~~~
+####  Alias
+~~~
+catsmile
+~~~
+
 ### Minimum Hardware 
 
 #### Validator

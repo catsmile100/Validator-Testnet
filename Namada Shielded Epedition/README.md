@@ -206,8 +206,6 @@ Request Faucet
 - Fund your wallet from [faucet1](https://faucet.housefire.luminara.icu/)
 - Fund your wallet from [faucet2](https://faucet.heliax.click/)
 
-After a couple of minutes, the check the balance
-
 Check Balance
 ~~~
 namadac balance --owner $WALLET
@@ -276,7 +274,7 @@ namada client bonds --owner $WALLET
 Find your validator status
 ~~~
 namada client validator-state --validator $VALIDATOR_ADDRESS
-
+~~~
 ### Stake
 add a variable with the validator address:
 ~~~
@@ -367,7 +365,7 @@ sign the transaction
 namadac sign-tx --tx-path "<path-to-.tx-file>" --signing-keys $WALLET,${WALLET}1 --owner ${WALLET}1-multisig --memo $MEMO
 ~~~
 save as a variable offline_signature 1
-
+~~~
 export SIGNATURE_ONE="<signature-file-name>"
 ~~~
 save as a variable offline_signature 2:

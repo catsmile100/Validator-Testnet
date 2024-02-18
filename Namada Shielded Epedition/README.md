@@ -54,7 +54,10 @@ PEERS="tcp://37.60.236.83:26657" sed -i 's|^persistent_peers *=.*|persistent_pee
 ~~~
 https://files-namada.catsmile.tech/testnet/namada-snapshot.tar.lz4
 ~~~
-
+####  Validator Address
+~~~
+VALIDATOR_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # alias=catsmile
+~~~
 ### Minimum Hardware 
 
 #### Validator
@@ -277,16 +280,16 @@ namada client validator-state --validator $VALIDATOR_ADDRESS
 ### Stake
 add a variable with the validator address:
 ~~~
-VAL_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # catsmile
+VALIDATOR_ADDRESS="tnam1q8g740srs0s29vqus9elppzaadey3yhung6xakul" # catsmile
 ~~~
 export the variable:
 ~~~
-echo "export VAL_ADDRESS="$VAL_ADDRESS"" >> $HOME/.bash_profile \
+echo "export VALIDATOR_ADDRESS="$VALIDATOR_ADDRESS"" >> $HOME/.bash_profile \
 source $HOME/.bash_profile
 ~~~
 delegate tokens
 ~~~
-namadac bond --source $WALLET --validator $VAL_ADDRESS --amount 500 --memo $MEMO
+namadac bond --source $WALLET --validator VALIDATOR_ADDRESS --amount 500 --memo $MEMO
 ~~~
 check your user bonds
 ~~~

@@ -565,7 +565,7 @@ Delete snap file
 rm -rf $HOME/namada-snapshot.tar
 ~~~
 
-### Upgrade to v0.31.4
+### Upgrade
  ~~~
 cd $HOME
 rm -rf namada

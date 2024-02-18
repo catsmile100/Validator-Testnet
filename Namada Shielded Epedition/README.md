@@ -645,6 +645,14 @@ Check Balance
 ~~~
 namadac balance --owner $WALLET
 ~~~
+find validator status
+~~~
+namadac validator-state --validator $VALIDATOR_ADDRESS
+~~~
+check epoch
+~~~
+namada client epoch
+~~~
 
 ### Delete node
 ~~~

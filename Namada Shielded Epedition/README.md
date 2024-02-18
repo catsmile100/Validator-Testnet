@@ -324,9 +324,9 @@ redelegate
 ~~~
 namadac redelegate --owner $WALLET --source-validator $VAL_ADDRESS --destination-validator <destination-validator-address> --amount 10 --memo $MEMO
 ~~~
-claim rewards
+claim rewards `crew`
 ~~~
-namadac claim-rewards --source $WALLET --validator $VAL_ADDRESS --memo $MEMO
+namadac claim-rewards --source $WALLET --validator $VAL_ADDRESS --memo $MEMO 
 ~~~
 query the pending reward tokens without claiming
 ~~~
@@ -335,7 +335,7 @@ namadac rewards --source $WALLET --validator $VAL_ADDRESS
 
 ### Multisign
 
-generate key_1:
+generate key_1
 ~~~
 namadaw gen --alias $WALLET
 ~~~
@@ -422,15 +422,15 @@ create a payment address
 ~~~
 namadaw gen-payment-addr --key ${WALLET}1-shielded --alias ${WALLET}1-shielded-addr
 ~~~
-shielded transfers (once the user has a shielded balance, it can be transferred to another shielded address)
+shielded transfers (once the user has a shielded balance, it can be transferred to another shielded address) `crew`
 ~~~
 namadac transfer  --source ${WALLET}-shielded --target ${WALLET}1-shielded-addr --token NAAN --amount 4 --signing-keys <your-implicit-account-alias> --memo $MEMO
 ~~~
-unshielding transfers (from a shielded to a transparent account)
+unshielding transfers (from a shielded to a transparent account) `crew`
 ~~~
 namadac transfer --source ${WALLET}-shielded --target $WALLET --token NAAN --amount 4 --signing-keys <your-implicit-account-alias> --memo $MEMO
 ~~~
-IBC shielded transfers
+IBC shielded transfers `crew`
 ~~~
 namadac ibc-transfer --amount xxxx --source $WALLET --receiver <Wallet Chain IBC> --token naan --channel-id <channel-ChainIBC> --memo $MEMO
 ~~~

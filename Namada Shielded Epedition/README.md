@@ -67,11 +67,6 @@ OS  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
 | Ubuntu 20.04 | 4        | 8 GB	         | 1 TB  | 
 
-#### Light Node
-OS  | CPU     | RAM      | SSD     | 
-| ------------- | ------------- | ------------- | -------- |
-| Ubuntu 20.04 | TBD        | TBD         | TBD  | 
-
 ### Manual installation
 ~~~
 sudo apt update && sudo apt upgrade -y

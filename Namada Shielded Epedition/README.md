@@ -668,18 +668,6 @@ http://SERVER_IP:3000/
 - `search for namada , or chose ID 19014 then import it to your grafana dashboard`
 - [Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)
 
-### NAMADA INDEXER `UPDATE SOON`
-
-### NAMADA INTERFACE `SOON`
-
-### NAMADA RELAYLER `SOON`
-
-### NAMADA INTERFACE OSMO `SOON`
-
-### NAMADA EXPLORER `SOON`
-
-### NAMADA BUILD TOOL `SOON`
-
 ### Cheat-Sheet
 Reload services
 ~~~
@@ -739,3 +727,15 @@ sudo systemctl daemon-reload
 sudo rm $(which namada)
 sudo rm -rf $HOME/root/.local/share/namada/shielded-expedition.88f17d1d14
 ~~~
+
+### Namada Indexer `UPDATE SOON`
+
+### Namada Interface-SDK `SOON`
+
+### Namada Relayler `SOON`
+
+### Namada Interface Osmo `SOON`
+
+### Namada Explorer `SOON`
+
+### Namada Build Tool `SOON`

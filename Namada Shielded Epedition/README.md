@@ -606,6 +606,15 @@ sudo systemctl restart namadad && sudo journalctl -u namadad -f
 
 ### Grafana
 ~~~
+curl -o grafana.sh https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Namada%20Shielded%20Epedition/grafana.sh
+~~~
+~~~
+chmod +x grafana.sh
+~~~
+~~~
+./grafana.sh
+~~~
+~~~
 sudo apt-get install -y apt-transport-https software-properties-common wget
 ~~~
 ~~~

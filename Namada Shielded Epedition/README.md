@@ -640,7 +640,7 @@ http://SERVER_IP:3000/
 ~~~
 - go to grafana [dashboard](https://grafana.com/grafana/dashboards)
 - `search for namada , or chose ID 19014 then import it to your grafana dashboard`
-- Request2 [Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)
+- [Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)
 
 ### Cheat-Sheet
 Reload services

@@ -668,11 +668,17 @@ http://SERVER_IP:3000/
 - `search for namada , or chose ID 19014 then import it to your grafana dashboard`
 - [Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)
 
+### NAMADA INDEXER `UPDATE SOON`
+
 ### NAMADA INTERFACE `SOON`
 
-### NAMADA RELAYER `SOON`
+### NAMADA RELAYLER `SOON`
 
 ### NAMADA INTERFACE OSMO `SOON`
+
+### NAMADA EXPLORER `SOON`
+
+### NAMADA BUILD TOOL `SOON`
 
 ### Cheat-Sheet
 Reload services

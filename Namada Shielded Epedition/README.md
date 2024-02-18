@@ -604,6 +604,44 @@ sudo mv namad* /usr/local/bin/
 sudo systemctl restart namadad && sudo journalctl -u namadad -f
 ~~~
 
+### Grafana
+~~~
+sudo apt-get install -y apt-transport-https software-properties-common wget
+~~~
+~~~
+sudo mkdir -p /etc/apt/keyrings/
+~~~
+~~~
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+~~~
+~~~
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+~~~
+~~~
+sudo apt-get update
+~~~
+~~~
+sudo apt-get install grafana
+~~~
+~~~
+sudo systemctl daemon-reload
+~~~
+~~~
+sudo systemctl start grafana-server
+~~~
+~~~
+sudo systemctl status grafana-server
+~~~
+- `Your Grafana should be working now`
+- `Log to your grafana dashboard on port 3000*`
+
+~~~
+http://SERVER_IP:3000/
+~~~
+- `go to grafana [dashboard](https://grafana.com/grafana/dashboards)`
+- `search for namada , or chose ID 19014 then import it to your grafana dashboard`
+- `[Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)`
+
 ### Cheat-Sheet
 Reload services
 ~~~

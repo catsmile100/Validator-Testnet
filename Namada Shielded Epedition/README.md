@@ -543,6 +543,27 @@ vote for PGF proposal
 namadac vote-proposal --proposal-id <proposal-id-of-steward-proposal> --vote yay --signing-keys $WALLET --memo $MEMO
 ~~~
 
+### Consensus
+check logs
+~~~
+sudo journalctl -u namadad -f
+~~~
+check sync status and node info
+~~~
+curl http://127.0.0.1:26657/status | jq
+~~~
+check consensus state
+~~~
+curl -s localhost:26657/consensus_state | jq .result.round_state.height_vote_set[0].prevotes_bit_array
+~~~
+full consensus state
+~~~
+curl -s localhost:12657/dump_consensus_state
+~~~
+your validator votes (prevote)
+~~~
+curl -s http://localhost:26657/dump_consensus_state | jq '.result.round_state.votes[0].prevotes' | grep $(curl -s http://localhost:26657/status | jq -r '.result.validator_info.address[:12]')
+~~~
 ### Snapshot
 - `updates every 4h`
 

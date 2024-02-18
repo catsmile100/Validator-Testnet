@@ -559,7 +559,7 @@ sudo systemctl restart namadad && sudo journalctl -u namadad -f
 ~~~
 Delete snap file
 ~~~
-rm -rf $HOME/snap_namada.tar
+rm -rf $HOME/namada-snapshot.tar
 ~~~
 
 ### Delete node

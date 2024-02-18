@@ -18,7 +18,7 @@
 </p>
 
 ### Public Services
-#### My Official
+#### Official
 ~~~
 https://namada.catsmile.tech
 ~~~

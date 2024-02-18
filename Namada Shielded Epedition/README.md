@@ -660,7 +660,6 @@ sudo systemctl status grafana-server
 - `Your Grafana should be working now`
 - `Log to your grafana dashboard on port 3000*`
 
-
 Link in Browser
 ~~~
 http://SERVER_IP:3000/
@@ -668,6 +667,12 @@ http://SERVER_IP:3000/
 - go to grafana [dashboard](https://grafana.com/grafana/dashboards)
 - `search for namada , or chose ID 19014 then import it to your grafana dashboard`
 - [Here](https://grafana.com/grafana/dashboards/19014-namada-blockchains)
+
+### NAMADA INTERFACE `SOON`
+
+### NAMADA RELAYER `SOON`
+
+### NAMADA INTERFACE OSMO `SOON`
 
 ### Cheat-Sheet
 Reload services

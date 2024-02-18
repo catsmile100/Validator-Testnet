@@ -203,8 +203,8 @@ namadaw find --alias $WALLET
 
 Request Faucet
 
-- Fund your wallet from [faucet1](https://faucet.housefire.luminara.icu/)
-- Fund your wallet from [faucet2](https://faucet.heliax.click/)
+- Request1 [faucet1](https://faucet.housefire.luminara.icu/)
+- Request2 [faucet2](https://faucet.heliax.click/)
 
 Check Balance
 ~~~
@@ -541,9 +541,9 @@ namadac vote-proposal --proposal-id <proposal-id-of-steward-proposal> --vote yay
 ~~~
 
 ### Snapshot
-- **updates every 4h**
+- `updates every 4h`
 
-Download snapshot:
+Download snapshot
 ~~~
 cd $HOME
 wget -O namada-snapshot.tar https://files-namada.catsmile.tech/testnet/namada-snapshot.tar.lz4

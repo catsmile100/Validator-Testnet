@@ -69,8 +69,6 @@ OS  | CPU     | RAM      | SSD     |
 | Ubuntu 20.04 | TBD        | TBD         | TBD  | 
 
 ### Manual installation
-### NOTE : 1 EPOCH ESTIMATE 6-10 HOURS
-
 ~~~
 sudo apt update && sudo apt upgrade -y
 sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler
@@ -190,7 +188,7 @@ sudo ufw allow 26656/tcp
 sudo ufw enable
 ~~~
 
-Create wallet
+### Wallet
 ~~~
 namadaw gen --alias $WALLET
 ~~~
@@ -227,4 +225,71 @@ Check Sync status
 curl http://127.0.0.1:26657/status | jq 
 ~~~
 
-
+### Validator
+Initiate a validator
+~~~
+namadac init-validator \
+		--commission-rate 0.07 \
+		--max-commission-rate-change 1 \
+		--signing-keys $WALLET \
+		--alias $ALIAS \
+		--email <EMAIL_ADDRESS> \
+		--website <WEBSITE> \ 
+		--discord-handle <DISCORD> \
+		--account-keys $WALLET \
+		--memo $MEMO
+~~~
+Find your validator address
+~~~
+namadaw list | grep -A 1 ""$ALIAS"" | grep "Established"
+~~~
+Replace your Validator address, save and import variables into system
+~~~
+VALIDATOR_ADDRESS=$(namadaw list | grep -A 1 "\"$ALIAS\"" | grep "Established" | awk '{print $3}') 
+echo "export VALIDATOR_ADDRESS="$VALIDATOR_ADDRESS"" >> $HOME/.bash_profile 
+source $HOME/.bash_profile
+~~~
+Restart the node and wait for 2 epochs
+~~~
+sudo systemctl restart namadad && sudo journalctl -u namadad -f
+~~~
+Check epoch
+~~~
+namada client epoch
+~~~
+Delegate tokens
+~~~
+namadac bond --validator $ALIAS --source $WALLET --amount 1000 --memo $MEMO
+~~~
+Wait for 3 epochs and check validator is in the consensus set
+~~~
+namadac validator-state --validator $ALIAS
+~~~
+Check your validator bond status
+~~~
+namada client bonds --owner $WALLET
+~~~
+Find your validator status
+~~~
+namada client validator-state --validator $VALIDATOR_ADDRESS
+~~~
+Add stake
+~~~
+namadac bond --source $WALLET --validator $VALIDATOR_ADDRESS --amount 1000
+~~~
+Query the set of validators
+~~~
+namadac bonded-stake
+~~~
+Unbond the tokens
+~~~
+namadac unbond --source $WALLET --validator $VALIDATOR_ADDRESS --amount 1000
+~~~
+Wait for 6 epochs, then check when the unbonded tokens can be withdrawed
+~~~
+namadac bonds --owner $WALLET
+~~~
+Withdraw the unbonded tokens
+~~~
+namadac withdraw --source $WALLET --validator $VALIDATOR_ADDRESS
+~~~

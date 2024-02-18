@@ -728,12 +728,12 @@ sudo rm $(which namada)
 sudo rm -rf $HOME/root/.local/share/namada/shielded-expedition.88f17d1d14
 ~~~
 ### Progress
-  1. Namada `RPC` status: `completed` implementation ✅
-  2. Namada `Snapshoot` status: `completed` implementation ✅
-  3. Namada `Indexer` status: `completed` implementation ✅
-  4. Namada `Services` status: `completed` implementation ✅
-  5. Namada `Interface-SDK` status: `completed` implementation 🛠
-  6. Namada `Relayler` status: `completed` implementation 🛠
-  7. Namada `Interface Osmo` status: `completed` implementation 🛠
-  8. Namada `Explorer` status: `Build & Setup` implementation 🛠
-  9. Namada `Tool` status: `completed` implementation 🛠
+  1. Namada `RPC` status: `completed` implementation public ✅
+  2. Namada `Snapshoot` status: `completed` implementation public ✅
+  3. Namada `Indexer` status: `completed` implementation public ✅
+  4. Namada `Services` status: `completed` implementation public ✅
+  5. Namada `Interface-SDK` status: `completed` implementation public 🛠
+  6. Namada `Relayler` status: `completed` implementation public 🛠
+  7. Namada `Interface Osmo` status: `completed` implementation public 🛠
+  8. Namada `Explorer` status: `Build & Setup` implementation public 🛠
+  9. Namada `Tool` status: `completed` implementation public 🛠

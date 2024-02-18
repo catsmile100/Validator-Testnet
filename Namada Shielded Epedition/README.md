@@ -605,45 +605,57 @@ sudo systemctl restart namadad && sudo journalctl -u namadad -f
 ~~~
 
 ### Grafana
+Download the Grafana installation 
 ~~~
 curl -o grafana.sh https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Namada%20Shielded%20Epedition/grafana.sh
 ~~~
+Grant execute permission to the script:
 ~~~
 chmod +x grafana.sh
 ~~~
+Run the Grafana 
 ~~~
 ./grafana.sh
 ~~~
+Install the necessary packages:
 ~~~
 sudo apt-get install -y apt-transport-https software-properties-common wget
 ~~~
+Create a directory for the apt keys
 ~~~
 sudo mkdir -p /etc/apt/keyrings/
 ~~~
+Download the Grafana public key and place it in the apt key directory
 ~~~
 wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
 ~~~
+Add the Grafana repository to the package source list
 ~~~
 echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 ~~~
+Update the package list
 ~~~
 sudo apt-get update
 ~~~
+Install the Grafana package
 ~~~
 sudo apt-get install grafana
 ~~~
+Reload the Systemd daemon
 ~~~
 sudo systemctl daemon-reload
 ~~~
+Start the Grafana service
 ~~~
 sudo systemctl start grafana-server
 ~~~
+Check the status of the Grafana service
 ~~~
 sudo systemctl status grafana-server
 ~~~
 - `Your Grafana should be working now`
 - `Log to your grafana dashboard on port 3000*`
-
+Link in Browser
 ~~~
 http://SERVER_IP:3000/
 ~~~

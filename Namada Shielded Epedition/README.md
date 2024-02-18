@@ -359,7 +359,7 @@ create a folder for a transaction
 ~~~
 mkdir tx_dumps
 ~~~
-create tran~~~saction:
+create transaction
 ~~~
 namadac transfer --source ${WALLET}1-multisig --target ${WALLET}1 --token NAAN --amount 10 --signing-keys $WALLET,${WALLET}1 --dump-tx --output-folder-path tx_dumps --memo $MEMO
 ~~~

@@ -21,10 +21,13 @@
 ~~~
 https://namada.catsmile.tech/
 ~~~
-
 #### RPC
 ~~~
 https://rpc-namada.catsmile.tech
+~~~
+#### Indexer
+~~~
+https://namada-indexer.catsmile.tech/block/last
 ~~~
 #### Addrbook 
 ~~~

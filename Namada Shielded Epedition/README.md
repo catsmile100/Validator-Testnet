@@ -17,6 +17,11 @@
 </p>
 
 ### Public Services
+#### Link
+~~~
+https://namada.catsmile.tech/
+~~~
+
 #### RPC
 ~~~
 https://rpc-namada.catsmile.tech
@@ -24,6 +29,26 @@ https://rpc-namada.catsmile.tech
 #### Addrbook 
 ~~~
 https://rpc-namada.catsmile.tech](https://files-namada.catsmile.tech/testnet/addrbook.json
+~~~
+####  Genesis 
+~~~
+https://files-namada.catsmile.tech/testnet/genesis.json
+~~~
+####  Seed
+~~~
+tcp://37.60.236.83:26657
+~~~
+####  Peer 
+~~~
+tcp://37.60.236.83:26657
+~~~
+####  live peers
+~~~
+PEERS="tcp://37.60.236.83:26657" sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.local/share/namada/shielded-expedition.88f17d1d14/config.toml
+~~~
+####  Snapshot
+~~~
+https://files-namada.catsmile.tech/testnet/namada-snapshot.tar.lz4
 ~~~
 
 ### Minimum Hardware 

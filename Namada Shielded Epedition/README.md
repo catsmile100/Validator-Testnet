@@ -32,11 +32,11 @@ https://namada-indexer.catsmile.tech/block/last
 ~~~
 #### Addrbook 
 ~~~
-https://files-namada.catsmile.tech/testnet/addrbook.json
+wget -O $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/config/addrbook.json https://files-namada.catsmile.tech/testnet/addrbook.json
 ~~~
 ####  Genesis 
 ~~~
-https://files-namada.catsmile.tech/testnet/genesis.json
+wget -O $HOME/.local/share/namada/shielded-expedition.88f17d1d14/cometbft/config/genesis.json https://files-namada.catsmile.tech/testnet/genesis.json
 ~~~
 ####  Seed
 ~~~

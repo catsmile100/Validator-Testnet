@@ -16,6 +16,8 @@
   <a href="https://namada-explorer.0xgen.online">Explorer2</a> 
 </p>
 
+### Public Services
+
 RPC : https://rpc-namada.catsmile.tech
 
 ### Minimum Hardware 

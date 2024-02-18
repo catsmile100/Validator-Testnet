@@ -21,11 +21,11 @@
 ~~~
 https://namada.catsmile.tech/
 ~~~
-#### RPC
+#### RPC `crew`
 ~~~
 https://rpc-namada.catsmile.tech
 ~~~
-#### Indexer
+#### Indexer `crew`
 ~~~
 https://namada-indexer.catsmile.tech/block/last
 ~~~
@@ -300,7 +300,7 @@ check all bonded nodes
 ~~~
 namadac bonded-stake 
 ~~~
-Add stake
+Add stake `crew`
 ~~~
 namadac bond --source $WALLET --validator $VALIDATOR_ADDRESS --amount 1000
 ~~~

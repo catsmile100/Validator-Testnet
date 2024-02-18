@@ -8,12 +8,12 @@
 <p align="center">
   <a href="https://namada.net">Link</a> |
   <a href="https://discord.com/invite/namada">Discord</a> |
-  <a https://twitter.com/namada">Twitter</a> |
+  <a href="https://twitter.com/namada">Twitter</a> |
   <a href="https://docs.namada.net/introduction">Docs</a> |
-  <a href="(https://namada.net/shielded-expedition)">Dashboard</a> |
-  <a href="(https://namada.net/blog/namada-shielded-expedition-wanted-asteroids-roids-point-system-and-rankings)">Task</a> |
-  <a href="(https://namada.explorers.guru/validators)">Explorer1</a> |
-  <a href="(https://namada-explorer.0xgen.online/)">Explorer2</a> 
+  <a href="https://namada.net/shielded-expedition">Dashboard</a> |
+  <a href="https://namada.net/blog/namada-shielded-expedition-wanted-asteroids-roids-point-system-and-rankings">Task</a> |
+  <a href="https://namada.explorers.guru/validators">Explorer1</a> |
+  <a href="https://namada-explorer.0xgen.online">Explorer2</a> 
 </p>
 
 RPC : https://rpc-namada.catsmile.tech

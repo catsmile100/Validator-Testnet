@@ -172,7 +172,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 
 19. *Deposit**
 	- `Create New Wallet`
-	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com
 	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys
 

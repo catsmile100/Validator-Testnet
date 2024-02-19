@@ -52,7 +52,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	source ~/.bash_profile
 	```
 
-4. **`check go**
+4. **Check GO**
 	```
 	go version 
 	```
@@ -133,8 +133,11 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo systemctl restart beacon-chain
 	journalctl -fu beacon-chain -o cat
 	```
+12. **Generate Keys and Import** 
+	- `Go to` https://auroria.launchpad.stratisevm.com/en/overview
+	- confirm until `“Generate key pairs”` appears, input your Metamask wallet address.
 
-12. **Get Deposit CLI**
+13. **Get Deposit CLI**
 	```
 	cd $HOME &&\
 	wget https://github.com/stratisproject/staking-deposit-cli/releases/download/0.1.0/staking-deposit-cli-linux-amd64.zip &&\
@@ -142,18 +145,18 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	tar -C ~/go/bin -xzf staking-deposit-cli-linux-amd64/staking-deposit-cli-linux-amd64.tar.gz &&\
 	rm -rf staking-deposit-cli-linux-amd64 staking-deposit-cli-linux-amd64.zip
 	```
-13. **Deposit CLI**
+14. **Deposit CLI**
 	```
 	deposit new-mnemonic --num_validators 1 --chain auroria --eth1_withdrawal_address [YOUR_WALLET_ADDRESS]
 	```
-14. **Create Passeord & Seed**
+15. **Create Passeord & Seed**
 	- `Create Password`
 	- `Save Seed`
 
-15. **Save Key**
+16. **Save Key**
 	- SAVE Folder `validator_keys`
 
-16. *Get Validator CLI**
+17. *Get Validator CLI**
 	```
 	cd $HOME &&\
 	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/validator-linux-amd64-0ebd251.tar.gz &&\
@@ -161,28 +164,28 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	rm -rf validator-linux-amd64-0ebd251.tar.gz &&\
 	mv ./validator ~/go/bin 
 	```
-17. *Import validator key**
+18. *Import validator key**
 	```
-	validator accounts import --keys-dir=/root/validator_keyskeystore-m*.json/ --auroria
+	validator accounts import --keys-dir=/root/validator_keys//keystore-m*.json --auroria
 	```
-	- Change path : `/root/validator_keyskeystore-m*.json`
+	- Change path : `/root/validator_keys//keystore-m*.json`
 
-18. *Deposit**
+19. *Deposit**
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com
 	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys
 
-19. **Check Pubkey**
+20. **Check Pubkey**
 	```
 	cat ./validator_keys/deposit* | jq '.[].pubkey'
 	```
 	- `Go to` https://auroria.beacon.stratisevm.com/validator/[YOUR_PUBKEY]
 	- `It can take up to 16 hours to deposit in the beacon-chain process and your validator become Active` 
 
-20. **Create password file**
+21. **Create password file**
 	```
 	echo "YOUR_WALLET_PASSWORD" >> ./validator_keys/pwd.txt
 	```
-21. **Create service file**
+22. **Create service file**
 	```
 	sudo tee /etc/systemd/system/validator.service > /dev/null <<EOF
 	[Unit]
@@ -203,7 +206,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- Change `--suggested-fee-recipient=YOUR_ADDRES`S with you address
 	- Change`datadir=$HOME/.validator --wallet-password-file=$HOME/validator_keys/pwd.txt --wallet-dir=$HOME/validator_keys`
 
-22. **RUN Validator**
+23. **RUN Validator**
 	```
 	sudo systemctl daemon-reload
 	sudo systemctl enable validator

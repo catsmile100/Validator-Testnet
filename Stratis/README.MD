@@ -25,8 +25,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 
 ## Installation
 
-- user 		:** root**
-- default      : **root@xxxxxx:~#**
+- User 	       : `root`
+- Path         : `root@xxxxxx:~#`
 
 
 1. **Install Docker & Dependencies**

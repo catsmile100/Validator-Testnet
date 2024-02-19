@@ -12,7 +12,6 @@
   <a href="https://discord.com/invite/9tDyfZs">Discord</a> |
   <a href="https://twitter.com/stratisplatform">Twitter</a> |
   <a href="https://auroria.launchpad.stratisevm.com/en/">Docs</a> |
-  <a href="https://pactusscan.com/">Explorer</a>
 </p>
 
 <p align="center">

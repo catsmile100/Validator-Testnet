@@ -134,6 +134,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	journalctl -fu beacon-chain -o cat
 	```
 12. **Generate Keys and Import** 
+	- `Create New Wallet`
 	- `Go to` https://auroria.launchpad.stratisevm.com/en/overview
 	- confirm until `“Generate key pairs”` appears, input your Metamask wallet address.
 
@@ -171,7 +172,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- Change path : `/root/validator_keys//keystore-m*.json`
 
 19. **Deposit**
-	- `Create New Wallet`
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com
 	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys
 

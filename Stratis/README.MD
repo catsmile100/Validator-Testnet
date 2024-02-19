@@ -102,7 +102,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	journalctl -fu geth -o cat
 	```
 
-
 9. **Get beacon-chain**
 	```
 	cd $HOME
@@ -139,14 +138,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	journalctl -fu beacon-chain -o cat
 	```
 
-12. **RUN beacon**
-	```
-	sudo systemctl daemon-reload
-	sudo systemctl enable beacon-chain
-	sudo systemctl restart beacon-chain
-	journalctl -fu beacon-chain -o cat
-	```
-
 13. **Get Deposit CLI**
 	```
 	cd $HOME &&\
@@ -164,7 +155,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- `Save Seed`
 
 16. **Save Key**
-	- `SAVE Folder `validator_keys`
+	- SAVE Folder `validator_keys`
 
 17. *Get Validator CLI**
 	```

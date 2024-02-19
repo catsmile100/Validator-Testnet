@@ -57,7 +57,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	go version 
 	```
 
-5. **Create ~/go/bin dir**
+5. **Create Directory**
 	```
 	cd $HOME
 	mkdir -p go/bin

@@ -203,8 +203,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	WantedBy=multi-user.target
 	EOF
 	```
-	- Change `--suggested-fee-recipient=YOUR_ADDRES`S with you address
 	- Change`datadir=$HOME/.validator --wallet-password-file=$HOME/validator_keys/pwd.txt --wallet-dir=$HOME/validator_keys`
+	- Change `--suggested-fee-recipient=YOUR_ADDRES`S with you address
 
 23. **RUN Validator**
 	```

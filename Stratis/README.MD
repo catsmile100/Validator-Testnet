@@ -40,7 +40,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo ufw enable
 	```
 
-3. **Install go**
+3. **Install GO**
 	```
 	VER="1.21.5"
 	wget "https://go.dev/dl/go$VER.linux-amd64.tar.gz"

@@ -1,6 +1,7 @@
 <p align="center">
-  <img height="350" height="350" src="">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1755661469926989824/dlA_4aUJ_400x400.jpg">
 </p>
+
 <h1>
 <p align="center"> Stratis </p>
 </h1>

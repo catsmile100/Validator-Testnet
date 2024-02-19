@@ -156,7 +156,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 16. **Save Key**
 	- SAVE Folder `validator_keys`
 
-17. *Get Validator CLI**
+17. **Get Validator CLI**
 	```
 	cd $HOME &&\
 	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/validator-linux-amd64-0ebd251.tar.gz &&\
@@ -164,13 +164,13 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	rm -rf validator-linux-amd64-0ebd251.tar.gz &&\
 	mv ./validator ~/go/bin 
 	```
-18. *Import validator key**
+18. **Import validator key**
 	```
 	validator accounts import --keys-dir=/root/validator_keys//keystore-m*.json --auroria
 	```
 	- Change path : `/root/validator_keys//keystore-m*.json`
 
-19. *Deposit**
+19. **Deposit**
 	- `Create New Wallet`
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com
 	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys

@@ -25,10 +25,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 
 ## Installation
 
-- User 	       : `root`
-- Path         : `root@xxxxxx:~#`
-
-
 1. **Install Docker & Dependencies**
 	```
 	sudo apt update && sudo apt upgrade -y
@@ -138,7 +134,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	journalctl -fu beacon-chain -o cat
 	```
 
-13. **Get Deposit CLI**
+12. **Get Deposit CLI**
 	```
 	cd $HOME &&\
 	wget https://github.com/stratisproject/staking-deposit-cli/releases/download/0.1.0/staking-deposit-cli-linux-amd64.zip &&\
@@ -146,18 +142,18 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	tar -C ~/go/bin -xzf staking-deposit-cli-linux-amd64/staking-deposit-cli-linux-amd64.tar.gz &&\
 	rm -rf staking-deposit-cli-linux-amd64 staking-deposit-cli-linux-amd64.zip
 	```
-14. **Deposit CLI**
+13. **Deposit CLI**
 	```
 	deposit new-mnemonic --num_validators 1 --chain auroria --eth1_withdrawal_address [YOUR_WALLET_ADDRESS]
 	```
-15. **Create Passeord & Seed**
+14. **Create Passeord & Seed**
 	- `Create Password`
 	- `Save Seed`
 
-16. **Save Key**
+15. **Save Key**
 	- SAVE Folder `validator_keys`
 
-17. *Get Validator CLI**
+16. *Get Validator CLI**
 	```
 	cd $HOME &&\
 	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/validator-linux-amd64-0ebd251.tar.gz &&\
@@ -165,28 +161,28 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	rm -rf validator-linux-amd64-0ebd251.tar.gz &&\
 	mv ./validator ~/go/bin 
 	```
-18. *Import validator key**
+17. *Import validator key**
 	```
 	validator accounts import --keys-dir=/root/validator_keyskeystore-m*.json/ --auroria
 	```
 	- Change path : `/root/validator_keyskeystore-m*.json`
 
-19. *Deposit**
+18. *Deposit**
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com
 	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys
 
-20. **Check Pubkey**
+19. **Check Pubkey**
 	```
 	cat ./validator_keys/deposit* | jq '.[].pubkey'
 	```
 	- `Go to` https://auroria.beacon.stratisevm.com/validator/[YOUR_PUBKEY]
 	- `It can take up to 16 hours to deposit in the beacon-chain process and your validator become Active` 
 
-21. **Create password file**
+20. **Create password file**
 	```
 	echo "YOUR_WALLET_PASSWORD" >> ./validator_keys/pwd.txt
 	```
-22. **Create service file**
+21. **Create service file**
 	```
 	sudo tee /etc/systemd/system/validator.service > /dev/null <<EOF
 	[Unit]
@@ -207,7 +203,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- Change `--suggested-fee-recipient=YOUR_ADDRES`S with you address
 	- Change`datadir=$HOME/.validator --wallet-password-file=$HOME/validator_keys/pwd.txt --wallet-dir=$HOME/validator_keys`
 
-23. **RUN Validator**
+22. **RUN Validator**
 	```
 	sudo systemctl daemon-reload
 	sudo systemctl enable validator

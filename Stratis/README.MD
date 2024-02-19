@@ -94,8 +94,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	WantedBy=multi-user.target
 	EOF
 	```
-
-8 **RUN geth**
+8. **RUN geth**
 	```
 	sudo systemctl daemon-reload
 	sudo systemctl enable geth
@@ -103,7 +102,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	journalctl -fu geth -o cat
 	```
 
-9 **Get beacon-chain**
+
+9. **Get beacon-chain**
 	```
 	cd $HOME
 	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/beacon-chain-linux-amd64-0ebd251.tar.gz
@@ -112,7 +112,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	mv ./beacon-chain ~/go/bin
 	```
 
-10 **Create beacon service**
+10. **Create beacon service**
 	```
 	tee /etc/systemd/system/beacon-chain.service > /dev/null <<EOF
 	[Unit]
@@ -131,7 +131,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	EOF
 	```
 
-11 **RUN beacon**
+11. **RUN beacon**
 	```
 	sudo systemctl daemon-reload
 	sudo systemctl enable beacon-chain

@@ -76,7 +76,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	mv ./geth ./go/bin
 	```
 
-7 **Create geth service**
+7. **Create geth service**
 	```
 	sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 	[Unit]

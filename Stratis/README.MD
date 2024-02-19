@@ -34,6 +34,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo apt update && sudo apt upgrade -y
 	sudo apt install git build-essential curl jq wget tar ufw -y
 	```
+
 2. **Open Port**
 	```
 	sudo ufw allow ssh
@@ -42,6 +43,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo ufw allow 12000
 	sudo ufw enable
 	```
+
 3. **Install go**
 	```
 	VER="1.21.5"
@@ -53,18 +55,19 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
 	source ~/.bash_profile
 	```
+
 4. **`check go**
 	```
 	go version 
 	```
-	
+
 5. **Create ~/go/bin dir**
 	```
 	cd $HOME
 	mkdir -p go/bin
 	```
 
-6. **Configure Execution Client ( geth )**
+6. **Get ( geth )**
 	```
 	cd $HOME &&\
 	wget https://github.com/stratisproject/go-stratis/releases/download/0.1.1/geth-linux-amd64-5c4504c.tar.gz &&\
@@ -72,7 +75,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	rm -r geth-linux-amd64-5c4504c.tar.gz &&\
 	mv ./geth ./go/bin
 	```
-7 **Create geth service file**
+
+7 **Create geth service**
 	```
 	sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 	[Unit]
@@ -90,6 +94,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	WantedBy=multi-user.target
 	EOF
 	```
+
 8 **RUN geth**
 	```
 	sudo systemctl daemon-reload
@@ -97,7 +102,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo systemctl restart geth
 	journalctl -fu geth -o cat
 	```
-9 **Start geth**
+
+9 **Get beacon-chain**
 	```
 	cd $HOME
 	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/beacon-chain-linux-amd64-0ebd251.tar.gz
@@ -105,7 +111,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	rm -r beacon-chain-linux-amd64-0ebd251.tar.gz
 	mv ./beacon-chain ~/go/bin
 	```
-10 **Create beacon service file**
+
+10 **Create beacon service**
 	```
 	tee /etc/systemd/system/beacon-chain.service > /dev/null <<EOF
 	[Unit]
@@ -123,6 +130,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	WantedBy=multi-user.target
 	EOF
 	```
+
 11 **RUN beacon**
 	```
 	sudo systemctl daemon-reload

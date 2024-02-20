@@ -240,6 +240,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	Remove Docker and Dependencies
 	```
 	sudo apt purge docker-ce docker-ce-cli containerd.io
+	```
 	Remove Go
 	```
 	sudo rm -rf /usr/local/go

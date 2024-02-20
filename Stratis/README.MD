@@ -214,7 +214,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo systemctl restart validator
 	journalctl -fu validator -o cat
 	```
-23. **Delete**
+
+24. **Delete**
 	Remove validator service
 	```
 	sudo systemctl stop validator

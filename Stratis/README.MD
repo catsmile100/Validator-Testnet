@@ -214,3 +214,53 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	sudo systemctl restart validator
 	journalctl -fu validator -o cat
 	```
+23. **Delete**
+	Remove validator service
+	```
+	sudo systemctl stop validator
+	sudo systemctl disable validator
+	sudo rm /etc/systemd/system/validator.service
+	sudo systemctl daemon-reload
+	```
+	Remove beacon-chain service
+	```
+	sudo systemctl stop beacon-chain
+	sudo systemctl disable beacon-chain
+	sudo rm /etc/systemd/system/beacon-chain.service
+	sudo systemctl daemon-reload
+	```
+	Remove geth service
+	```
+	sudo systemctl stop geth
+	sudo systemctl disable geth
+	sudo rm /etc/systemd/system/geth.service
+	sudo systemctl daemon-reload
+	```
+	Remove Docker and Dependencies
+	```
+	sudo apt purge docker-ce docker-ce-cli containerd.io
+	Remove Go
+	```
+	sudo rm -rf /usr/local/go
+	Remove staking-deposit-cli and validator binaries:
+	```
+	rm ~/go/bin/staking-deposit-cli
+	rm ~/go/bin/validator
+	Remove generated directories:
+	```
+	rm -rf ~/.beacon-chain
+	rm -rf ~/.geth
+	rm -rf ~/validator_keys
+	```
+	Close open ports (optional)
+	```
+	sudo ufw delete allow ssh
+	sudo ufw delete allow 30303/tcp
+	sudo ufw delete allow 13000
+	sudo ufw delete allow 12000
+	sudo ufw disable
+	```
+	Clean up installed packages
+	```
+	sudo apt autoremove
+	```

@@ -167,9 +167,9 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 18. **Import validator key**
 	```
-	validator accounts import --keys-dir=/root/validator_keys//keystore-m*.json --auroria
+	validator accounts import --keys-dir=/root/validator_keys/keystore-m*.json --auroria
 	```
-	- Change path : `/root/validator_keys//keystore-m*.json`
+	- Change path : `/root/validator_keys/keystore-m*.json`
 
 19. **Deposit**
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com

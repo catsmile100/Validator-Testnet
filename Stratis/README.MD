@@ -244,10 +244,10 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 	sudo rm -rf /usr/local/go
 	Remove staking-deposit-cli and validator binaries:
-	```
 	rm ~/go/bin/staking-deposit-cli
 	rm ~/go/bin/validator
-	Remove generated directories:
+	```
+	Remove generated directories
 	```
 	rm -rf ~/.beacon-chain
 	rm -rf ~/.geth

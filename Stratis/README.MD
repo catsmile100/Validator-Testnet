@@ -28,7 +28,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- `Create New Wallet` <new_evm>
 	- `Claim Faucet` https://auroria.faucet.stratisevm.com 
 
-2. **Dependencies**
+2. **Install Dependencies**
 	```
   	sudo apt update && sudo apt upgrade -y
 	sudo apt install git build-essential curl jq wget tar ufw -y unzip -y screen -y
@@ -135,7 +135,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	cd stratis
 	cat $HOME/stratis/staking-deposit-cli-linux-amd64/validator_keys/deposit* | jq '.[].pubkey
 	```
-15. **Check Validator ** 
+
+15. **Check Validator** 
 	- `Go to` https://auroria.beacon.stratisevm.com/validator/<YOUR_PUBKEY>
 	- Deposit Active around 16-24 hours
 

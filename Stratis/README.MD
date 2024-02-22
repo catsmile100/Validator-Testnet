@@ -136,5 +136,5 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	cat $HOME/stratis/staking-deposit-cli-linux-amd64/validator_keys/deposit* | jq '.[].pubkey
 	```
 15. **Check Validator ** 
-	`Go to` https://auroria.beacon.stratisevm.com/validator/<YOUR_PUBKEY>
+	- `Go to` https://auroria.beacon.stratisevm.com/validator/<YOUR_PUBKEY>
 

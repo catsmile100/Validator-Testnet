@@ -137,4 +137,5 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 15. **Check Validator ** 
 	- `Go to` https://auroria.beacon.stratisevm.com/validator/<YOUR_PUBKEY>
+	- Deposit Active around 16-24 hours
 

@@ -24,245 +24,117 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 | StratisEVM | 4          | 8         | 1 TB  | Ubuntu 22.04 LTS  |
 
 ## Installation
+1. **Request Faucet**
+	- `Create New Wallet` <new_evm>
+	- `Claim Faucet` https://auroria.faucet.stratisevm.com 
 
-1. **Install Docker & Dependencies**
+2. **Dependencies**
 	```
-	sudo apt update && sudo apt upgrade -y
-	sudo apt install git build-essential curl jq wget tar ufw -y
+  	sudo apt update && sudo apt upgrade -y
+	sudo apt install git build-essential curl jq wget tar ufw -y unzip -y screen -y
 	```
+3. **Setting Deposit in Launcpad**
+	- goto https://auroria.launchpad.stratisevm.com/en/overview
+	- How many validators would you like to run? `1`	
+	- Paste Address `<new_evm>`
+	- Save `./deposit new-mnemonic --chain auroria --eth1_withdrawal_address <new_evm>`
 
-2. **Open Port**
+4. **Open Port**
 	```
-	sudo ufw allow ssh
 	sudo ufw allow 30303/tcp
-	sudo ufw allow 13000
-	sudo ufw allow 12000
+	sudo ufw allow 30303/udp
+	sudo ufw deny 8545/tcp
+	sudo ufw default deny incoming
+	sudo ufw default allow outgoing
+	sudo ufw allow out 13000/tcp
+	sudo ufw allow out 13000/udp
+	sudo ufw allow out 12000/tcp
+	sudo ufw allow out 12000/udp
+	sudo ufw allow 13000/tcp
+	sudo ufw allow 13000/udp
+	sudo ufw allow 12000/tcp
+	sudo ufw allow 12000/udp
+	sudo ufw deny 3500/tcp
+	sudo ufw deny 8551/tcp
+	sudo ufw deny 4000/tcp
+	sudo ufw allow 22
 	sudo ufw enable
 	```
-
-3. **Install GO**
+5. **Reload Port**
 	```
-	VER="1.21.5"
-	wget "https://go.dev/dl/go$VER.linux-amd64.tar.gz"
-	sudo rm -rf /usr/local/go
-	sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
-	rm "go$VER.linux-amd64.tar.gz"
-
-	echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
-	source ~/.bash_profile
+	sudo ufw reload
 	```
 
-4. **Check GO**
+6. **Create Direktory**
 	```
-	go version 
-	```
-
-5. **Create Directory**
-	```
-	cd $HOME
-	mkdir -p go/bin
+	mkdir stratis
+	cd stratis
 	```
 
-6. **Get ( geth )**
+7. **Download Binary**
 	```
-	cd $HOME &&\
-	wget https://github.com/stratisproject/go-stratis/releases/download/0.1.1/geth-linux-amd64-5c4504c.tar.gz &&\
-	tar -xzf geth-linux-amd64-5c4504c.tar.gz &&\
-	rm -r geth-linux-amd64-5c4504c.tar.gz &&\
-	mv ./geth ./go/bin
+	wget https://github.com/stratisproject/go-stratis/releases/download/0.1.1/geth-linux-amd64-5c4504c.tar.gz && wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/beacon-chain-linux-amd64-0ebd251.tar.gz && wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/validator-linux-amd64-0ebd251.tar.gz && wget https://github.com/stratisproject/staking-deposit-cli/releases/download/0.1.0/staking-deposit-cli-linux-amd64.zip
+	tar -xf geth-linux-amd64-5c4504c.tar.gz && tar -xf beacon-chain-linux-amd64-0ebd251.tar.gz && tar -xf validator-linux-amd64-0ebd251.tar.gz && unzip staking-deposit-cli-linux-amd64.zip
+	rm geth-linux-amd64-5c4504c.tar.gz && rm beacon-chain-linux-amd64-0ebd251.tar.gz && rm validator-linux-amd64-0ebd251.tar.gz && rm staking-deposit-cli-linux-amd64.zip
+
+	```
+8. **Setting geth**
+	```
+	screen -S geth
+	./geth --auroria --http --http.api eth,net,engine,admin --datadir=data\testnet\geth --authrpc.addr=127.0.0.1 --authrpc.jwtsecret=jwtsecret --syncmode=full
+	ctrl + a + d
 	```
 
-7. **Create geth service**
+9. **Setting beacon**
 	```
-	sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
-	[Unit]
-	Description="geth client"
-	After=network-online.target
-
-	[Service]
-	User=$USER
-	ExecStart=$(which geth) --auroria --http --http.api eth,net,engine,admin --datadir=$HOME/.geth --authrpc.addr=127.0.0.1 --authrpc.jwtsecret=jwtsecret --syncmode=full
-	Restart=always
-	RestartSec=3
-	LimitNOFILE=65535
-
-	[Install]
-	WantedBy=multi-user.target
-	EOF
-	```
-8. **RUN geth**
-	```
-	sudo systemctl daemon-reload
-	sudo systemctl enable geth
-	sudo systemctl restart geth
-	journalctl -fu geth -o cat
+	screen -S beacon
+	./beacon-chain --auroria --datadir=data\testnet\beacon --execution-endpoint=http://localhost:8551 --jwt-secret=jwtsecret
+	ctrl + a + d
 	```
 
-9. **Get beacon-chain**
+10. **Create Deposit CLI**
 	```
-	cd $HOME
-	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/beacon-chain-linux-amd64-0ebd251.tar.gz
-	tar -xzf beacon-chain-linux-amd64-0ebd251.tar.gz
-	rm -r beacon-chain-linux-amd64-0ebd251.tar.gz
-	mv ./beacon-chain ~/go/bin
+	cd staking-deposit-cli-linux-amd64
+	tar -xf staking-deposit-cli-linux-amd64.tar.gz
+	rm -rf staking-deposit-cli-linux-amd64.tar.gz
+	./deposit new-mnemonic --num_validators 1 --chain auroria --eth1_withdrawal_address <address_evm>
 	```
+	- select  [english]
+	- paste address_evm
+	- select  [english]
+	- Create Password 
+	- repeat pass
+	- save seed Validator 
 
-10. **Create beacon service**
-	```
-	tee /etc/systemd/system/beacon-chain.service > /dev/null <<EOF
-	[Unit]
-	Description="Beacon client"
-	After=network-online.target
+11. **Download Keystore**
+	Download Keystore in :  `/root/stratis/staking-deposit-cli-linux-amd64/validator_keys`
 
-	[Service]
-	User=$USER
-	ExecStart=$(which beacon-chain) --auroria --datadir=$HOME/.beacon-chain --execution-endpoint=http://localhost:8551 --jwt-secret=jwtsecret --accept-terms-of-use
-	Restart=always
-	RestartSec=3
-	LimitNOFILE=65535
+12. **Upload Data Deposit*
+	- `Goto` https://auroria.launchpad.stratisevm.com/en/upload-deposit-data
+	- `Import keys` file deposit_data-xxxx.json 
+	- Deposit
+	- Confirm Deposit
 
-	[Install]
-	WantedBy=multi-user.target
-	EOF
+13. **Create Validator**
 	```
+	screen -S validator
+	cd stratis
+	./validator accounts import --keys-dir=$HOME/stratis/staking-deposit-cli-linux-amd64/validator_keys --auroria
+	```
+	- accept
+	- input password
+	- repeat pasword 
+	```
+	./validator --wallet-dir=$HOME/.eth2validators/prysm-wallet-v2 --auroria --suggested-fee-recipient=<address_evm>
+	```
+	- input password
+	- ctrl + a + d
 
-11. **RUN beacon**
+14. **Get PubKey**
 	```
-	sudo systemctl daemon-reload
-	sudo systemctl enable beacon-chain
-	sudo systemctl restart beacon-chain
-	journalctl -fu beacon-chain -o cat
+	cd stratis
+	cat $HOME/stratis/staking-deposit-cli-linux-amd64/validator_keys/deposit* | jq '.[].pubkey
 	```
-12. **Generate Keys and Import** 
-	- `Create New Wallet`
-	- `Go to` https://auroria.launchpad.stratisevm.com/en/overview
-	- confirm until `“Generate key pairs”` appears, input your Metamask wallet address.
+15. **Check Validator ** 
+	`Go to` https://auroria.beacon.stratisevm.com/validator/<YOUR_PUBKEY>
 
-13. **Get Deposit CLI**
-	```
-	cd $HOME &&\
-	wget https://github.com/stratisproject/staking-deposit-cli/releases/download/0.1.0/staking-deposit-cli-linux-amd64.zip &&\
-	unzip staking-deposit-cli-linux-amd64.zip &&\
-	tar -C ~/go/bin -xzf staking-deposit-cli-linux-amd64/staking-deposit-cli-linux-amd64.tar.gz &&\
-	rm -rf staking-deposit-cli-linux-amd64 staking-deposit-cli-linux-amd64.zip
-	```
-14. **Deposit CLI**
-	```
-	deposit new-mnemonic --num_validators 1 --chain auroria --eth1_withdrawal_address [YOUR_WALLET_ADDRESS]
-	```
-15. **Create Passeord & Seed**
-	- `Create Password`
-	- `Save Seed`
-
-16. **Save Key**
-	- SAVE Folder `validator_keys`
-
-17. **Get Validator CLI**
-	```
-	cd $HOME &&\
-	wget https://github.com/stratisproject/prysm-stratis/releases/download/0.1.1/validator-linux-amd64-0ebd251.tar.gz &&\
-	tar -xzf validator-linux-amd64-0ebd251.tar.gz &&\
-	rm -rf validator-linux-amd64-0ebd251.tar.gz &&\
-	mv ./validator ~/go/bin 
-	```
-18. **Import validator key**
-	```
-	validator accounts import --keys-dir=/root/validator_keys/keystore-m*.json --auroria
-	```
-	- Change path : `/root/validator_keys/keystore-m*.json`
-
-19. **Deposit**
-	- `Claim Faucet` https://auroria.faucet.stratisevm.com
-	- `Configure` https://auroria.launchpad.stratisevm.com/en/generate-keys
-
-20. **Check Pubkey**
-	```
-	cat ./validator_keys/deposit* | jq '.[].pubkey'
-	```
-	- `Go to` https://auroria.beacon.stratisevm.com/validator/[YOUR_PUBKEY]
-	- `It can take up to 16 hours to deposit in the beacon-chain process and your validator become Active` 
-
-21. **Create password file**
-	```
-	echo "YOUR_WALLET_PASSWORD" >> ./validator_keys/pwd.txt
-	```
-22. **Create service file**
-	```
-	sudo tee /etc/systemd/system/validator.service > /dev/null <<EOF
-	[Unit]
-	Description=validator node
-	After=network-online.target
-
-	[Service]
-	User=$USER
-	ExecStart=$(which validator) --auroria --datadir=$HOME/.validator --wallet-password-file=$HOME/validator_keys/pwd.txt --wallet-dir=$HOME/validator_keys --suggested-fee-recipient=YOUR_ADDRESS --accept-terms-of-use
-	Restart=always
-	RestartSec=3
-	LimitNOFILE=65535
-
-	[Install]
-	WantedBy=multi-user.target
-	EOF
-	```
-	- Change`datadir=$HOME/.validator --wallet-password-file=$HOME/validator_keys/pwd.txt --wallet-dir=$HOME/validator_keys`
-	- Change `--suggested-fee-recipient=YOUR_ADDRESS` with you address
-
-23. **RUN Validator**
-	```
-	sudo systemctl daemon-reload
-	sudo systemctl enable validator
-	sudo systemctl restart validator
-	journalctl -fu validator -o cat
-	```
-
-24. **Delete**
-	Remove validator service
-	```
-	sudo systemctl stop validator
-	sudo systemctl disable validator
-	sudo rm /etc/systemd/system/validator.service
-	sudo systemctl daemon-reload
-	```
-	Remove beacon-chain service
-	```
-	sudo systemctl stop beacon-chain
-	sudo systemctl disable beacon-chain
-	sudo rm /etc/systemd/system/beacon-chain.service
-	sudo systemctl daemon-reload
-	```
-	Remove geth service
-	```
-	sudo systemctl stop geth
-	sudo systemctl disable geth
-	sudo rm /etc/systemd/system/geth.service
-	sudo systemctl daemon-reload
-	```
-	Remove Docker and Dependencies
-	```
-	sudo apt purge docker-ce docker-ce-cli containerd.io
-	```
-	Remove Go
-	```
-	sudo rm -rf /usr/local/go
-	Remove staking-deposit-cli and validator binaries:
-	rm ~/go/bin/staking-deposit-cli
-	rm ~/go/bin/validator
-	```
-	Remove generated directories
-	```
-	rm -rf ~/.beacon-chain
-	rm -rf ~/.geth
-	rm -rf ~/validator_keys
-	```
-	Close open ports (optional)
-	```
-	sudo ufw delete allow ssh
-	sudo ufw delete allow 30303/tcp
-	sudo ufw delete allow 13000
-	sudo ufw delete allow 12000
-	sudo ufw disable
-	```
-	Clean up installed packages
-	```
-	sudo apt autoremove
-	```

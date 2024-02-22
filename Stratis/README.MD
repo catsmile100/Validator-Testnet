@@ -100,7 +100,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	./deposit new-mnemonic --num_validators 1 --chain auroria --eth1_withdrawal_address <address_evm>
 	```
 	- select  [english]
-	- paste address_evm
+	- paste <new_evm>
 	- select  [english]
 	- Create Password 
 	- repeat pass

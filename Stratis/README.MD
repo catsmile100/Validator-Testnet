@@ -140,3 +140,10 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- `Go to` https://auroria.beacon.stratisevm.com/validator/<YOUR_PUBKEY>
 	- Deposit Active around 16-24 hours
 
+16. **Create Moniker** 
+	1. Access https://www.myetherwallet.com/wallet/sign using your Metamask wallet connected to the Stratis wallet node where you made the initial deposit.
+	2. Navigate to Message > Sign Message.
+	3. Input the signature, for example: *<YOUR_VALIDATOR_NAME> beaconcha.in*.
+	4. Sign & Confirm Transaction in your wallet.
+	5. Copy and go to *https://auroria.explorer.stratisevm.com/<YOUR_PUB_KEY>*.
+	6. Enter your validator name and paste the previously copied signature, then click Save Changes

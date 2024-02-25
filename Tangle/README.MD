@@ -52,7 +52,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 7. **Requeest Faucet**
 	```
-	In DisCord `#🚰-faucet`
+	`In DisCord`#🚰-faucet
 	```
 8. **Get Key Validator**
 	```

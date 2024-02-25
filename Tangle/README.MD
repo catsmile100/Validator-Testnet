@@ -50,6 +50,10 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 	https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc.tangle.tools#/staking
 	```
+<p align="center">
+  <img height="350" height="350" src="https://bafkreiebgluunvrgjdsni5f7garf4ubxferobpa7nd2jdtosa4rhloy3su.ipfs.nftstorage.link">
+</p>
+
 7. **Requeest Faucet**
 	- In DisCord `#🚰-faucet`
 8. **Get Key Validator**

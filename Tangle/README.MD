@@ -51,7 +51,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc.tangle.tools#/staking
 	```
 7. **Requeest Faucet**
-	In DisCord `#🚰-faucet`
+	- In DisCord `#🚰-faucet`
 8. **Get Key Validator**
 	```
 	curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "author_rotateKeys", "params":[]}' http://localhost:9933

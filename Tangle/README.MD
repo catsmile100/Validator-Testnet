@@ -78,7 +78,13 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	- Save folder: `/root/.tangle/data/chains/tangle-standalone-testnet/keystore/`
 	- Save file: `/root/.tangle/node-key`
 
-11. **Delete**
+11. **Monitor Dashboard**
+	- https://leaderboard.tangle.tools/
+<p align="center">
+  <img height="350" height="350" src="https://bafkreiaws7yodavdznc3szyykdw4rmywvu6y6gxintsnkekvkufxy42hha.ipfs.nftstorage.link/">
+</p>
+
+12. **Delete**
 	```
 	systemctl stop tangle
 	systemctl disable tangle 

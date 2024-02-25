@@ -46,27 +46,39 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 	https://telemetry.polkadot.io/#list/0x3d22af97d919611e03bbcbda96f65988758865423e89b2d99547a6bb61452db3
 	```
-6. **Create Wallet**
-	```
-	https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc.tangle.tools#/staking
-	```
 <p align="center">
   <img height="350" height="350" src="https://bafkreiebgluunvrgjdsni5f7garf4ubxferobpa7nd2jdtosa4rhloy3su.ipfs.nftstorage.link">
 </p>
 
+6. **Create Wallet**
+	```
+	https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc.tangle.tools#/staking
+	```
 7. **Requeest Faucet**
 	- In DisCord `#🚰-faucet`
+
 8. **Get Key Validator**
 	```
 	curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "author_rotateKeys", "params":[]}' http://localhost:9933
 	```
 	- {"jsonrpc":"2.0","result":`HERE COPY`,"id":1} 
+9. **Setting Validator**
+	```
+	https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc.tangle.tools#/staking
+	```
+<p align="center">
+  <img height="350" height="350" src="https://bafkreiazpvq3rnz7bnx547dknweeqmnjpv76lbzxz6mqozl7op37dik5be.ipfs.nftstorage.link/">
+</p>
+
+<p align="center">
+  <img height="350" height="350" src="https://bafkreier6u2mmc2cmhsgd6otjvpxkzd2c7alghapwmmwz6dut53sgu5iem.ipfs.nftstorage.link/">
+</p>
 	
-9. **Backup**
+10. **Backup**
 	- Save folder: `/root/.tangle/data/chains/tangle-standalone-testnet/keystore/`
 	- Save file: `/root/.tangle/node-key`
 
-10. **Delete**
+11. **Delete**
 	```
 	systemctl stop tangle
 	systemctl disable tangle 

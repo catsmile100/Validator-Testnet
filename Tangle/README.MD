@@ -26,7 +26,9 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 ## Installation
 1. **Auto Install**
 	```
-	sudo apt install curl -y && source <(curl -s https://nodesync.top/tangle_install)
+	sudo apt install curl -y && curl -o tangle-install.sh https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Tangle/tangle-install.sh && chmod +x tangle-install.sh && ./tangle-install.sh
+	chmod +x tangle-install.sh
+	./tangle-install.sh
 	```
 2. **Check Status**
 	```

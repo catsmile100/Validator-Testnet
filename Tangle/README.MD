@@ -52,17 +52,17 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	```
 7. **Requeest Faucet**
 	```
-	In DisCord #🚰-faucet 
+	In DisCord `#🚰-faucet`
 	```
 8. **Get Key Validator**
 	```
 	curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "author_rotateKeys", "params":[]}' http://localhost:9933
 	```
-	-{"jsonrpc":"2.0","result":"HERE COPY","id":1} - copy 
+	-{"jsonrpc":"2.0","result":`HERE COPY`,"id":1} - copy 
 	
 9. **Backup**
-	- Save folder: /root/.tangle/data/chains/tangle-standalone-testnet/keystore/
-	- Save file: /root/.tangle/node-key**
+	- Save folder: `/root/.tangle/data/chains/tangle-standalone-testnet/keystore/`
+	- Save file: `/root/.tangle/node-key`
 
 10. **Delete**
 	```

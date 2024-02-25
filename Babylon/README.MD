@@ -176,7 +176,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	--pubkey $(babylond tendermint show-validator) \
 	--moniker "test" \
 	--identity "" \
-	--details "I love blockchain ❤️" \
+	--details "blockchain " \
 	--chain-id bbn-test-2 \
 	--gas auto --gas-adjustment 1.5 --gas-prices 0.0025ubbn \
 	-y
@@ -187,7 +187,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 	--commission-rate 0.1 \
 	--new-moniker "$MONIKER" \
 	--identity "" \
-	--details "I love blockchain ❤️" \
+	--details "blockchain " \
 	--from $WALLET \
 	--chain-id bbn-test-2 \
 	--gas auto --gas-adjustment 1.5 --gas-prices 0.0025ubbn \

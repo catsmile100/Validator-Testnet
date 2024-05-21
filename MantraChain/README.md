@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/497141eb-d744-40ab-86b7-0098904c46cf">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1772721575831232512/4uprzeW6_400x400.jpg">
 </p>
 <h1>
 <p align="center"> MANTRA Chain </p>

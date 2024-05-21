@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/11a1060f-8ad0-45a4-9a30-ee6d58271172">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1711757188757168128/tASYFnV8_400x400.jpg">
 </p>
 <h1>
 <p align="center"> PRYMZM </p>

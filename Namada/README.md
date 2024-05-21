@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/1de34c44-77d0-4f15-aabd-2e88f87ff81c">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1775529113102561281/y4D30_VO_400x400.jpg">
 </p>
 <h1>
 <p align="center"> NAMADA SHIELDED EXPEDITION </p>

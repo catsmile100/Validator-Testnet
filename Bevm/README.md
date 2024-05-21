@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/8297af28-4067-4497-a503-453460058a03">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1738138565874425856/xOG10LN0_400x400.jpg">
 
 </p>
 <h1>

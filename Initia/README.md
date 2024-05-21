@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/3be2d91d-7a9a-49a9-8b4a-f85aae08ff07">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1604751287618113536/ayyW6i94_400x400.jpg">
 </p>
 <h1>
 <p align="center"> Initia </p>

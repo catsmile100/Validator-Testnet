@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/d1af99ec-cc52-428e-bb68-b39a46df3967">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1696539323590385664/gY9hSgaR_400x400.jpg">
 </p>
 <h1>
 <p align="center"> Aleo </p>

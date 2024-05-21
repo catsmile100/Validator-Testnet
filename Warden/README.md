@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/8e1c121f-5976-4f45-86ff-93a69b48bdae">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1752230748520587264/1DSgt5Aq_400x400.png">
 </p>
 <h1>
 <p align="center"> Warden </p>

@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/67e98d2e-842d-4470-802e-8dcecbe66b82">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1689908960726245376/NSEHl_ga_400x400.jpg">
 </p>
 <h1>
 <p align="center"> Airchains </p>

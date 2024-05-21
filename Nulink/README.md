@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/7b2255c4-e8db-44f9-b268-69f09331b322">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1749066337505185792/eb3-fBQF_400x400.jpg">
 </p>
 <h1>
 <p align="center"> NuLink </p>

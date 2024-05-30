@@ -177,13 +177,20 @@ viper network version
 ### Solved Error
 ```
 cd ~/.viper
-rm -r data
-rm -r viper_evidence.db
-rm -r viper_result.db
+sudo rm -r data
+sudo rm -r viper_evidence.db
+sudo rm -r viper_result.db
 sudo git clone https://github.com/vishruthsk/data.git data
+sudo chown -R viper ~/.viper/data
 cd config
-rm addrbook.json
+sudo rm addrbook.json
 sudo systemctl restart viper.service
 journalctl -u viper -f
 ```
+
+### Check Version
+```
+viper network version
+```
+
 

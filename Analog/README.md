@@ -57,6 +57,7 @@ sudo mv websocat_amd64-linux /usr/local/bin/websocat
 ```
 websocat --version
 ```
+***make sure version websocat 1.7.0***
 ### Test websocat with author_rotateKeys method
 ```
 echo '{"id":1,"jsonrpc":"2.0","method":"author_rotateKeys","params":[]}' | websocat -n1 -B 99999999 ws://127.0.0.1:9944

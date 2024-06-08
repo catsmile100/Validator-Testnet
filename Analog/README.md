@@ -6,11 +6,10 @@
 </h1>
 
 <p align="center">
-  <a href="https://pactus.org">Link</a> |
-  <a href="https://discord.com/invite/H5vZkNnXCu">Discord</a> |
-  <a href="https://twitter.com/pactuschain">Twitter</a> |
-  <a href="https://pactus.org/user-guides">Docs</a> |
-  <a href="https://pacscan.org">Explorer</a> 
+  <a href="https://www.analog.one/">Link</a> |
+  <a href="https://discord.com/invite/analog">Discord</a> |
+  <a href="https://x.com/OneAnalog">Twitter</a> |
+  <a href="https://docs.analog.one/documentation/node-operators/introduction">Docs</a> |
 </p>
 
 Minimum Hardware :

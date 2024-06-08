@@ -19,6 +19,12 @@ OS  | CPU     | RAM      | NVMe     |
 | Ubuntu 22.04 | 8          | 16         | 300 GB  | 
 
 
+### Complete the form  <a href="https://l5d87lam6fy.typeform.com/to/kwlADm6U">here</a>
+
+### Create a Polkadot wallet and set up a stash account using the Subwallet extension
+
+### Request Faucet in Discord
+
 ### Update and install necessary packages
 ```
 sudo apt update

@@ -48,7 +48,7 @@ mkdir -p $(pwd)/.analog
 ```
 docker run -d -p 9944:9944 -p 30303:30303 -v $(pwd)/.analog:/.analog --name analog analoglabs/timechain --base-path /.analog --rpc-external --rpc-methods=Unsafe --unsafe-rpc-external --name <youe_moniker>
 ```
-***Replace <your_moniker> with a unique name for your node***
+***Replace <your_moniker> with a unique name for your node. It must match the name you entered on your registration form***
 ### Install websocat
 ```
 curl -LO https://github.com/vi/websocat/releases/download/v1.7.0/websocat_amd64-linux

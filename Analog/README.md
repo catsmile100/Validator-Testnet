@@ -63,12 +63,10 @@ websocat --version
 echo '{"id":1,"jsonrpc":"2.0","method":"author_rotateKeys","params":[]}' | websocat -n1 -B 99999999 ws://127.0.0.1:9944
 ```
 ### Check Telemetry
-```
 <a href="https://telemetry.analog.one/#/0x0614f7b74a2e47f7c8d8e2a5335be84bdde9402a43f5decdec03200a87c8b943">Telemetry</a>
-```
 ***make sure your moniker***
+
 ### Provide link to Polkadot.js apps for further actions
-```
 <a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.testnet.analog.one###/accounts">Dashgboard</a>
-```
+
 

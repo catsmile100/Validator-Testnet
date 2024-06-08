@@ -13,7 +13,7 @@
   <a href="https://pacscan.org">Explorer</a> 
 </p>
 
-######### Minimum Hardware :
+Minimum Hardware :
 OS  | CPU     | RAM      | NVMe     | 
 | ------------- | ------------- | ------------- | -------- |
 | Ubuntu 22.04 | 8          | 16         | 300 GB  | 

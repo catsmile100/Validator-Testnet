@@ -14,7 +14,7 @@
 </p>
 
 ######### Minimum Hardware :
-OS  | CPU     | RAM      | SSD     | 
+OS  | CPU     | RAM      | NVMe     | 
 | ------------- | ------------- | ------------- | -------- |
 | Ubuntu 22.04 | 8          | 16         | 300 GB  | 
 

@@ -67,6 +67,6 @@ echo '{"id":1,"jsonrpc":"2.0","method":"author_rotateKeys","params":[]}' | webso
 ***make sure your moniker***
 
 ### Provide link to Polkadot.js apps for further actions
-<a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.testnet.analog.one###/accounts">Dashgboard</a>
-
+<a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.testnet.analog.one###/accounts">Dashboard</a>
+***input Rotating key in setup Node***
 

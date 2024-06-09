@@ -180,3 +180,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable monitor-analog.service
 sudo systemctl start monitor-analog.service
 ```
+###  Run Sample
+![runss](https://github.com/catsmile100/Validator-Testnet/assets/85368621/ac2d81eb-ee59-4b45-8cf7-ab373e581f44)
+

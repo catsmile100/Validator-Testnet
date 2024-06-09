@@ -77,6 +77,7 @@ sudo cat mnemonic.txt
 ```
 rm -rf  /etc/systemd/system/nubit.service
 ```
+```
 rm -rf nubit-node
 ```
 ```

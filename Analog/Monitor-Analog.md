@@ -150,6 +150,7 @@ setInterval(async () => {
 }, CHECK_INTERVAL);
 
 ```
+***change <token_telegram> & <chat_id>***
 
 ### Create services
 ```

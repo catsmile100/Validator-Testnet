@@ -20,6 +20,10 @@ OS  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
 | Ubuntu 22.04 | 2          | 2         | 500 GB  | 
 
+### Update 
+```
+sudo apt update && sudo apt upgrade -y
+```
 ### Install Node package
 ```
 curl -sL1 https://nubit.sh | bash
@@ -67,4 +71,14 @@ cd nubit-node
 ```
 ```
 sudo cat mnemonic.txt
+```
+
+### Delete
+```
+rm -rf  /etc/systemd/system/nubit.service
+```
+rm -rf nubit-node
+```
+```
+rm -rf $HOME/.nubit-light-nubit-alphatestnet-1 
 ```

@@ -75,11 +75,9 @@ sudo cat mnemonic.txt
 
 ### Delete
 ```
-rm -rf  /etc/systemd/system/nubit.service
-```
-```
+sudo systemctl stop nubit
+sudo systemctl disable nubit
+sudo rm /etc/systemd/system/nubit.service
 rm -rf nubit-node
-```
-```
 rm -rf $HOME/.nubit-light-nubit-alphatestnet-1 
 ```

@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/d7cb2811-aea3-459a-9a04-c45b4f85bfc4">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/00e41002-b3ee-4358-8033-5ccadc31dc48">
 </p>
 <h1>
 <p align="center"> Nubit Light Node </p>
@@ -20,7 +20,7 @@ OS  | CPU     | RAM      | SSD     |
 | ------------- | ------------- | ------------- | -------- |
 | Ubuntu 22.04 | 2          | 2         | 500 GB  | 
 
-### Install Binary
+### Install Node package
 ```
 curl -sL1 https://nubit.sh | bash
 ```
@@ -60,7 +60,6 @@ sudo systemctl start nubit
 ### Check Log
 ```
 sudo journalctl -u nubit -f --no-hostname -o cat
-
 ```
 ### Save mnemonic
 ```

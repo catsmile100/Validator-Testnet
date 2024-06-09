@@ -72,7 +72,7 @@ cd nubit-node
 ```
 sudo cat mnemonic.txt
 ```
-***Import to Keplr add Chain Nubit & Request Faucet
+***Import to Keplr add Chain Nubit & Request Faucet***
 
 ### Delete
 ```

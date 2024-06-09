@@ -36,7 +36,7 @@ Description=Nubit Light Node
 After=network.target
 
 [Service]
-User=root
+User=$USER
 WorkingDirectory=/root/nubit-node
 ExecStart=/root/nubit-node/start.sh
 Restart=always

@@ -236,6 +236,14 @@ Exit: `Ctrl+C`
 ```console
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
+## Settign RPC Metamask
+
+- Import Privatekey
+- Name : Custome
+- RPC  : http://<IP>:8445
+- Chain : 1234
+-Symbol : eEVMOS
+
 ## Balance Metamask
 
 ![balance](https://github.com/catsmile100/Validator-Testnet/assets/85368621/be9a9aae-c167-403c-b4fc-59068c5ddb14)

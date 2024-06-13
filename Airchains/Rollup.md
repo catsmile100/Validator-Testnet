@@ -1,4 +1,4 @@
-# Rollup
+# Rollup Avail DA
 
 ## System Requirements (Minimum-Recommended)
 | Ram | CPU     | Disk                      |
@@ -6,7 +6,6 @@
 | `2 GB`      | `4 Core` | `200 GB ` |
 
 <h1 align="center">Steps</h1>
-
 # 1- Install Dependecies
 ```console
 # Update Packages

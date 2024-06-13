@@ -94,7 +94,7 @@ sudo journalctl -u rolld -f --no-hostname -o cat
 cd evm-station
 /bin/bash ./scripts/local-keys.sh
 ```
-### Update Metamask RPC
+### Update Port
 ```console
 sed -i -e 's/address = "127.0.0.1:8545"/address = "0.0.0.0:8545"/' -e 's/ws-address = "127.0.0.1:8546"/ws-address = "0.0.0.0:8546"/' $HOME/.evmosd/config/app.toml
 ```

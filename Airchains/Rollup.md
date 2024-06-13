@@ -91,6 +91,7 @@ sudo journalctl -u rolld -f --no-hostname -o cat
 ## Get Private-key of Evmos (EVM Station)
 > Save the private key!
 ```console
+cd evm-station
 /bin/bash ./scripts/local-keys.sh
 ```
 ### Update Metamask RPC

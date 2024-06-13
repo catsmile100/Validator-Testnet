@@ -236,8 +236,10 @@ Exit: `Ctrl+C`
 ```console
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
+## Check Point 
+https://points.airchains.io/
+* Use `WALLET_ADDRESS` with air... wallet you saved before
 ## Setting RPC Metamask
-
 - Import: local-keys.sh (PeivateKey) 
 - Name : <moniker>
 - RPC  : http://<IP_VPS>:8445
@@ -245,5 +247,4 @@ sudo journalctl -u stationd -f --no-hostname -o cat
 - Symbol : eEVMOS
 
 ## Balance Metamask
-
 ![balance](https://github.com/catsmile100/Validator-Testnet/assets/85368621/be9a9aae-c167-403c-b4fc-59068c5ddb14)

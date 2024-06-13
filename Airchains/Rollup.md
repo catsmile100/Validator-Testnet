@@ -106,11 +106,6 @@ sudo ufw allow 8546
 ```console
 sudo systemctl restart rolld
 ```
-* Check logs if you want
-```console
-sudo journalctl -u rolld -f --no-hostname -o cat
-```
-
 # 3- Install Avail DA
 We will use Avail Turing as the DA layer. We have other options like Celestia, EigenLayer or MockDA but we choose Avail, Remember, You CANNOT change DA later
 

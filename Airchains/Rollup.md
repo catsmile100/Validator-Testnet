@@ -229,8 +229,7 @@ Exit: `Ctrl+C`
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
 ## Check Point 
-https://points.airchains.io/
-* Use `WALLET_ADDRESS` with air... wallet you saved before
+[Dashboard](https://points.airchains.io) Connect witgh Address airxxxxx
 
 ## Setting RPC Metamask
 * Import Account Use  `local-keys.sh`
@@ -238,8 +237,7 @@ https://points.airchains.io/
 * RPC `http://<IP_VPS>:8445`
 * ChainID `1234`
 * Symbol `eEVMOS` 
-* Block explorer URL `` 
-
+* Block explorer URL `optional` 
 
 ## Balance Metamask
 ![balance](https://github.com/catsmile100/Validator-Testnet/assets/85368621/be9a9aae-c167-403c-b4fc-59068c5ddb14)

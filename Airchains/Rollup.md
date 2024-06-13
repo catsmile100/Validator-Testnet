@@ -105,7 +105,7 @@ sudo ufw allow 8546
 sudo systemctl restart rolld
 ```
 # 3- Install Avail DA
-Avail Turing as the DA layer
+`Avail Turing as the DA layer`
 #
 ```console
 cd $HOME
@@ -135,8 +135,6 @@ ExecStart=/root/.avail/turing/bin/avail-light --network turing --app-id 36 --ide
 WantedBy=multi-user.target
 EOF
 ```
-> We use root user of vps but if you use wsl or a custom user you must change user by replacing `root` in the code
-
 ## Start availd 
 ```console
 systemctl daemon-reload 
@@ -150,7 +148,6 @@ Exit: `Ctrl+C`
 ```console
 cat ~/.avail/identity/identity.toml
 ```
-
 ## Get Faucet
 > Import your Avail DA Mnemonic to the [Subwallet](https://www.subwallet.app/download.html) to create a `polkadot` wallet
 >
@@ -165,14 +162,12 @@ cd $HOME
 cd tracks
 go mod tidy
 ```
-
 ## Initiate Tracks
 * Replace `Avail-Wallet-Address` with your Avail DA wallet
 * Replace `moniker-name` with your name
 ```console
 go run cmd/main.go init --daRpc "http://127.0.0.1:7000" --daKey "Avail-Wallet-Address" --daType "avail" --moniker "moniker-name" --stationRpc "http://127.0.0.1:8545" --stationAPI "http://127.0.0.1:17545" --stationType "evm"
 ```
-
 ## Create Tracks Address
 * Replace `moniker-name`
 ```console

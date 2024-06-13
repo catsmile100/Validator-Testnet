@@ -5,7 +5,7 @@
 | :-------- | :------- | :-------------------------------- |
 | `2 GB`      | `4 Core` | `200 GB ` |
 
-<h1 align="center">Steps</h1>
+<h1 align="left">Installation</h1>
 # 1- Install Dependecies
 ```console
 # Update Packages

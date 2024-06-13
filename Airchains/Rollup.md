@@ -107,10 +107,8 @@ sudo ufw allow 8546
 sudo systemctl restart rolld
 ```
 # 3- Install Avail DA
-We will use Avail Turing as the DA layer. We have other options like Celestia, EigenLayer or MockDA but we choose Avail, Remember, You CANNOT change DA later
-
+Avail Turing as the DA layer
 #
-
 ```console
 cd $HOME
 git clone https://github.com/availproject/availup.git

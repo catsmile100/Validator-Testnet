@@ -236,7 +236,7 @@ Exit: `Ctrl+C`
 ```console
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
-## Settign RPC Metamask
+## Setting RPC Metamask
 
 - Import: local-keys.sh (PeivateKey) 
 - Name : <moniker>

@@ -69,7 +69,7 @@ Description=ZK
 After=network.target
 
 [Service]
-User=root
+User=$USER
 EnvironmentFile=/root/.rollup-env
 ExecStart=/root/evm-station/build/station-evm start --metrics "" --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "stationevm_1234-1"
 Restart=always
@@ -127,7 +127,7 @@ After=network.target
 StartLimitIntervalSec=0
 
 [Service]
-User=root
+User=$USER
 Type=simple
 Restart=always
 RestartSec=120
@@ -204,14 +204,14 @@ cat ~/.tracks/config/sequencer.toml
 go run cmd/main.go create-station --accountName moniker-name --accountPath $HOME/.tracks/junction-accounts/keys --jsonRPC "https://airchains-testnet-rpc.cosmonautstakes.com/" --info "EVM Track" --tracks WALLET_ADDRESS --bootstrapNode "/ip4/IP/tcp/2300/p2p/node_id"
 ```
 
-## Create stationd service
+## Create service stationd 
 ```console
 sudo tee /etc/systemd/system/stationd.service > /dev/null << EOF
 [Unit]
 Description=station track service
 After=network-online.target
 [Service]
-User=root
+User=$USER
 WorkingDirectory=/root/tracks/
 ExecStart=/usr/local/go/bin/go run cmd/main.go start
 Restart=always

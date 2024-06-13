@@ -61,7 +61,7 @@ GENESIS=$HOMEDIR/config/genesis.json
 TMP_GENESIS=$HOMEDIR/config/tmp_genesis.json
 VAL_KEY="mykey"
 ```
-> We use root user of vps but if you use wsl or a custom user you must change user by replacing `root` in the code
+## Create  Services rolld
 ```console
 sudo tee /etc/systemd/system/rolld.service > /dev/null << EOF
 [Unit]
@@ -80,7 +80,7 @@ WantedBy=multi-user.target
 EOF
 ```
 
-## Start Evmos
+## Start rolld
 ```console
 sudo systemctl daemon-reload
 sudo systemctl enable rolld
@@ -118,8 +118,7 @@ cd availup
 
 * Close it with `Ctrl+C`
 
-## Config systemD for Avail DA
-> Copy Paste All the code below in the terminal and Enter!
+## Create Sevice availd
 ```console
 sudo tee /etc/systemd/system/availd.service > /dev/null <<'EOF'
 [Unit]
@@ -140,7 +139,7 @@ EOF
 ```
 > We use root user of vps but if you use wsl or a custom user you must change user by replacing `root` in the code
 
-## Start Avail DA systemD
+## Start availd 
 ```console
 systemctl daemon-reload 
 sudo systemctl enable availd
@@ -205,7 +204,7 @@ cat ~/.tracks/config/sequencer.toml
 go run cmd/main.go create-station --accountName moniker-name --accountPath $HOME/.tracks/junction-accounts/keys --jsonRPC "https://airchains-testnet-rpc.cosmonautstakes.com/" --info "EVM Track" --tracks WALLET_ADDRESS --bootstrapNode "/ip4/IP/tcp/2300/p2p/node_id"
 ```
 
-## Create Station systemD file
+## Create stationd service
 ```console
 sudo tee /etc/systemd/system/stationd.service > /dev/null << EOF
 [Unit]
@@ -223,7 +222,7 @@ WantedBy=multi-user.target
 EOF
 ```
 
-## Run Station Node with systemD
+## Run Station Node with stationd
 ```console
 sudo systemctl daemon-reload
 sudo systemctl enable stationd

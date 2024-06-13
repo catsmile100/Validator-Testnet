@@ -238,11 +238,11 @@ sudo journalctl -u stationd -f --no-hostname -o cat
 ```
 ## Settign RPC Metamask
 
-- Import Privatekey
-- Name : Custome
-- RPC  : http://<IP>:8445
+- Import: local-keys.sh (PeivateKey) 
+- Name : <moniker>
+- RPC  : http://<IP_VPS>:8445
 - Chain : 1234
--Symbol : eEVMOS
+- Symbol : eEVMOS
 
 ## Balance Metamask
 

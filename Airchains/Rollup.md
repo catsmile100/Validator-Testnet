@@ -229,7 +229,7 @@ Exit: `Ctrl+C`
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
 ## Check Point 
-[Dashboard](https://points.airchains.io) Connect witgh Address airxxxxx
+[Dashboard](https://points.airchains.io) Connect with Address `airxxxxx`
 
 ## Setting RPC Metamask
 * Import Account Use  `local-keys.sh`

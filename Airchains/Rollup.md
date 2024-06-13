@@ -236,3 +236,6 @@ Exit: `Ctrl+C`
 ```console
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
+## Balance Metamask
+
+![balance](https://github.com/catsmile100/Validator-Testnet/assets/85368621/be9a9aae-c167-403c-b4fc-59068c5ddb14)

@@ -74,6 +74,15 @@ sudo cat mnemonic.txt
 ```
 ***Import to Keplr, add Chain Nubit, and request from the [Faucet](https://faucet.nubit.org/)***
 
+### Update
+```
+sudo systemctl stop nubit
+cd nubit-node 
+curl -sL1 https://nubit.sh | bash
+sudo systemctl start nubit
+sudo journalctl -u nubit -f --no-hostname -o cat
+```
+
 ### Delete
 ```
 sudo systemctl stop nubit

@@ -231,6 +231,10 @@ go run cmd/main.go rollback
 sudo systemctl restart stationd
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
+OR
+```
+./tracks rollback
+```
 ## Check Pod Tracker Logs
 ```console
 sudo journalctl -u stationd -f --no-hostname -o cat

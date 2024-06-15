@@ -74,9 +74,11 @@ echo '{"id":1,"jsonrpc":"2.0","method":"author_rotateKeys","params":[]}' | webso
 
 ### Cheat sheet
 ```
-docker logs analog
-docker stop analog
+docker logs -f analog
 docker start analog
+docker stop analog
+docker rm analog
+docker pull analoglabs/timechain
 ```
 
 

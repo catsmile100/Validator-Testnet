@@ -72,3 +72,11 @@ echo '{"id":1,"jsonrpc":"2.0","method":"author_rotateKeys","params":[]}' | webso
 <a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.testnet.analog.one###/accounts">Dashboard</a>
 ***input Rotating key in setup Node***
 
+### Cheat sheet
+```
+docker logs analog
+docker stop analog
+docker start analog
+```
+
+

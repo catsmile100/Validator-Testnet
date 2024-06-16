@@ -1,10 +1,9 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1752230748520587264/1DSgt5Aq_400x400.png">
+  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/0bb521df-3ce0-404d-a58d-0d6d89c8a99c">
 </p>
 <h1>
 <p align="center"> Warden </p>
 </h1>
-
 ### Documentation
 > - [Site](https://wardenprotocol.org/)
 > - [X](https://x.com/wardenprotocol)

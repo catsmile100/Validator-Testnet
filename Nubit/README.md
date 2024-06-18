@@ -89,6 +89,6 @@ sudo systemctl stop nubit
 sudo systemctl disable nubit
 sudo rm /etc/systemd/system/nubit.service
 rm -rf nubit-node
-rm -rf .nubit
+rm -rf .nubit-validator
 rm -rf $HOME/.nubit-light-nubit-alphatestnet-1 
 ```

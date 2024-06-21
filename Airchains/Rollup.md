@@ -225,8 +225,11 @@ sudo journalctl -u stationd -f --no-hostname -o cat
 Exit: `Ctrl+C`
 ## Rooback
 ```
-systemctl stop stationd
+sudo systemctl stop stationd
 cd tracks
+git pull
+go run cmd/main.go rollback
+go run cmd/main.go rollback
 go run cmd/main.go rollback
 sudo systemctl restart stationd
 sudo journalctl -u stationd -f --no-hostname -o cat

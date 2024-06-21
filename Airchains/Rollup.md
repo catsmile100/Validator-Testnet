@@ -268,8 +268,6 @@ sudo rm /etc/systemd/system/rolld.service
 sudo rm /etc/systemd/system/availd.service
 sudo rm /etc/systemd/system/stationd.service
 
-sudo systemctl daemon-reload
-
 sudo rm -rf /root/evm-station
 sudo rm -rf /root/.avail
 sudo rm -rf /root/tracks

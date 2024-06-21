@@ -252,3 +252,33 @@ sudo journalctl -u stationd -f --no-hostname -o cat
 
 ## Balance Metamask
 ![balance](https://github.com/catsmile100/Validator-Testnet/assets/85368621/be9a9aae-c167-403c-b4fc-59068c5ddb14)
+
+
+## Delete
+```console
+sudo systemctl stop rolld
+sudo systemctl stop availd
+sudo systemctl stop stationd
+
+sudo systemctl disable rolld
+sudo systemctl disable availd
+sudo systemctl disable stationd
+
+sudo rm /etc/systemd/system/rolld.service
+sudo rm /etc/systemd/system/availd.service
+sudo rm /etc/systemd/system/stationd.service
+
+sudo systemctl daemon-reload
+
+sudo rm -rf /root/evm-station
+sudo rm -rf /root/.avail
+sudo rm -rf /root/tracks
+sudo rm -rf /root/availup
+sudo rm -rf /root/.evmosd
+sudo rm -rf /root/.tracks
+
+sudo ufw delete allow 8545
+sudo ufw delete allow 8546
+
+sudo systemctl daemon-reload
+```

@@ -243,7 +243,7 @@ OR
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
 
-## Check Insufficient fees
+## Error Insufficient fees
 ```console
 gas := utilis.GenerateRandomWithFavour(510, 1000, [2]int{520, 700}, 0.7)
 ```

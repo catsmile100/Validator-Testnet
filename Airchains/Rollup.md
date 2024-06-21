@@ -258,6 +258,9 @@ systemctl restart stationd && sudo journalctl -u stationd -f --no-hostname -o ca
 ## Check Point 
 [Dashboard](https://points.airchains.io) Connect with Address `airxxxxx`
 
+![point](https://github.com/catsmile100/Validator-Testnet/assets/85368621/a8f12900-a77f-4c3d-8399-33589022ee11)
+* The points will appear on the dashboard in a few days
+
 ## Setting RPC Metamask
 * Import Account Use  `local-keys.sh`
 * Network name `moniker-name`

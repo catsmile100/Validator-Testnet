@@ -242,6 +242,19 @@ OR
 ```console
 sudo journalctl -u stationd -f --no-hostname -o cat
 ```
+
+## Check Insufficient fees
+```console
+gas := utilis.GenerateRandomWithFavour(510, 1000, [2]int{520, 700}, 0.7)
+```
+```
+cd $HOME/tracks
+go mod tidy
+```
+```
+systemctl restart stationd && sudo journalctl -u stationd -f --no-hostname -o cat
+```
+
 ## Check Point 
 [Dashboard](https://points.airchains.io) Connect with Address `airxxxxx`
 

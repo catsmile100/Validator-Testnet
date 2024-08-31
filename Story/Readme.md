@@ -53,7 +53,7 @@ chmod +x installstory.sh
 
 #cheatsheet
 
-## Geth Service Management Commands
+## Geth Service Management Commands (Adjust the port to your settings)
 
 ## Check Geth status
 ```

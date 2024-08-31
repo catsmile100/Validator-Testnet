@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1781168613661274112/DVPEQLrM_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/036ac877-a23d-4904-adff-162bc9157016">
 </p>
 
 <h1>

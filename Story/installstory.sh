@@ -3,6 +3,15 @@
 # Input moniker
 read -p "Enter your moniker: " MONIKER
 
+# Input new port prefix
+read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
+
+# Validate input
+while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
+    echo "Invalid input. Please enter 2 digits."
+    read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
+done
+
 # Update and install dependencies
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
@@ -45,6 +54,11 @@ wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/tes
 # Download snapshot
 curl https://server-5.itrocket.net/testnet/story/story_2024-08-30_153938_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 
+# Create JWT secret file
+mkdir -p $HOME/.story/geth/iliad/geth
+echo "your_jwt_secret" > $HOME/.story/geth/iliad/geth/jwtsecret
+chmod 600 $HOME/.story/geth/iliad/geth/jwtsecret
+
 # Create Geth service
 sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 [Unit]
@@ -83,15 +97,6 @@ EOF
 # Change ports
 DAEMON_HOME="$HOME/.story/story"
 
-# Input new port prefix
-read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
-
-# Validate input
-while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
-    echo "Invalid input. Please enter 2 digits."
-    read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
-done
-
 # Function to change port
 change_port() {
     local old_port=$1
@@ -119,9 +124,28 @@ echo "Geth WebSocket port changed to $GETH_WS_PORT"
 
 echo -e "\n\e[42mAll ports have been changed with prefix $NEW_PREFIX.\e[0m\n"
 
+# Stop Story service
+sudo systemctl stop story
+
+# Backup and remove old data
+cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
+rm -rf $HOME/.story/story/data
+
+# Download and extract new snapshot
+curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ --strip-components 3
+
+# Restore priv_validator_state.json
+mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
+
+# Download updated addrbook
+wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
+
 # Start services
 sudo systemctl daemon-reload
 sudo systemctl enable geth
 sudo systemctl start geth
 sudo systemctl enable story
 sudo systemctl start story
+
+# Monitor Story service logs
+sudo journalctl -fu story -o cat

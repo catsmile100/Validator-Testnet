@@ -14,7 +14,12 @@ done
 
 # Update and install dependencies
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
+sudo apt install curl git wget htop tmux build-essential jq make gcc unzip -y
+
+# Install lz4 using snap if not already installed
+if ! command -v lz4 &> /dev/null; then
+    sudo snap install lz4
+fi
 
 # Install Go
 cd $HOME

@@ -117,6 +117,18 @@ echo -e "\n\e[42mInitializing the story client...\e[0m\n"
 story init --moniker "$MONIKER" --network iliad
 echo -e "\n\e[42mStory client initialized.\e[0m\n"
 
+# Update Story config
+sed -i -e "s/^laddr = .*/laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
+sed -i -e "s/^rpc.laddr = .*/rpc.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}657\"/" $HOME/.story/story/config/config.toml
+sed -i -e "s/^grpc.address = .*/grpc.address = \"0.0.0.0:${NEW_PREFIX}658\"/" $HOME/.story/story/config/config.toml
+sed -i -e "s/^api.address = .*/api.address = \"0.0.0.0:${NEW_PREFIX}17\"/" $HOME/.story/story/config/config.toml
+
+# Update Geth config
+sed -i -e "s/^HTTPPort = .*/HTTPPort = ${NEW_PREFIX}45/" $HOME/.story/geth/config.toml
+sed -i -e "s/^WSPort = .*/WSPort = ${NEW_PREFIX}46/" $HOME/.story/geth/config.toml
+sed -i -e "s/^Port = .*/Port = ${NEW_PREFIX}303/" $HOME/.story/geth/config.toml
+sed -i -e "s/^AuthRPCPort = .*/AuthRPCPort = ${NEW_PREFIX}51/" $HOME/.story/geth/config.toml
+
 # Create Geth service file
 echo -e "\n\e[42mCreating Geth service file...\e[0m\n"
 sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
@@ -126,7 +138,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46 --port ${NEW_PREFIX}303
+ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46 --port ${NEW_PREFIX}303 --authrpc.port ${NEW_PREFIX}51
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -230,4 +242,3 @@ rm -rf $HOME/.story/geth/iliad/geth/chaindata
 curl https://server-5.itrocket.net/testnet/story/story_2024-09-02_211110_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
 sudo systemctl restart story geth && sudo journalctl -u story -f
-echo -e "\n\e[42mSnapshot taken.\e[0m\n"

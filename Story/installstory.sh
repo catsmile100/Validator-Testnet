@@ -14,7 +14,7 @@ done
 
 # Update and install dependencies
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl git wget htop tmux build-essential jq make gcc unzip -y
+sudo apt install curl git wget htop tmux build-essential jq make gcc unzip ufw -y
 
 # Install lz4 using snap if not already installed
 if ! command -v lz4 &> /dev/null; then
@@ -133,6 +133,18 @@ echo "Geth HTTP port changed to $GETH_HTTP_PORT"
 echo "Geth WebSocket port changed to $GETH_WS_PORT"
 
 echo -e "\n\e[42mAll ports have been changed with prefix $NEW_PREFIX.\e[0m\n"
+
+# Allow ports through firewall
+sudo ufw allow ${NEW_PREFIX}45/tcp
+sudo ufw allow ${NEW_PREFIX}46/tcp
+sudo ufw allow ${NEW_PREFIX}56/tcp
+sudo ufw allow ${NEW_PREFIX}57/tcp
+sudo ufw allow ${NEW_PREFIX}58/tcp
+sudo ufw allow ${NEW_PREFIX}17/tcp
+sudo ufw allow 22
+
+# Enable firewall
+sudo ufw enable
 
 # Stop Story service
 sudo systemctl stop story

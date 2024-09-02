@@ -201,7 +201,7 @@ else
 fi
 
 # Allow SSH port through firewall
-sudo ufw allow 22/tcp
+sudo ufw allow 22
 
 # Enable firewall
 sudo ufw enable

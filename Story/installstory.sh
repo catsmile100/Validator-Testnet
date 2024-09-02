@@ -34,7 +34,7 @@ check_port() {
 }
 
 # Default ports
-DEFAULT_PORTS=(26656 26657 26658 1317 8545 8546 30303)
+DEFAULT_PORTS=(26656 26657 26658 1317 8545 8546 30303 8551)
 
 # Check if default ports are available
 echo -e "\n\e[42mChecking default ports...\e[0m\n"
@@ -186,6 +186,7 @@ if [ -n "$NEW_PREFIX" ]; then
     sudo ufw allow ${NEW_PREFIX}658/tcp comment story_grpc_port
     sudo ufw allow ${NEW_PREFIX}17/tcp comment story_api_port
     sudo ufw allow ${NEW_PREFIX}303/tcp comment geth_p2p_port
+    sudo ufw allow ${NEW_PREFIX}51/tcp comment geth_engine_api_port
 else
     sudo ufw allow 8545/tcp comment geth_http_port
     sudo ufw allow 8546/tcp comment geth_ws_port
@@ -194,6 +195,7 @@ else
     sudo ufw allow 26658/tcp comment story_grpc_port
     sudo ufw allow 1317/tcp comment story_api_port
     sudo ufw allow 30303/tcp comment geth_p2p_port
+    sudo ufw allow 8551/tcp comment geth_engine_api_port
 fi
 
 # Allow SSH port through firewall

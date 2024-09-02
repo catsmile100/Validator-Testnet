@@ -12,9 +12,13 @@ echo "                                                               "
 # Stop and disable existing services, remove old files
 echo -e "\n\e[42mStopping and disabling existing services, removing old files...\e[0m\n"
 {
-    sudo systemctl stop story story-geth
-    sudo systemctl disable story story-geth
-    sudo rm /etc/systemd/system/story.service /etc/systemd/system/story-geth.service
+    sudo systemctl stop geth
+    sudo systemctl disable geth
+
+    sudo systemctl stop story
+    sudo systemctl disable story
+
+    sudo rm /etc/systemd/system/story.service /etc/systemd/system/geth.service
     rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
     sudo systemctl daemon-reload
 } &>/dev/null
@@ -60,6 +64,18 @@ else
     NEW_PREFIX=""
 fi
 
+# Ensure ports 8551, 30303, and 1317 are not in use
+if ! check_port 8551 || ! check_port 30303 || ! check_port 1317; then
+    echo "Ports 8551, 30303, or 1317 are in use. Please enter a new port prefix."
+    read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
+
+    # Validate input
+    while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
+        echo "Invalid input. Please enter 2 digits."
+        read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
+    done
+fi
+
 # Install dependencies
 echo -e "\n\e[42mInstalling dependencies...\e[0m\n"
 sudo apt update && sudo apt upgrade -y
@@ -103,14 +119,14 @@ echo -e "\n\e[42mStory client initialized.\e[0m\n"
 
 # Create Geth service file
 echo -e "\n\e[42mCreating Geth service file...\e[0m\n"
-sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth daemon
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46 --port ${NEW_PREFIX}03
+ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46 --port ${NEW_PREFIX}303
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -143,8 +159,8 @@ echo -e "\n\e[42mStory service file created.\e[0m\n"
 # Enable and start Geth
 echo -e "\n\e[42mEnabling and starting Geth...\e[0m\n"
 sudo systemctl daemon-reload
-sudo systemctl enable story-geth
-sudo systemctl restart story-geth && sudo journalctl -u story-geth -f &
+sudo systemctl enable geth
+sudo systemctl restart geth && sudo journalctl -u geth -f &
 echo -e "\n\e[42mGeth enabled and started.\e[0m\n"
 
 # Enable and start Story
@@ -167,7 +183,7 @@ echo -e "\n\e[42mAddrbook and genesis downloaded.\e[0m\n"
 
 # Restart services
 echo -e "\n\e[42mRestarting services...\e[0m\n"
-sudo systemctl restart story-geth
+sudo systemctl restart geth
 sudo systemctl restart story
 echo -e "\n\e[42mServices restarted.\e[0m\n"
 
@@ -185,7 +201,7 @@ if [ -n "$NEW_PREFIX" ]; then
     sudo ufw allow ${NEW_PREFIX}657/tcp comment story_rpc_port
     sudo ufw allow ${NEW_PREFIX}658/tcp comment story_grpc_port
     sudo ufw allow ${NEW_PREFIX}17/tcp comment story_api_port
-    sudo ufw allow ${NEW_PREFIX}03/tcp comment geth_p2p_port
+    sudo ufw allow ${NEW_PREFIX}303/tcp comment geth_p2p_port
     sudo ufw allow ${NEW_PREFIX}51/tcp comment geth_engine_api_port
 else
     sudo ufw allow 8545/tcp comment geth_http_port
@@ -207,11 +223,11 @@ echo -e "\n\e[42mFirewall rules configured.\e[0m\n"
 
 # Snapshot
 echo -e "\n\e[42mTaking snapshot...\e[0m\n"
-sudo systemctl stop story story-geth
+sudo systemctl stop story geth
 cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
 rm -rf $HOME/.story/story/data
 rm -rf $HOME/.story/geth/iliad/geth/chaindata
 curl https://server-5.itrocket.net/testnet/story/story_2024-09-02_211110_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
-sudo systemctl restart story story-geth && sudo journalctl -u story -f
+sudo systemctl restart story geth && sudo journalctl -u story -f
 echo -e "\n\e[42mSnapshot taken.\e[0m\n"

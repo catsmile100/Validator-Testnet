@@ -48,9 +48,6 @@ wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/
 ```
 dos2unix installstory.sh && chmod +x installstory.sh && ./installstory.sh && rm -rf installstory.sh
 ```
-
-##cheatsheet
-
 ### Geth Service Management Commands (Adjust the port to your settings)
 
 #### Check Geth status

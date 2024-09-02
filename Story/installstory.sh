@@ -10,6 +10,7 @@ echo " ╚═════╝╚═╝  ╚═╝   ╚══════╝╚�
 echo "                                                               "
 
 # Stop and disable existing services, remove old files
+echo -e "\n\e[42mStopping and disabling existing services, removing old files...\e[0m\n"
 {
     sudo systemctl stop story geth
     sudo systemctl disable story geth
@@ -17,6 +18,7 @@ echo "                                                               "
     rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
     sudo systemctl daemon-reload
 } &>/dev/null
+echo -e "\n\e[42mExisting services stopped and old files removed.\e[0m\n"
 
 # Input moniker
 read -p "Enter your moniker: " MONIKER
@@ -58,86 +60,57 @@ else
     NEW_PREFIX=""
 fi
 
-# Update and install dependencies
+# Install dependencies
+echo -e "\n\e[42mInstalling dependencies...\e[0m\n"
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl git wget htop tmux build-essential jq make gcc unzip ufw -y
-
-# Install lz4 using snap if not already installed
-if ! command -v lz4 &> /dev/null; then
-    sudo snap install lz4
-fi
-
-# Install dos2unix if not already installed
-if ! command -v dos2unix &> /dev/null; then
-    sudo apt install dos2unix -y
-fi
+sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
+echo -e "\n\e[42mDependencies installed.\e[0m\n"
 
 # Install Go
+echo -e "\n\e[42mInstalling Go...\e[0m\n"
 cd $HOME
-GO_VER="1.20.3"
-wget "https://golang.org/dl/go$GO_VER.linux-amd64.tar.gz"
+VER="1.20.3"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf "go$GO_VER.linux-amd64.tar.gz"
-rm "go$GO_VER.linux-amd64.tar.gz"
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm "go$VER.linux-amd64.tar.gz"
 [ ! -f ~/.bash_profile ] && touch ~/.bash_profile
 echo "export PATH=\$PATH:/usr/local/go/bin:\$HOME/go/bin" >> ~/.bash_profile
-source ~/.bash_profile
-[ ! -d $HOME/go/bin ] && mkdir -p $HOME/go/bin
+source $HOME/.bash_profile
+[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
+echo -e "\n\e[42mGo installed.\e[0m\n"
 
-# Download and install binaries
+# Download binaries
+echo -e "\n\e[42mDownloading binaries...\e[0m\n"
 cd $HOME
 rm -rf bin
-mkdir -p bin
+mkdir bin
 cd bin
 wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/geth-public/geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
 wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.9.11-2a25df1.tar.gz
 tar -xvf geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
 tar -xvf story-linux-amd64-0.9.11-2a25df1.tar.gz
-mv geth-linux-amd64-0.9.2-ea9f0d2/geth $HOME/go/bin/
-mv story-linux-amd64-0.9.11-2a25df1/story $HOME/go/bin/
+mv ~/bin/geth-linux-amd64-0.9.2-ea9f0d2/geth ~/go/bin/
+mv ~/bin/story-linux-amd64-0.9.11-2a25df1/story ~/go/bin/
+mkdir -p ~/.story/story
+mkdir -p ~/.story/geth
+echo -e "\n\e[42mBinaries downloaded.\e[0m\n"
 
-# Initialize Story
+# Initialize the story client
+echo -e "\n\e[42mInitializing the story client...\e[0m\n"
 story init --moniker "$MONIKER" --network iliad
+echo -e "\n\e[42mStory client initialized.\e[0m\n"
 
-# Configure peers
-PEERS="2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,fe5b39d2bd701ed12a953894cc1449d4c5c6d699@135.125.189.91:26656,ae2d5116b30e5d0c61894b2f643005f71a4aa313@75.119.129.76:26656,a320f8a15892bddd7b5502527e0d11c5b5b9d0e3@69.67.150.107:29931,a03f525b72ece596b6ea3609b49c676751fafc14@94.141.103.163:26656,00c495396dfee53a31476d7619d1cc252b9a47b9@89.58.62.213:26656,ee5ecaf1364cb3238113ba9a29813c17fab97694@157.173.197.110:26656,5a0191a6bd8f17c9d2fa52386ff409f5d796d112@3.209.222.188:26656"
-sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
-
-# Download addrbook and genesis
-echo -e "\n\e[42mDownloading addrbook...\e[0m\n"
-wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
-
-echo -e "\n\e[42mDownloading genesis...\e[0m\n"
-wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
-
-# Stop Story service
-sudo systemctl stop story 2>/dev/null
-
-# Backup and remove old data
-cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
-rm -rf $HOME/.story/story/data
-
-# Download and extract new snapshot
-echo -e "\n\e[42mDownloading and extracting new snapshot...\e[0m\n"
-curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ --strip-components 3
-
-# Restore priv_validator_state.json
-mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
-
-# Create JWT secret file
-mkdir -p $HOME/.story/geth/iliad/geth
-echo "your_jwt_secret" > $HOME/.story/geth/iliad/geth/jwtsecret
-chmod 600 $HOME/.story/geth/iliad/geth/jwtsecret
-
-# Create Geth service
-sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
+# Create Geth service file
+echo -e "\n\e[42mCreating Geth service file...\e[0m\n"
+sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
-Description=Geth Daemon
+Description=Story Geth daemon
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$HOME/go/bin/geth --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46
+ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -145,8 +118,10 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
+echo -e "\n\e[42mGeth service file created.\e[0m\n"
 
-# Create Story service
+# Create Story service file
+echo -e "\n\e[42mCreating Story service file...\e[0m\n"
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
 Description=Story Service
@@ -155,7 +130,7 @@ After=network.target
 [Service]
 User=$USER
 WorkingDirectory=$HOME/.story/story
-ExecStart=$HOME/go/bin/story run
+ExecStart=$(which story) run
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
@@ -163,53 +138,60 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
+echo -e "\n\e[42mStory service file created.\e[0m\n"
 
-# Change ports if necessary
+# Enable and start Geth
+echo -e "\n\e[42mEnabling and starting Geth...\e[0m\n"
+sudo systemctl daemon-reload
+sudo systemctl enable story-geth
+sudo systemctl restart story-geth && sudo journalctl -u story-geth -f &
+echo -e "\n\e[42mGeth enabled and started.\e[0m\n"
+
+# Enable and start Story
+echo -e "\n\e[42mEnabling and starting Story...\e[0m\n"
+sudo systemctl enable story
+sudo systemctl restart story && sudo journalctl -u story -f &
+echo -e "\n\e[42mStory enabled and started.\e[0m\n"
+
+# Configure peers
+echo -e "\n\e[42mConfiguring peers...\e[0m\n"
+PEERS="2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,00c495396dfee53a31476d7619d1cc252b9a47b9@89.58.62.213:26656,800bd9a3bb37a07d5c57c42a5de72d7ab370cfd1@100.42.189.22:26656,8e33fb7dfa20e61bf743cdea89f8ca909946a189@65.108.232.134:26656,6a1b35d7c8deae3f6b0588855300af1dfa8ebd17@49.12.172.31:13656,c82d2b5fe79e3159768a77f25eee4f22e3841f56@3.209.222.59:26656"
+sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
+echo -e "\n\e[42mPeers configured.\e[0m\n"
+
+# Download addrbook and genesis
+echo -e "\n\e[42mDownloading addrbook and genesis...\e[0m\n"
+wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
+wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
+echo -e "\n\e[42mAddrbook and genesis downloaded.\e[0m\n"
+
+# Restart services
+echo -e "\n\e[42mRestarting services...\e[0m\n"
+sudo systemctl restart story-geth
+sudo systemctl restart story
+echo -e "\n\e[42mServices restarted.\e[0m\n"
+
+# Add enode peer
+echo -e "\n\e[42mAdding enode peer...\e[0m\n"
+geth --exec 'admin.addPeer("enode://499267340ce74fd95b56181b219fc1097b138156c961a38cce608cbd8e22dc02214644997a6fc84c49023e59a70d52ee10c3c40007bd1ccca06267d708fc4aeb@story-testnet-enode.itrocket.net:30301")' attach ~/.story/geth/iliad/geth.ipc
+echo -e "\n\e[42mEnode peer added.\e[0m\n"
+
+# Configure firewall rules
+echo -e "\n\e[42mConfiguring firewall rules...\e[0m\n"
 if [ -n "$NEW_PREFIX" ]; then
-    DAEMON_HOME="$HOME/.story/story"
-
-    # Function to change port
-    change_port() {
-        local old_port=$1
-        local new_port="${NEW_PREFIX}${old_port:2}"
-        sed -i -e "s|:$old_port|:$new_port|g" $DAEMON_HOME/config/config.toml
-        sed -i -e "s|:$old_port|:$new_port|g" $DAEMON_HOME/config/story.toml
-        echo "Port $old_port changed to $new_port"
-    }
-
-    echo -e '\n\e[42mChanging ports automatically...\e[0m\n'
-
-    # Change Story ports
-    change_port 26656
-    change_port 26657
-    change_port 26658
-    change_port 1317
-
-    # Change Geth ports
-    GETH_HTTP_PORT="${NEW_PREFIX}45"
-    GETH_WS_PORT="${NEW_PREFIX}46"
-    sed -i "s|--http.port 8545|--http.port $GETH_HTTP_PORT|g" /etc/systemd/system/geth.service
-    sed -i "s|--ws.port 8546|--ws.port $GETH_WS_PORT|g" /etc/systemd/system/geth.service
-    echo "Geth HTTP port changed to $GETH_HTTP_PORT"
-    echo "Geth WebSocket port changed to $GETH_WS_PORT"
-
-    echo -e "\n\e[42mAll ports have been changed with prefix $NEW_PREFIX.\e[0m\n"
-
-    # Allow new ports through firewall
-    sudo ufw allow ${NEW_PREFIX}45/tcp
-    sudo ufw allow ${NEW_PREFIX}46/tcp
-    sudo ufw allow ${NEW_PREFIX}656/tcp
-    sudo ufw allow ${NEW_PREFIX}657/tcp
-    sudo ufw allow ${NEW_PREFIX}658/tcp
-    sudo ufw allow ${NEW_PREFIX}17/tcp
+    sudo ufw allow ${NEW_PREFIX}45/tcp comment geth_http_port
+    sudo ufw allow ${NEW_PREFIX}46/tcp comment geth_ws_port
+    sudo ufw allow ${NEW_PREFIX}656/tcp comment story_p2p_port
+    sudo ufw allow ${NEW_PREFIX}657/tcp comment story_rpc_port
+    sudo ufw allow ${NEW_PREFIX}658/tcp comment story_grpc_port
+    sudo ufw allow ${NEW_PREFIX}17/tcp comment story_api_port
 else
-    # Allow default ports through firewall
-    sudo ufw allow 26656/tcp
-    sudo ufw allow 26657/tcp
-    sudo ufw allow 26658/tcp
-    sudo ufw allow 1317/tcp
-    sudo ufw allow 8545/tcp
-    sudo ufw allow 8546/tcp
+    sudo ufw allow 8545/tcp comment geth_http_port
+    sudo ufw allow 8546/tcp comment geth_ws_port
+    sudo ufw allow 26656/tcp comment story_p2p_port
+    sudo ufw allow 26657/tcp comment story_rpc_port
+    sudo ufw allow 26658/tcp comment story_grpc_port
+    sudo ufw allow 1317/tcp comment story_api_port
 fi
 
 # Allow SSH port through firewall
@@ -217,13 +199,15 @@ sudo ufw allow ssh
 
 # Enable firewall
 sudo ufw enable
+echo -e "\n\e[42mFirewall rules configured.\e[0m\n"
 
-# Start services
-sudo systemctl daemon-reload
-sudo systemctl enable geth
-sudo systemctl start geth
-sudo systemctl enable story
-sudo systemctl start story
-
-# Monitor Story service logs
-sudo journalctl -fu story -o cat
+# Snapshot
+echo -e "\n\e[42mTaking snapshot...\e[0m\n"
+sudo systemctl stop story story-geth
+cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
+rm -rf $HOME/.story/story/data
+rm -rf $HOME/.story/geth/iliad/geth/chaindata
+curl https://server-5.itrocket.net/testnet/story/story_2024-09-02_211110_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
+mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
+sudo systemctl restart story story-geth && sudo journalctl -u story -f
+echo -e "\n\e[42mSnapshot taken.\e[0m\n"

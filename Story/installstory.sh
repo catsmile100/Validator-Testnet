@@ -14,17 +14,13 @@ echo -e "\n\e[42mStopping and disabling existing services, removing old files...
 {
     sudo systemctl stop geth
     sudo systemctl disable geth
-
     sudo systemctl stop story
     sudo systemctl disable story
-
     sudo rm /etc/systemd/system/story.service /etc/systemd/system/geth.service
     rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
     sudo systemctl daemon-reload
 } &>/dev/null
 echo -e "\n\e[42mExisting services stopped and old files removed.\e[0m\n"
-
-#!/bin/bash
 
 # Input port prefix (2 digits) and moniker name
 read -p "Enter 2-digit port prefix: " PORT_PREFIX
@@ -36,11 +32,11 @@ if [[ ! $PORT_PREFIX =~ ^[0-9]{2}$ ]]; then
   exit 1
 fi
 
-# install dependencies, if needed
+# Install dependencies
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
 
-# install go, if needed
+# Install Go
 cd $HOME
 VER="1.20.3"
 wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
@@ -52,7 +48,7 @@ echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 
-# download binaries
+# Download binaries
 cd $HOME
 rm -rf bin
 mkdir bin
@@ -66,14 +62,14 @@ mv ~/bin/story-linux-amd64-0.9.11-2a25df1/story ~/go/bin/
 mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
 
-# initialize the story client
+# Initialize the story client
 story init --moniker $MONIKER --network iliad
 
-# download genesis and addrbook
+# Download genesis and addrbook
 wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
 wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
 
-# create geth service file
+# Create systemd service files
 sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth daemon
@@ -90,7 +86,6 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-# create story service file
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
 Description=Story Service
@@ -104,11 +99,12 @@ ExecStart=$(which story) run
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
+
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# set custom ports in app.toml
+# Set custom ports in configuration files
 sed -i.bak -e "s%:1317%:${PORT_PREFIX}17%g;
 s%:8080%:${PORT_PREFIX}80%g;
 s%:9090%:${PORT_PREFIX}90%g;
@@ -117,7 +113,6 @@ s%:8545%:${PORT_PREFIX}45%g;
 s%:8546%:${PORT_PREFIX}46%g;
 s%:6065%:${PORT_PREFIX}65%g" $HOME/.story/story/config/app.toml
 
-# set custom ports in config.toml file
 sed -i.bak -e "s%:26658%:${PORT_PREFIX}658%g;
 s%:26657%:${PORT_PREFIX}657%g;
 s%:6060%:${PORT_PREFIX}660%g;
@@ -129,13 +124,10 @@ s%:26660%:${PORT_PREFIX}660%g" $HOME/.story/story/config/config.toml
 PEERS="2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,00c495396dfee53a31476d7619d1cc252b9a47b9@89.58.62.213:26656,800bd9a3bb37a07d5c57c42a5de72d7ab370cfd1@100.42.189.22:26656,8e33fb7dfa20e61bf743cdea89f8ca909946a189@65.108.232.134:26656,c82d2b5fe79e3159768a77f25eee4f22e3841f56@3.209.222.59:26656,a03f525b72ece596b6ea3609b49c676751fafc14@94.141.103.163:26656"
 sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
 
-# enable and start geth
+# Enable and start services
 sudo systemctl daemon-reload
 sudo systemctl enable geth
 sudo systemctl restart geth 
-
-# enable and start story
-sudo systemctl daemon-reload
 sudo systemctl enable story
 sudo systemctl restart story 
 

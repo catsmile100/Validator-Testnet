@@ -122,6 +122,8 @@ sed -i -e "s/^laddr = .*/laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.s
 sed -i -e "s/^rpc.laddr = .*/rpc.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}657\"/" $HOME/.story/story/config/config.toml
 sed -i -e "s/^grpc.address = .*/grpc.address = \"0.0.0.0:${NEW_PREFIX}658\"/" $HOME/.story/story/config/config.toml
 sed -i -e "s/^api.address = .*/api.address = \"0.0.0.0:${NEW_PREFIX}17\"/" $HOME/.story/story/config/config.toml
+# Tambahkan baris berikut untuk mengubah port 18656
+sed -i -e "s/^p2p.laddr = .*/p2p.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
 
 # Update Geth config
 sed -i -e "s/^HTTPPort = .*/HTTPPort = ${NEW_PREFIX}45/" $HOME/.story/geth/config.toml

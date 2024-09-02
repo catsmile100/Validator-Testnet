@@ -9,6 +9,16 @@ echo "╚██████╗██║  ██║   ██║   █████
 echo " ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚══════╝"
 echo "                                                               "
 
+# Stop and disable existing services, remove old files
+sudo systemctl stop story geth
+sudo systemctl disable story geth
+sudo rm /etc/systemd/system/story.service /etc/systemd/system/geth.service
+rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
+sudo systemctl daemon-reload
+
+# Input moniker
+read -p "Enter your moniker: " MONIKER
+
 # Function to check if a port is available
 check_port() {
     local port=$1

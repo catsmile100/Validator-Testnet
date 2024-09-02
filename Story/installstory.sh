@@ -12,9 +12,9 @@ echo "                                                               "
 # Stop and disable existing services, remove old files
 echo -e "\n\e[42mStopping and disabling existing services, removing old files...\e[0m\n"
 {
-    sudo systemctl stop story geth
-    sudo systemctl disable story geth
-    sudo rm /etc/systemd/system/story.service /etc/systemd/system/geth.service
+    sudo systemctl stop story story-geth
+    sudo systemctl disable story story-geth
+    sudo rm /etc/systemd/system/story.service /etc/systemd/system/story-geth.service
     rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
     sudo systemctl daemon-reload
 } &>/dev/null
@@ -185,7 +185,7 @@ if [ -n "$NEW_PREFIX" ]; then
     sudo ufw allow ${NEW_PREFIX}657/tcp comment story_rpc_port
     sudo ufw allow ${NEW_PREFIX}658/tcp comment story_grpc_port
     sudo ufw allow ${NEW_PREFIX}17/tcp comment story_api_port
-    sudo ufw allow ${NEW_PREFIX}303/tcp comment geth_p2p_port
+    sudo ufw allow ${NEW_PREFIX}03/tcp comment geth_p2p_port
     sudo ufw allow ${NEW_PREFIX}51/tcp comment geth_engine_api_port
 else
     sudo ufw allow 8545/tcp comment geth_http_port

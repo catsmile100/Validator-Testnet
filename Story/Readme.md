@@ -22,25 +22,6 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 | ------------- | ------------- | ------------- | -------- | -------- |
 | Story | 4          | 8         | 200 GB  | Ubuntu 22.04 LTS  |
 
-## Active UFW
-```
-sudo ufw enable
-```
-## Open port
-```
-sudo ufw allow 22
-sudo ufw allow 17656/tcp
-sudo ufw allow 17657/tcp
-sudo ufw allow 17658/tcp
-sudo ufw allow 1717/tcp
-sudo ufw allow 1745/tcp
-sudo ufw allow 1746/tcp
-```
-#### verif
-```
-sudo ufw reload
-```
-
 ## Auto Installation
 ```
 wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh

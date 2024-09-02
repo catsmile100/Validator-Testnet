@@ -133,7 +133,7 @@ sudo ufw allow ${PORT_PREFIX}656/tcp comment story_p2p_port
 sudo ufw allow ${PORT_PREFIX}657/tcp comment story_node_status_port
 
 # Add enode peer
-geth --exec 'admin.addPeer("enode://499267340ce74fd95b56181b219fc1097b138156c961a38cce608cbd8e22dc02214644997a6fc84c49023e59a70d52ee10c3c40007bd1ccca06267d708fc4aeb@story-testnet-enode.itrocket.net:30301")' attach ~/.story/geth/iliad/geth.ipc
+geth --exec 'admin.addPeer("enode://499267340ce74fd95b56181b219fc1097b138156c961a38cce608cbd8e22dc02214644997a6fc84c49023e59a70d52ee10c3c40007bd1ccca06267d708fc4aeb@story-testnet-enode.itrocket.net:30301")' attach $HOME/.story/geth/iliad/geth.ipc
 
 # Download and apply snapshot
 sudo systemctl stop story geth

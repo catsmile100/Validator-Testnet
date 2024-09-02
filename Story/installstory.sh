@@ -6,20 +6,45 @@ echo "██╔════╝██╔══██╗╚══██╔══�
 echo "██║     ███████║   ██║   ███████╗██╔████╔██║██║██║     █████╗  "
 echo "██║     ██╔══██║   ██║   ╚════██║██║╚██╔╝██║██║██║     ██╔══╝  "
 echo "╚██████╗██║  ██║   ██║   ███████║██║ ╚═╝ ██║██║███████╗███████╗"
-echo " ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝╚══════╝╚══════╝"
+echo " ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚══════╝"
 echo "                                                               "
 
-# Input moniker
-read -p "Enter your moniker: " MONIKER
+# Function to check if a port is available
+check_port() {
+    local port=$1
+    if sudo lsof -i -P -n | grep -q ":$port"; then
+        return 1
+    else
+        return 0
+    fi
+}
 
-# Input new port prefix
-read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
+# Default ports
+DEFAULT_PORTS=(26656 26657 26658 1317 8545 8546)
 
-# Validate input
-while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
-    echo "Invalid input. Please enter 2 digits."
-    read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
+# Check if default ports are available
+echo -e "\n\e[42mChecking default ports...\e[0m\n"
+all_ports_available=true
+for port in "${DEFAULT_PORTS[@]}"; do
+    if ! check_port $port; then
+        all_ports_available=false
+        break
+    fi
 done
+
+# If default ports are not available, prompt for new port prefix
+if [ "$all_ports_available" = false ]; then
+    echo "Default ports are not available. Please enter a new port prefix."
+    read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
+
+    # Validate input
+    while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
+        echo "Invalid input. Please enter 2 digits."
+        read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
+    done
+else
+    NEW_PREFIX=""
+fi
 
 # Update and install dependencies
 sudo apt update && sudo apt upgrade -y
@@ -67,12 +92,25 @@ PEERS="2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:
 sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
 
 # Download addrbook and genesis
+echo -e "\n\e[42mDownloading addrbook...\e[0m\n"
 wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
+
+echo -e "\n\e[42mDownloading genesis...\e[0m\n"
 wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
 
-# Download snapshot
-echo -e "\n\e[42mDownloading and extracting snapshot...\e[0m\n"
-curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
+# Stop Story service
+sudo systemctl stop story
+
+# Backup and remove old data
+cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
+rm -rf $HOME/.story/story/data
+
+# Download and extract new snapshot
+echo -e "\n\e[42mDownloading and extracting new snapshot...\e[0m\n"
+curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ --strip-components 3
+
+# Restore priv_validator_state.json
+mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
 
 # Create JWT secret file
 mkdir -p $HOME/.story/geth/iliad/geth
@@ -114,63 +152,59 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-# Change ports
-DAEMON_HOME="$HOME/.story/story"
+# Change ports if necessary
+if [ -n "$NEW_PREFIX" ]; then
+    DAEMON_HOME="$HOME/.story/story"
 
-# Function to change port
-change_port() {
-    local old_port=$1
-    local new_port="${NEW_PREFIX}${old_port:2}"
-    sed -i -e "s|:$old_port|:$new_port|g" $DAEMON_HOME/config/config.toml
-    sed -i -e "s|:$old_port|:$new_port|g" $DAEMON_HOME/config/story.toml
-    echo "Port $old_port changed to $new_port"
-}
+    # Function to change port
+    change_port() {
+        local old_port=$1
+        local new_port="${NEW_PREFIX}${old_port:2}"
+        sed -i -e "s|:$old_port|:$new_port|g" $DAEMON_HOME/config/config.toml
+        sed -i -e "s|:$old_port|:$new_port|g" $DAEMON_HOME/config/story.toml
+        echo "Port $old_port changed to $new_port"
+    }
 
-echo -e '\n\e[42mChanging ports automatically...\e[0m\n'
+    echo -e '\n\e[42mChanging ports automatically...\e[0m\n'
 
-# Change Story ports
-change_port 26656
-change_port 26657
-change_port 26658
-change_port 1317
+    # Change Story ports
+    change_port 26656
+    change_port 26657
+    change_port 26658
+    change_port 1317
 
-# Change Geth ports
-GETH_HTTP_PORT="${NEW_PREFIX}45"
-GETH_WS_PORT="${NEW_PREFIX}46"
-sed -i "s|--http.port 8545|--http.port $GETH_HTTP_PORT|g" /etc/systemd/system/geth.service
-sed -i "s|--ws.port 8546|--ws.port $GETH_WS_PORT|g" /etc/systemd/system/geth.service
-echo "Geth HTTP port changed to $GETH_HTTP_PORT"
-echo "Geth WebSocket port changed to $GETH_WS_PORT"
+    # Change Geth ports
+    GETH_HTTP_PORT="${NEW_PREFIX}45"
+    GETH_WS_PORT="${NEW_PREFIX}46"
+    sed -i "s|--http.port 8545|--http.port $GETH_HTTP_PORT|g" /etc/systemd/system/geth.service
+    sed -i "s|--ws.port 8546|--ws.port $GETH_WS_PORT|g" /etc/systemd/system/geth.service
+    echo "Geth HTTP port changed to $GETH_HTTP_PORT"
+    echo "Geth WebSocket port changed to $GETH_WS_PORT"
 
-echo -e "\n\e[42mAll ports have been changed with prefix $NEW_PREFIX.\e[0m\n"
+    echo -e "\n\e[42mAll ports have been changed with prefix $NEW_PREFIX.\e[0m\n"
 
-# Allow ports through firewall
-sudo ufw allow ${NEW_PREFIX}45/tcp
-sudo ufw allow ${NEW_PREFIX}46/tcp
-sudo ufw allow ${NEW_PREFIX}56/tcp
-sudo ufw allow ${NEW_PREFIX}57/tcp
-sudo ufw allow ${NEW_PREFIX}58/tcp
-sudo ufw allow ${NEW_PREFIX}17/tcp
+    # Allow new ports through firewall
+    sudo ufw allow ${NEW_PREFIX}45/tcp
+    sudo ufw allow ${NEW_PREFIX}46/tcp
+    sudo ufw allow ${NEW_PREFIX}656/tcp
+    sudo ufw allow ${NEW_PREFIX}657/tcp
+    sudo ufw allow ${NEW_PREFIX}658/tcp
+    sudo ufw allow ${NEW_PREFIX}17/tcp
+else
+    # Allow default ports through firewall
+    sudo ufw allow 26656/tcp
+    sudo ufw allow 26657/tcp
+    sudo ufw allow 26658/tcp
+    sudo ufw allow 1317/tcp
+    sudo ufw allow 8545/tcp
+    sudo ufw allow 8546/tcp
+fi
+
+# Allow SSH port through firewall
+sudo ufw allow 22/tcp
 
 # Enable firewall
 sudo ufw enable
-
-# Stop Story service
-sudo systemctl stop story
-
-# Backup and remove old data
-cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
-rm -rf $HOME/.story/story/data
-
-# Download and extract new snapshot
-echo -e "\n\e[42mDownloading and extracting new snapshot...\e[0m\n"
-curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ --strip-components 3
-
-# Restore priv_validator_state.json
-mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
-
-# Download updated addrbook
-wget -O $HOME/.story/story/config/addrbook.json "https://raw.githubusercontent.com/111STAVR111/props/main/Story/addrbook.json"
 
 # Start services
 sudo systemctl daemon-reload

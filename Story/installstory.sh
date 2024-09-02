@@ -24,66 +24,23 @@ echo -e "\n\e[42mStopping and disabling existing services, removing old files...
 } &>/dev/null
 echo -e "\n\e[42mExisting services stopped and old files removed.\e[0m\n"
 
-# Input moniker
-read -p "Enter your moniker: " MONIKER
+#!/bin/bash
 
-# Function to check if a port is available
-check_port() {
-    local port=$1
-    if sudo lsof -i -P -n | grep -q ":$port"; then
-        return 1
-    else
-        return 0
-    fi
-}
+# Input port prefix (2 digits) and moniker name
+read -p "Enter 2-digit port prefix: " PORT_PREFIX
+read -p "Enter moniker name: " MONIKER
 
-# Default ports
-DEFAULT_PORTS=(26656 26657 26658 1317 8545 8546 30303 8551)
-
-# Check if default ports are available
-echo -e "\n\e[42mChecking default ports...\e[0m\n"
-all_ports_available=true
-for port in "${DEFAULT_PORTS[@]}"; do
-    if ! check_port $port; then
-        all_ports_available=false
-        break
-    fi
-done
-
-# If default ports are not available, prompt for new port prefix
-if [ "$all_ports_available" = false ]; then
-    echo "Default ports are not available. Please enter a new port prefix."
-    read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
-
-    # Validate input
-    while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
-        echo "Invalid input. Please enter 2 digits."
-        read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
-    done
-else
-    NEW_PREFIX=""
+# Validate port prefix
+if [[ ! $PORT_PREFIX =~ ^[0-9]{2}$ ]]; then
+  echo "Port prefix must be exactly 2 digits."
+  exit 1
 fi
 
-# Ensure ports 8551, 30303, and 1317 are not in use
-if ! check_port 8551 || ! check_port 30303 || ! check_port 1317; then
-    echo "Ports 8551, 30303, or 1317 are in use. Please enter a new port prefix."
-    read -p "Enter new port prefix (2 digits, e.g., 14): " NEW_PREFIX
-
-    # Validate input
-    while [[ ! $NEW_PREFIX =~ ^[0-9]{2}$ ]]; do
-        echo "Invalid input. Please enter 2 digits."
-        read -p "Enter port prefix (2 digits, e.g., 14): " NEW_PREFIX
-    done
-fi
-
-# Install dependencies
-echo -e "\n\e[42mInstalling dependencies...\e[0m\n"
+# install dependencies, if needed
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
-echo -e "\n\e[42mDependencies installed.\e[0m\n"
 
-# Install Go
-echo -e "\n\e[42mInstalling Go...\e[0m\n"
+# install go, if needed
 cd $HOME
 VER="1.20.3"
 wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
@@ -91,13 +48,11 @@ sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
 rm "go$VER.linux-amd64.tar.gz"
 [ ! -f ~/.bash_profile ] && touch ~/.bash_profile
-echo "export PATH=\$PATH:/usr/local/go/bin:\$HOME/go/bin" >> ~/.bash_profile
+echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
-echo -e "\n\e[42mGo installed.\e[0m\n"
 
-# Download binaries
-echo -e "\n\e[42mDownloading binaries...\e[0m\n"
+# download binaries
 cd $HOME
 rm -rf bin
 mkdir bin
@@ -110,32 +65,15 @@ mv ~/bin/geth-linux-amd64-0.9.2-ea9f0d2/geth ~/go/bin/
 mv ~/bin/story-linux-amd64-0.9.11-2a25df1/story ~/go/bin/
 mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
-echo -e "\n\e[42mBinaries downloaded.\e[0m\n"
 
-# Initialize the story client
-echo -e "\n\e[42mInitializing the story client...\e[0m\n"
-story init --moniker "$MONIKER" --network iliad
-echo -e "\n\e[42mStory client initialized.\e[0m\n"
+# initialize the story client
+story init --moniker $MONIKER --network iliad
 
-# Update Story config
-if [ -n "$NEW_PREFIX" ]; then
-    sed -i -e "s/^laddr = .*/laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
-    sed -i -e "s/^rpc.laddr = .*/rpc.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}657\"/" $HOME/.story/story/config/config.toml
-    sed -i -e "s/^grpc.address = .*/grpc.address = \"0.0.0.0:${NEW_PREFIX}658\"/" $HOME/.story/story/config/config.toml
-    sed -i -e "s/^api.address = .*/api.address = \"0.0.0.0:${NEW_PREFIX}17\"/" $HOME/.story/story/config/config.toml
-    sed -i -e "s/^p2p.laddr = .*/p2p.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
-fi
+# download genesis and addrbook
+wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
+wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
 
-# Update Geth config
-if [ -n "$NEW_PREFIX" ]; then
-    sed -i -e "s/^HTTPPort = .*/HTTPPort = ${NEW_PREFIX}45/" $HOME/.story/geth/config.toml
-    sed -i -e "s/^WSPort = .*/WSPort = ${NEW_PREFIX}46/" $HOME/.story/geth/config.toml
-    sed -i -e "s/^Port = .*/Port = ${NEW_PREFIX}303/" $HOME/.story/geth/config.toml
-    sed -i -e "s/^AuthRPCPort = .*/AuthRPCPort = ${NEW_PREFIX}51/" $HOME/.story/geth/config.toml
-fi
-
-# Create Geth service file
-echo -e "\n\e[42mCreating Geth service file...\e[0m\n"
+# create geth service file
 sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth daemon
@@ -143,7 +81,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46 --port ${NEW_PREFIX}303 --authrpc.port ${NEW_PREFIX}51
+ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${PORT_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${PORT_PREFIX}46
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -151,10 +89,8 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-echo -e "\n\e[42mGeth service file created.\e[0m\n"
 
-# Create Story service file
-echo -e "\n\e[42mCreating Story service file...\e[0m\n"
+# create story service file
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
 Description=Story Service
@@ -164,82 +100,54 @@ After=network.target
 User=$USER
 WorkingDirectory=$HOME/.story/story
 ExecStart=$(which story) run
+
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target
 EOF
-echo -e "\n\e[42mStory service file created.\e[0m\n"
 
-# Enable and start Geth
-echo -e "\n\e[42mEnabling and starting Geth...\e[0m\n"
+# set custom ports in app.toml
+sed -i.bak -e "s%:1317%:${PORT_PREFIX}17%g;
+s%:8080%:${PORT_PREFIX}80%g;
+s%:9090%:${PORT_PREFIX}90%g;
+s%:9091%:${PORT_PREFIX}91%g;
+s%:8545%:${PORT_PREFIX}45%g;
+s%:8546%:${PORT_PREFIX}46%g;
+s%:6065%:${PORT_PREFIX}65%g" $HOME/.story/story/config/app.toml
+
+# set custom ports in config.toml file
+sed -i.bak -e "s%:26658%:${PORT_PREFIX}658%g;
+s%:26657%:${PORT_PREFIX}657%g;
+s%:6060%:${PORT_PREFIX}660%g;
+s%:26656%:${PORT_PREFIX}656%g;
+s%^external_address = \"\"%external_address = \"$(wget -qO- eth0.me):${PORT_PREFIX}656\"%;
+s%:26660%:${PORT_PREFIX}660%g" $HOME/.story/story/config/config.toml
+
+# Configure persistent peers
+PEERS="2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,00c495396dfee53a31476d7619d1cc252b9a47b9@89.58.62.213:26656,800bd9a3bb37a07d5c57c42a5de72d7ab370cfd1@100.42.189.22:26656,8e33fb7dfa20e61bf743cdea89f8ca909946a189@65.108.232.134:26656,c82d2b5fe79e3159768a77f25eee4f22e3841f56@3.209.222.59:26656,a03f525b72ece596b6ea3609b49c676751fafc14@94.141.103.163:26656"
+sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
+
+# enable and start geth
 sudo systemctl daemon-reload
 sudo systemctl enable geth
-sudo systemctl restart geth && sudo journalctl -u geth -f &
-echo -e "\n\e[42mGeth enabled and started.\e[0m\n"
+sudo systemctl restart geth 
 
-# Enable and start Story
-echo -e "\n\e[42mEnabling and starting Story...\e[0m\n"
+# enable and start story
+sudo systemctl daemon-reload
 sudo systemctl enable story
-sudo systemctl restart story && sudo journalctl -u story -f &
-echo -e "\n\e[42mStory enabled and started.\e[0m\n"
-
-# Configure peers
-echo -e "\n\e[42mConfiguring peers...\e[0m\n"
-PEERS="2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,00c495396dfee53a31476d7619d1cc252b9a47b9@89.58.62.213:26656,800bd9a3bb37a07d5c57c42a5de72d7ab370cfd1@100.42.189.22:26656,8e33fb7dfa20e61bf743cdea89f8ca909946a189@65.108.232.134:26656,6a1b35d7c8deae3f6b0588855300af1dfa8ebd17@49.12.172.31:13656,c82d2b5fe79e3159768a77f25eee4f22e3841f56@3.209.222.59:26656"
-sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.story/story/config/config.toml
-echo -e "\n\e[42mPeers configured.\e[0m\n"
-
-# Download addrbook and genesis
-echo -e "\n\e[42mDownloading addrbook and genesis...\e[0m\n"
-wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
-wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
-echo -e "\n\e[42mAddrbook and genesis downloaded.\e[0m\n"
-
-# Restart services
-echo -e "\n\e[42mRestarting services...\e[0m\n"
-sudo systemctl restart geth
-sudo systemctl restart story
-echo -e "\n\e[42mServices restarted.\e[0m\n"
-
-# Add enode peer
-echo -e "\n\e[42mAdding enode peer...\e[0m\n"
-geth --exec 'admin.addPeer("enode://499267340ce74fd95b56181b219fc1097b138156c961a38cce608cbd8e22dc02214644997a6fc84c49023e59a70d52ee10c3c40007bd1ccca06267d708fc4aeb@story-testnet-enode.itrocket.net:30301")' attach ~/.story/geth/iliad/geth.ipc
-echo -e "\n\e[42mEnode peer added.\e[0m\n"
+sudo systemctl restart story 
 
 # Configure firewall rules
-echo -e "\n\e[42mConfiguring firewall rules...\e[0m\n"
-if [ -n "$NEW_PREFIX" ]; then
-    sudo ufw allow ${NEW_PREFIX}45/tcp comment geth_http_port
-    sudo ufw allow ${NEW_PREFIX}46/tcp comment geth_ws_port
-    sudo ufw allow ${NEW_PREFIX}656/tcp comment story_p2p_port
-    sudo ufw allow ${NEW_PREFIX}657/tcp comment story_rpc_port
-    sudo ufw allow ${NEW_PREFIX}658/tcp comment story_grpc_port
-    sudo ufw allow ${NEW_PREFIX}17/tcp comment story_api_port
-    sudo ufw allow ${NEW_PREFIX}303/tcp comment geth_p2p_port
-    sudo ufw allow ${NEW_PREFIX}51/tcp comment geth_engine_api_port
-else
-    sudo ufw allow 8545/tcp comment geth_http_port
-    sudo ufw allow 8546/tcp comment geth_ws_port
-    sudo ufw allow 26656/tcp comment story_p2p_port
-    sudo ufw allow 26657/tcp comment story_rpc_port
-    sudo ufw allow 26658/tcp comment story_grpc_port
-    sudo ufw allow 1317/tcp comment story_api_port
-    sudo ufw allow 30303/tcp comment geth_p2p_port
-    sudo ufw allow 8551/tcp comment geth_engine_api_port
-fi
+sudo ufw allow 30303/tcp comment geth_p2p_port
+sudo ufw allow ${PORT_PREFIX}656/tcp comment story_p2p_port
+sudo ufw allow ${PORT_PREFIX}657/tcp comment story_node_status_port
 
-# Allow SSH port through firewall
-sudo ufw allow ssh
+# Add enode peer
+geth --exec 'admin.addPeer("enode://499267340ce74fd95b56181b219fc1097b138156c961a38cce608cbd8e22dc02214644997a6fc84c49023e59a70d52ee10c3c40007bd1ccca06267d708fc4aeb@story-testnet-enode.itrocket.net:30301")' attach ~/.story/geth/iliad/geth.ipc
 
-# Enable firewall
-sudo ufw enable
-echo -e "\n\e[42mFirewall rules configured.\e[0m\n"
-
-# Snapshot
-echo -e "\n\e[42mTaking snapshot...\e[0m\n"
+# Download and apply snapshot
 sudo systemctl stop story geth
 cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
 rm -rf $HOME/.story/story/data
@@ -247,11 +155,3 @@ rm -rf $HOME/.story/geth/iliad/geth/chaindata
 curl https://server-5.itrocket.net/testnet/story/story_2024-09-02_211110_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
 sudo systemctl restart story geth
-
-# Tampilkan port yang digunakan oleh geth dan story
-echo -e "\n\e[42mPorts in use by geth and story:\e[0m\n"
-if [ -n "$NEW_PREFIX" ]; then
-    sudo lsof -i -P -n | grep -E "(${NEW_PREFIX}45|${NEW_PREFIX}46|${NEW_PREFIX}303|${NEW_PREFIX}51|${NEW_PREFIX}656|${NEW_PREFIX}657|${NEW_PREFIX}658|${NEW_PREFIX}17)"
-else
-    sudo lsof -i -P -n | grep -E "(8545|8546|30303|8551|26656|26657|26658|1317)"
-fi

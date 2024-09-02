@@ -6,7 +6,7 @@ echo "██╔════╝██╔══██╗╚══██╔══�
 echo "██║     ███████║   ██║   ███████╗██╔████╔██║██║██║     █████╗  "
 echo "██║     ██╔══██║   ██║   ╚════██║██║╚██╔╝██║██║██║     ██╔══╝  "
 echo "╚██████╗██║  ██║   ██║   ███████║██║ ╚═╝ ██║██║███████╗███████╗"
-echo " ╚═════╝╚═╝  ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝"
+echo " ╚═════╝╚═╝  ╚══════╝╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝"
 echo "                                                               "
 
 # Stop and disable existing services, remove old files
@@ -118,18 +118,21 @@ story init --moniker "$MONIKER" --network iliad
 echo -e "\n\e[42mStory client initialized.\e[0m\n"
 
 # Update Story config
-sed -i -e "s/^laddr = .*/laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
-sed -i -e "s/^rpc.laddr = .*/rpc.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}657\"/" $HOME/.story/story/config/config.toml
-sed -i -e "s/^grpc.address = .*/grpc.address = \"0.0.0.0:${NEW_PREFIX}658\"/" $HOME/.story/story/config/config.toml
-sed -i -e "s/^api.address = .*/api.address = \"0.0.0.0:${NEW_PREFIX}17\"/" $HOME/.story/story/config/config.toml
-# Tambahkan baris berikut untuk mengubah port 18656
-sed -i -e "s/^p2p.laddr = .*/p2p.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
+if [ -n "$NEW_PREFIX" ]; then
+    sed -i -e "s/^laddr = .*/laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
+    sed -i -e "s/^rpc.laddr = .*/rpc.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}657\"/" $HOME/.story/story/config/config.toml
+    sed -i -e "s/^grpc.address = .*/grpc.address = \"0.0.0.0:${NEW_PREFIX}658\"/" $HOME/.story/story/config/config.toml
+    sed -i -e "s/^api.address = .*/api.address = \"0.0.0.0:${NEW_PREFIX}17\"/" $HOME/.story/story/config/config.toml
+    sed -i -e "s/^p2p.laddr = .*/p2p.laddr = \"tcp:\/\/0.0.0.0:${NEW_PREFIX}656\"/" $HOME/.story/story/config/config.toml
+fi
 
 # Update Geth config
-sed -i -e "s/^HTTPPort = .*/HTTPPort = ${NEW_PREFIX}45/" $HOME/.story/geth/config.toml
-sed -i -e "s/^WSPort = .*/WSPort = ${NEW_PREFIX}46/" $HOME/.story/geth/config.toml
-sed -i -e "s/^Port = .*/Port = ${NEW_PREFIX}303/" $HOME/.story/geth/config.toml
-sed -i -e "s/^AuthRPCPort = .*/AuthRPCPort = ${NEW_PREFIX}51/" $HOME/.story/geth/config.toml
+if [ -n "$NEW_PREFIX" ]; then
+    sed -i -e "s/^HTTPPort = .*/HTTPPort = ${NEW_PREFIX}45/" $HOME/.story/geth/config.toml
+    sed -i -e "s/^WSPort = .*/WSPort = ${NEW_PREFIX}46/" $HOME/.story/geth/config.toml
+    sed -i -e "s/^Port = .*/Port = ${NEW_PREFIX}303/" $HOME/.story/geth/config.toml
+    sed -i -e "s/^AuthRPCPort = .*/AuthRPCPort = ${NEW_PREFIX}51/" $HOME/.story/geth/config.toml
+fi
 
 # Create Geth service file
 echo -e "\n\e[42mCreating Geth service file...\e[0m\n"
@@ -243,4 +246,12 @@ rm -rf $HOME/.story/story/data
 rm -rf $HOME/.story/geth/iliad/geth/chaindata
 curl https://server-5.itrocket.net/testnet/story/story_2024-09-02_211110_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
-sudo systemctl restart story geth && sudo journalctl -u story -f
+sudo systemctl restart story geth
+
+# Tampilkan port yang digunakan oleh geth dan story
+echo -e "\n\e[42mPorts in use by geth and story:\e[0m\n"
+if [ -n "$NEW_PREFIX" ]; then
+    sudo lsof -i -P -n | grep -E "(${NEW_PREFIX}45|${NEW_PREFIX}46|${NEW_PREFIX}303|${NEW_PREFIX}51|${NEW_PREFIX}656|${NEW_PREFIX}657|${NEW_PREFIX}658|${NEW_PREFIX}17)"
+else
+    sudo lsof -i -P -n | grep -E "(8545|8546|30303|8551|26656|26657|26658|1317)"
+fi

@@ -24,7 +24,7 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 
 ## Auto Installation
 ```
-wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh
+rm -f installstory.sh && wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh
 ```
 ```
 dos2unix installstory.sh && chmod +x installstory.sh && ./installstory.sh && rm -rf installstory.sh

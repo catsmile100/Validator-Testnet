@@ -52,7 +52,7 @@ wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/te
 wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
 
 # Download snapshot
-curl https://server-5.itrocket.net/testnet/story/story_2024-08-30_153938_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
+curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 
 # Create JWT secret file
 mkdir -p $HOME/.story/geth/iliad/geth

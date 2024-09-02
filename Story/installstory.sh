@@ -104,15 +104,11 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-# Set custom ports in configuration files
-sed -i.bak -e "s%:1317%:${PORT_PREFIX}17%g;
-s%:8080%:${PORT_PREFIX}80%g;
-s%:9090%:${PORT_PREFIX}90%g;
-s%:9091%:${PORT_PREFIX}91%g;
-s%:8545%:${PORT_PREFIX}45%g;
-s%:8546%:${PORT_PREFIX}46%g;
-s%:6065%:${PORT_PREFIX}65%g" $HOME/.story/story/config/app.toml
+# Set custom ports in story.toml
+sed -i.bak -e "s%engine-endpoint = \"http://localhost:8551\"%engine-endpoint = \"http://localhost:${PORT_PREFIX}51\"%g;
+s%api-address = \"127.0.0.1:1717\"%api-address = \"127.0.0.1:${PORT_PREFIX}17\"%g" $HOME/.story/story/config/story.toml
 
+# Set custom ports in config.toml file
 sed -i.bak -e "s%:26658%:${PORT_PREFIX}658%g;
 s%:26657%:${PORT_PREFIX}657%g;
 s%:6060%:${PORT_PREFIX}660%g;

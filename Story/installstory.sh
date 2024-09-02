@@ -21,6 +21,11 @@ if ! command -v lz4 &> /dev/null; then
     sudo snap install lz4
 fi
 
+# Install dos2unix if not already installed
+if ! command -v dos2unix &> /dev/null; then
+    sudo apt install dos2unix -y
+fi
+
 # Install Go
 cd $HOME
 GO_VER="1.20.3"

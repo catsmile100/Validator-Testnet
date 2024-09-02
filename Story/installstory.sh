@@ -6,15 +6,17 @@ echo "██╔════╝██╔══██╗╚══██╔══�
 echo "██║     ███████║   ██║   ███████╗██╔████╔██║██║██║     █████╗  "
 echo "██║     ██╔══██║   ██║   ╚════██║██║╚██╔╝██║██║██║     ██╔══╝  "
 echo "╚██████╗██║  ██║   ██║   ███████║██║ ╚═╝ ██║██║███████╗███████╗"
-echo " ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚══════╝"
+echo " ╚═════╝╚═╝  ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝"
 echo "                                                               "
 
 # Stop and disable existing services, remove old files
-sudo systemctl stop story geth
-sudo systemctl disable story geth
-sudo rm /etc/systemd/system/story.service /etc/systemd/system/geth.service
-rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
-sudo systemctl daemon-reload
+{
+    sudo systemctl stop story geth
+    sudo systemctl disable story geth
+    sudo rm /etc/systemd/system/story.service /etc/systemd/system/geth.service
+    rm -rf $HOME/.story $HOME/bin $HOME/go/bin/story $HOME/go/bin/geth
+    sudo systemctl daemon-reload
+} &>/dev/null
 
 # Input moniker
 read -p "Enter your moniker: " MONIKER
@@ -109,7 +111,7 @@ echo -e "\n\e[42mDownloading genesis...\e[0m\n"
 wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
 
 # Stop Story service
-sudo systemctl stop story
+sudo systemctl stop story 2>/dev/null
 
 # Backup and remove old data
 cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup

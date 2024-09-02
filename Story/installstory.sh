@@ -127,10 +127,31 @@ sudo systemctl restart geth
 sudo systemctl enable story
 sudo systemctl restart story 
 
+# Function to check and add UFW rule
+add_ufw_rule() {
+    local port=$1
+    local comment=$2
+    if ! sudo ufw status | grep -q "$port"; then
+        sudo ufw allow $port comment "$comment"
+    else
+        echo "Rule for port $port already exists, skipping."
+    fi
+}
+
 # Configure firewall rules
-sudo ufw allow 30303/tcp comment geth_p2p_port
-sudo ufw allow ${PORT_PREFIX}656/tcp comment story_p2p_port
-sudo ufw allow ${PORT_PREFIX}657/tcp comment story_node_status_port
+add_ufw_rule 30303/tcp "geth_p2p_port"
+add_ufw_rule ${PORT_PREFIX}656/tcp "story_p2p_port"
+add_ufw_rule ${PORT_PREFIX}657/tcp "story_node_status_port"
+
+# Wait for geth to start
+echo "Waiting for geth to start..."
+sleep 10
+
+# Check if geth is running
+if ! sudo systemctl is-active --quiet geth; then
+    echo "Geth service is not running. Exiting."
+    exit 1
+fi
 
 # Add enode peer
 geth --exec 'admin.addPeer("enode://499267340ce74fd95b56181b219fc1097b138156c961a38cce608cbd8e22dc02214644997a6fc84c49023e59a70d52ee10c3c40007bd1ccca06267d708fc4aeb@story-testnet-enode.itrocket.net:30301")' attach $HOME/.story/geth/iliad/geth.ipc

@@ -34,7 +34,7 @@ check_port() {
 }
 
 # Default ports
-DEFAULT_PORTS=(26656 26657 26658 1317 8545 8546)
+DEFAULT_PORTS=(26656 26657 26658 1317 8545 8546 30303)
 
 # Check if default ports are available
 echo -e "\n\e[42mChecking default ports...\e[0m\n"
@@ -110,7 +110,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46
+ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port ${NEW_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port ${NEW_PREFIX}46 --port ${NEW_PREFIX}03
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -185,6 +185,7 @@ if [ -n "$NEW_PREFIX" ]; then
     sudo ufw allow ${NEW_PREFIX}657/tcp comment story_rpc_port
     sudo ufw allow ${NEW_PREFIX}658/tcp comment story_grpc_port
     sudo ufw allow ${NEW_PREFIX}17/tcp comment story_api_port
+    sudo ufw allow ${NEW_PREFIX}303/tcp comment geth_p2p_port
 else
     sudo ufw allow 8545/tcp comment geth_http_port
     sudo ufw allow 8546/tcp comment geth_ws_port
@@ -192,6 +193,7 @@ else
     sudo ufw allow 26657/tcp comment story_rpc_port
     sudo ufw allow 26658/tcp comment story_grpc_port
     sudo ufw allow 1317/tcp comment story_api_port
+    sudo ufw allow 30303/tcp comment geth_p2p_port
 fi
 
 # Allow SSH port through firewall

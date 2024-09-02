@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Banner ASCII
+echo " ██████╗ █████╗ ████████╗███████╗███╗   ███╗██╗██╗     ███████╗"
+echo "██╔════╝██╔══██╗╚══██╔══╝██╔════╝████╗ ████║██║██║     ██╔════╝"
+echo "██║     ███████║   ██║   ███████╗██╔████╔██║██║██║     █████╗  "
+echo "██║     ██╔══██║   ██║   ╚════██║██║╚██╔╝██║██║██║     ██╔══╝  "
+echo "╚██████╗██║  ██║   ██║   ███████║██║ ╚═╝ ██║██║███████╗███████╗"
+echo " ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝╚══════╝╚══════╝"
+echo "                                                               "
+
 # Input moniker
 read -p "Enter your moniker: " MONIKER
 
@@ -62,6 +71,7 @@ wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/te
 wget -O $HOME/.story/story/config/genesis.json https://server-5.itrocket.net/testnet/story/genesis.json
 
 # Download snapshot
+echo -e "\n\e[42mDownloading and extracting snapshot...\e[0m\n"
 curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story
 
 # Create JWT secret file
@@ -141,7 +151,6 @@ sudo ufw allow ${NEW_PREFIX}56/tcp
 sudo ufw allow ${NEW_PREFIX}57/tcp
 sudo ufw allow ${NEW_PREFIX}58/tcp
 sudo ufw allow ${NEW_PREFIX}17/tcp
-sudo ufw allow 22
 
 # Enable firewall
 sudo ufw enable
@@ -154,6 +163,7 @@ cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_val
 rm -rf $HOME/.story/story/data
 
 # Download and extract new snapshot
+echo -e "\n\e[42mDownloading and extracting new snapshot...\e[0m\n"
 curl -o - -L https://story.snapshot.stavr.tech/story-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ --strip-components 3
 
 # Restore priv_validator_state.json

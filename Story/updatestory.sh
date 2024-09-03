@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # Install necessary packages
-sudo apt-get install wget lz4 aria2 pv -y
+sudo apt-get install wget dos2unix lz4 aria2 pv -y
+
+# Removed old files
+rm -rf Geth_snapshot.lz4 Story_snapshot.lz4
 
 # Stop geth and story services
 sudo systemctl stop geth

@@ -1,16 +1,39 @@
 #!/bin/bash
 
-# Install necessary packages
-sudo apt-get install wget dos2unix lz4 aria2 pv -y
+# List of required packages
+packages=("wget" "dos2unix" "lz4" "aria2" "pv")
 
-# Removed old files
-rm -rf Geth_snapshot.lz4 Story_snapshot.lz4
+# Function to check and install packages
+install_if_not_present() {
+    for package in "${packages[@]}"; do
+        if ! dpkg -l | grep -q "^ii  $package "; then
+            echo "Installing $package..."
+            sudo apt-get install -y $package
+        else
+            echo "$package is already installed."
+        fi
+    done
+}
+
+# Call the function to check and install packages
+install_if_not_present
+
+# Remove old files if they exist
+echo "Removing old files if they exist..."
+[ -f Geth_snapshot.lz4 ] && rm -f Geth_snapshot.lz4
+[ -f Story_snapshot.lz4 ] && rm -f Story_snapshot.lz4
 
 # Stop geth and story services
-sudo systemctl stop geth
+echo "Stopping geth and story services..."
+if systemctl list-units --full -all | grep -q "geth.service"; then
+    sudo systemctl stop geth
+else
+    sudo systemctl stop story-geth
+fi
 sudo systemctl stop story
 
 # Sleep for 5 seconds
+echo "Waiting for 5 seconds..."
 sleep 5
 
 # Download Geth snapshot
@@ -66,5 +89,12 @@ mv $HOME/.story/priv_validator_state.json.backup $HOME/.story/story/data/priv_va
 sleep 5
 
 # Start geth and story services
-sudo systemctl start geth
+echo "Starting geth and story services..."
+if systemctl list-units --full -all | grep -q "geth.service"; then
+    sudo systemctl start geth
+else
+    sudo systemctl start story-geth
+fi
 sudo systemctl start story
+
+echo "Done."

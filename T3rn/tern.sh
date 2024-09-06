@@ -77,6 +77,5 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Check service status
-echo "Executor service started. Checking status..."
-sudo systemctl status executor
+echo "Executor started. Displaying logs..."
+journalctl -u executor -f

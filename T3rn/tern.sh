@@ -1,41 +1,82 @@
 #!/bin/bash
 
+# Prompt for PRIVATE_KEY_LOCAL input
+read -p "Enter your PRIVATE_KEY_LOCAL: " PRIVATE_KEY_LOCAL
+
 # Update and install dependencies
-echo "Updating and installing dependencies..."
+echo "Updating package list and upgrading installed packages..."
 sudo apt update && sudo apt upgrade -y
+if [ $? -ne 0 ]; then
+  echo "Error updating and upgrading packages. Exiting..."
+  exit 1
+fi
+
+echo "Installing required packages..."
 sudo apt install curl wget tar build-essential jq unzip -y
-sleep 2
+if [ $? -ne 0 ]; then
+  echo "Error installing packages. Exiting..."
+  exit 1
+fi
 
-# Download Executor Binary
-echo "Downloading Executor Binary..."
-cd $HOME
-wget https://github.com/t3rn/executor-release/releases/download/v0.1.0/executor-linux-amd64.tar.gz
-sleep 2
-
-# Verify the download (optional)
-# echo "Verifying download..."
-# wget https://github.com/t3rn/executor-release/releases/download/v0.1.0/sha256sum.txt
-# sha256sum -c sha256sum.txt
+# Download the executor binary
+echo "Downloading executor..."
+wget https://github.com/t3rn/executor-release/releases/download/v0.20.0/executor-linux-v0.20.0.tar.gz
+if [ $? -ne 0 ]; then
+  echo "Error downloading executor. Exiting..."
+  exit 1
+fi
 
 # Extract the binary
-echo "Extracting Executor Binary..."
-tar -xvf executor-linux-amd64.tar.gz
-cd executor-linux-amd64
-sleep 2
+echo "Extracting executor..."
+tar -xvf executor-linux-v0.20.0.tar.gz
+if [ $? -ne 0 ]; then
+  echo "Error extracting executor. Exiting..."
+  exit 1
+fi
 
-# Set environment variables
-echo "Setting environment variables..."
-export NODE_ENV=testnet
-export LOG_LEVEL=debug
-export LOG_PRETTY=false
-export PRIVATE_KEY_LOCAL=dead93c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56dbeef
-export ENABLED_NETWORKS='arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn'
+# Create a systemd service file
+echo "Creating executor service file..."
+sudo tee /etc/systemd/system/executor.service > /dev/null <<EOF
+[Unit]
+Description=Executor Service
+After=network.target
 
-# Optional: Set custom RPC URLs
-# export EXECUTOR_ARBITRUM-SEPOLIA_RPC_URLS='url1,url2'
+[Service]
+User=root
+WorkingDirectory=$(pwd)/executor/executor
+Environment="NODE_ENV=testnet"
+Environment="LOG_LEVEL=debug"
+Environment="LOG_PRETTY=false"
+Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
+Environment="ENABLED_NETWORKS=arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn"
+ExecStart=$(pwd)/executor/executor/bin/executor
+Restart=always
+RestartSec=3
 
-# Start the Executor
-echo "Starting the Executor..."
-./executor
+[Install]
+WantedBy=multi-user.target
+EOF
 
-echo "Executor setup complete."
+# Reload systemd and start the service
+echo "Reloading systemd daemon and enabling executor service..."
+sudo systemctl daemon-reload
+if [ $? -ne 0 ]; then
+  echo "Error reloading systemd daemon. Exiting..."
+  exit 1
+fi
+
+sudo systemctl enable executor
+if [ $? -ne 0 ]; then
+  echo "Error enabling executor service. Exiting..."
+  exit 1
+fi
+
+sudo systemctl start executor
+if [ $? -ne 0 ]; then
+  echo "Error starting executor service. Exiting..."
+  exit 1
+fi
+
+# Check service status
+echo "Executor service started. Checking status..."
+sudo systemctl status executor

@@ -8,8 +8,8 @@ sudo rm -f /etc/systemd/system/executor.service
 sudo systemctl daemon-reload
 sudo systemctl reset-failed
 
-# Stop and remove old Docker containers
-echo "Stopping and removing old Docker containers..."
+# Stop and remove old Docker container named executor
+echo "Stopping and removing old Docker container named executor..."
 docker ps -a -q --filter "name=executor" | grep -q . && docker stop executor && docker rm executor
 
 # Update and install dependencies
@@ -43,7 +43,7 @@ rm -rf $EXECUTOR_FILE
 
 # Move the binary to a standard location
 sudo mkdir -p /usr/local/bin/executor
-sudo mv executor/* /usr/local/bin/executor/
+sudo mv executor-linux-$LATEST_VERSION/* /usr/local/bin/executor/
 
 echo "Binary downloaded and extracted successfully."
 echo

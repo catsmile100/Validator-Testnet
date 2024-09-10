@@ -18,9 +18,17 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Get the latest version of the executor
+echo "Fetching the latest executor version..."
+LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | jq -r .tag_name)
+if [ -z "$LATEST_VERSION" ]; then
+  echo "Error fetching the latest version. Exiting..."
+  exit 1
+fi
+
 # Download the executor binary
-echo "Downloading executor..."
-wget https://github.com/t3rn/executor-release/releases/download/v0.20.0/executor-linux-v0.20.0.tar.gz
+echo "Downloading executor version $LATEST_VERSION..."
+wget https://github.com/t3rn/executor-release/releases/download/$LATEST_VERSION/executor-linux-$LATEST_VERSION.tar.gz
 if [ $? -ne 0 ]; then
   echo "Error downloading executor. Exiting..."
   exit 1
@@ -28,7 +36,7 @@ fi
 
 # Extract the binary
 echo "Extracting executor..."
-tar -xvf executor-linux-v0.20.0.tar.gz
+tar -xvf executor-linux-$LATEST_VERSION.tar.gz
 if [ $? -ne 0 ]; then
   echo "Error extracting executor. Exiting..."
   exit 1

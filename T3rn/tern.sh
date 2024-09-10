@@ -1,12 +1,29 @@
 #!/bin/bash
 
+# Stop and remove old executor service
+echo "Stopping and removing old executor service..."
+sudo systemctl stop executor
+sudo systemctl disable executor
+sudo rm -f /etc/systemd/system/executor.service
+sudo systemctl daemon-reload
+sudo systemctl reset-failed
+
+# Update and install dependencies
 cd $HOME
 rm -rf executor; rm -f t3rn.sh
 sudo apt -q update
 sudo apt -qy upgrade
 
-EXECUTOR_URL="https://github.com/t3rn/executor-release/releases/download/v0.21.0/executor-linux-v0.21.0.tar.gz"
-EXECUTOR_FILE="executor-linux-v0.21.0.tar.gz"
+# Get the latest version of the executor
+echo "Fetching the latest executor version..."
+LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | jq -r .tag_name)
+if [ -z "$LATEST_VERSION" ]; then
+  echo "Error fetching the latest version. Exiting..."
+  exit 1
+fi
+
+EXECUTOR_URL="https://github.com/t3rn/executor-release/releases/download/$LATEST_VERSION/executor-linux-$LATEST_VERSION.tar.gz"
+EXECUTOR_FILE="executor-linux-$LATEST_VERSION.tar.gz"
 
 echo "Downloading the Executor binary from $EXECUTOR_URL..."
 curl -L -o $EXECUTOR_FILE $EXECUTOR_URL
@@ -19,7 +36,7 @@ fi
 echo "Extracting the binary..."
 tar -xzvf $EXECUTOR_FILE
 rm -rf $EXECUTOR_FILE
-cd executor/executor/bin
+sudo mv executor-linux-$LATEST_VERSION /usr/local/bin/executor
 
 echo "Binary downloaded and extracted successfully."
 echo
@@ -57,10 +74,10 @@ fi
 echo
 
 # Create a systemd service file
-echo "Creating t3rn-executor service file..."
-sudo tee /etc/systemd/system/t3rn-executor.service > /dev/null <<EOF
+echo "Creating executor service file..."
+sudo tee /etc/systemd/system/executor.service > /dev/null <<EOF
 [Unit]
-Description=t3rn Executor Service
+Description=Executor Service
 After=network.target
 
 [Service]
@@ -80,24 +97,24 @@ WantedBy=multi-user.target
 EOF
 
 # Reload systemd and start the service
-echo "Reloading systemd daemon and enabling t3rn-executor service..."
+echo "Reloading systemd daemon and enabling executor service..."
 sudo systemctl daemon-reload
 if [ $? -ne 0 ]; then
   echo "Error reloading systemd daemon. Exiting..."
   exit 1
 fi
 
-sudo systemctl enable t3rn-executor
+sudo systemctl enable executor
 if [ $? -ne 0 ]; then
-  echo "Error enabling t3rn-executor service. Exiting..."
+  echo "Error enabling executor service. Exiting..."
   exit 1
 fi
 
-sudo systemctl start t3rn-executor
+sudo systemctl start executor
 if [ $? -ne 0 ]; then
-  echo "Error starting t3rn-executor service. Exiting..."
+  echo "Error starting executor service. Exiting..."
   exit 1
 fi
 
-echo "t3rn-executor service started. Displaying logs..."
-journalctl -u t3rn-executor -f
+echo "Executor service started. Displaying logs..."
+journalctl -u executor -f

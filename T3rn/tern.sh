@@ -1,85 +1,76 @@
 #!/bin/bash
 
-# Prompt for PRIVATE_KEY_LOCAL input
-read -p "Enter your PRIVATE_KEY_LOCAL: " PRIVATE_KEY_LOCAL
+cd $HOME
+rm -rf executor; rm -f t3rn.sh
+sudo apt -q update
+sudo apt -qy upgrade
 
-# Update and install dependencies
-echo "Updating package list and upgrading installed packages..."
-sudo apt update && sudo apt upgrade -y
+EXECUTOR_URL="https://github.com/t3rn/executor-release/releases/download/v0.21.0/executor-linux-v0.21.0.tar.gz"
+EXECUTOR_FILE="executor-linux-v0.21.0.tar.gz"
+
+echo "Downloading the Executor binary from $EXECUTOR_URL..."
+curl -L -o $EXECUTOR_FILE $EXECUTOR_URL
+
 if [ $? -ne 0 ]; then
-  echo "Error updating and upgrading packages. Exiting..."
-  exit 1
+    echo "Failed to download the Executor binary. Please check your internet connection and try again."
+    exit 1
 fi
 
-echo "Installing required packages..."
-sudo apt install curl wget tar build-essential jq unzip -y
-if [ $? -ne 0 ]; then
-  echo "Error installing packages. Exiting..."
-  exit 1
+echo "Extracting the binary..."
+tar -xzvf $EXECUTOR_FILE
+rm -rf $EXECUTOR_FILE
+cd executor/executor/bin
+
+echo "Binary downloaded and extracted successfully."
+echo
+
+read -p "Enter your preferred Node Environment (e.g., testnet, mainnet): " NODE_ENV
+export NODE_ENV=${NODE_ENV:-testnet}
+echo "Node Environment set to: $NODE_ENV"
+echo
+
+export LOG_LEVEL=debug
+export LOG_PRETTY=false
+echo "Log settings configured: LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
+echo
+
+read -s -p "Enter your Private Key from Metamask: " PRIVATE_KEY_LOCAL
+export PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
+echo -e "\nPrivate key has been set."
+echo
+
+read -p "Enter the networks to operate on (comma-separated, e.g., arbitrum-sepolia,base-sepolia): " ENABLED_NETWORKS
+export ENABLED_NETWORKS=${ENABLED_NETWORKS:-arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn}
+echo "Enabled Networks set to: $ENABLED_NETWORKS"
+echo
+
+read -p "Would you like to set custom RPC URLs? (y/n): " SET_RPC
+if [ "$SET_RPC" == "y" ]; then
+  for NETWORK in $(echo $ENABLED_NETWORKS | tr "," "\n"); do
+    read -p "Enter the RPC URLs for $NETWORK (comma-separated): " RPC_URLS
+    export EXECUTOR_${NETWORK^^}_RPC_URLS=$RPC_URLS
+    echo "RPC URLs set for $NETWORK"
+  done
+else
+  echo "Skipping custom RPC URL setup. Default URLs will be used."
 fi
-
-# Remove old executor files and t3en.sh
-echo "Stopping and removing old executor files and t3en.sh..."
-sudo systemctl stop executor
-sudo systemctl disable executor
-sudo rm -rf /etc/systemd/system/executor.service
-sudo rm -rf /usr/local/bin/executor
-sudo rm -rf /usr/local/bin/executor-linux-*
-sudo rm -rf $(pwd)/executor
-sudo rm -rf $(pwd)/executor-linux-*
-sudo rm -f $(pwd)/t3en.sh
-sudo rm -f $(pwd)/executor-linux-*.tar.gz*
-if [ $? -ne 0 ]; then
-  echo "Error removing old executor files. Exiting..."
-  exit 1
-fi
-
-# Get the latest version of the executor
-echo "Fetching the latest executor version..."
-LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | jq -r .tag_name)
-if [ -z "$LATEST_VERSION" ]; then
-  echo "Error fetching the latest version. Exiting..."
-  exit 1
-fi
-
-# Download the executor binary
-echo "Downloading executor version $LATEST_VERSION..."
-wget https://github.com/t3rn/executor-release/releases/download/$LATEST_VERSION/executor-linux-$LATEST_VERSION.tar.gz
-if [ $? -ne 0 ]; then
-  echo "Error downloading executor. Exiting..."
-  exit 1
-fi
-
-# Extract the binary
-echo "Extracting executor..."
-tar -xvf executor-linux-$LATEST_VERSION.tar.gz
-if [ $? -ne 0 ]; then
-  echo "Error extracting executor. Exiting..."
-  exit 1
-fi
-
-# Move the binary to a standard location
-sudo mv executor-linux-$LATEST_VERSION /usr/local/bin/executor
-
-# Display the version of the executor
-echo "Executor version installed:"
-/usr/local/bin/executor/bin/executor --version
+echo
 
 # Create a systemd service file
-echo "Creating executor service file..."
-sudo tee /etc/systemd/system/executor.service > /dev/null <<EOF
+echo "Creating t3rn-executor service file..."
+sudo tee /etc/systemd/system/t3rn-executor.service > /dev/null <<EOF
 [Unit]
-Description=Executor Service
+Description=t3rn Executor Service
 After=network.target
 
 [Service]
 User=root
 WorkingDirectory=/usr/local/bin/executor
-Environment="NODE_ENV=testnet"
-Environment="LOG_LEVEL=debug"
-Environment="LOG_PRETTY=false"
+Environment="NODE_ENV=$NODE_ENV"
+Environment="LOG_LEVEL=$LOG_LEVEL"
+Environment="LOG_PRETTY=$LOG_PRETTY"
 Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
-Environment="ENABLED_NETWORKS=arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn"
+Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
 ExecStart=/usr/local/bin/executor/bin/executor
 Restart=always
 RestartSec=3
@@ -89,24 +80,24 @@ WantedBy=multi-user.target
 EOF
 
 # Reload systemd and start the service
-echo "Reloading systemd daemon and enabling executor service..."
+echo "Reloading systemd daemon and enabling t3rn-executor service..."
 sudo systemctl daemon-reload
 if [ $? -ne 0 ]; then
   echo "Error reloading systemd daemon. Exiting..."
   exit 1
 fi
 
-sudo systemctl enable executor
+sudo systemctl enable t3rn-executor
 if [ $? -ne 0 ]; then
-  echo "Error enabling executor service. Exiting..."
+  echo "Error enabling t3rn-executor service. Exiting..."
   exit 1
 fi
 
-sudo systemctl start executor
+sudo systemctl start t3rn-executor
 if [ $? -ne 0 ]; then
-  echo "Error starting executor service. Exiting..."
+  echo "Error starting t3rn-executor service. Exiting..."
   exit 1
 fi
 
-echo "Executor started. Displaying logs..."
-journalctl -u executor -f
+echo "t3rn-executor service started. Displaying logs..."
+journalctl -u t3rn-executor -f

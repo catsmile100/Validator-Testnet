@@ -18,6 +18,18 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Remove old executor files
+echo "Stopping and removing old executor files..."
+sudo systemctl stop executor
+sudo systemctl disable executor
+sudo rm -rf /etc/systemd/system/executor.service
+sudo rm -rf /usr/local/bin/executor
+sudo rm -rf $(pwd)/executor
+if [ $? -ne 0 ]; then
+  echo "Error removing old executor files. Exiting..."
+  exit 1
+fi
+
 # Get the latest version of the executor
 echo "Fetching the latest executor version..."
 LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | jq -r .tag_name)
@@ -42,6 +54,13 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Move the binary to a standard location
+sudo mv executor-linux-$LATEST_VERSION /usr/local/bin/executor
+
+# Display the version of the executor
+echo "Executor version installed:"
+/usr/local/bin/executor/bin/executor --version
+
 # Create a systemd service file
 echo "Creating executor service file..."
 sudo tee /etc/systemd/system/executor.service > /dev/null <<EOF
@@ -51,13 +70,13 @@ After=network.target
 
 [Service]
 User=root
-WorkingDirectory=$(pwd)/executor/executor
+WorkingDirectory=/usr/local/bin/executor
 Environment="NODE_ENV=testnet"
 Environment="LOG_LEVEL=debug"
 Environment="LOG_PRETTY=false"
 Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
 Environment="ENABLED_NETWORKS=arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn"
-ExecStart=$(pwd)/executor/executor/bin/executor
+ExecStart=/usr/local/bin/executor/bin/executor
 Restart=always
 RestartSec=3
 

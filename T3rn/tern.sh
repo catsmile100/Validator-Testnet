@@ -18,13 +18,17 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Remove old executor files
-echo "Stopping and removing old executor files..."
+# Remove old executor files and t3en.sh
+echo "Stopping and removing old executor files and t3en.sh..."
 sudo systemctl stop executor
 sudo systemctl disable executor
 sudo rm -rf /etc/systemd/system/executor.service
 sudo rm -rf /usr/local/bin/executor
+sudo rm -rf /usr/local/bin/executor-linux-*
 sudo rm -rf $(pwd)/executor
+sudo rm -rf $(pwd)/executor-linux-*
+sudo rm -f $(pwd)/t3en.sh
+sudo rm -f $(pwd)/executor-linux-*.tar.gz*
 if [ $? -ne 0 ]; then
   echo "Error removing old executor files. Exiting..."
   exit 1

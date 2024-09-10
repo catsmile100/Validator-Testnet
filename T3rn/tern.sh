@@ -41,16 +41,17 @@ echo "Extracting the binary..."
 tar -xzvf $EXECUTOR_FILE
 rm -rf $EXECUTOR_FILE
 
-# Move the binary to a standard location
+# Move the extracted contents to a standard location
 sudo rm -rf /usr/local/bin/executor
 sudo mkdir -p /usr/local/bin/executor
-sudo mv executor-linux-$LATEST_VERSION/* /usr/local/bin/executor/
+sudo mv executor/* /usr/local/bin/executor/ 2>/dev/null
+sudo mv artifacts /usr/local/bin/executor/ 2>/dev/null
 
-echo "Binary downloaded and extracted successfully."
-echo
+echo "Contents moved to /usr/local/bin/executor"
+ls -la /usr/local/bin/executor
 
 # Find the executor binary
-EXECUTOR_PATH=$(find /usr/local/bin/executor -type f -executable)
+EXECUTOR_PATH=$(find /usr/local/bin/executor -type f -executable | grep -v '\.so')
 
 if [ -z "$EXECUTOR_PATH" ]; then
     echo "Error: Executable file not found in /usr/local/bin/executor. Exiting..."

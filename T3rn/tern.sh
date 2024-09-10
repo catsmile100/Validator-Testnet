@@ -36,7 +36,10 @@ fi
 echo "Extracting the binary..."
 tar -xzvf $EXECUTOR_FILE
 rm -rf $EXECUTOR_FILE
-sudo mv executor-linux-$LATEST_VERSION /usr/local/bin/executor
+
+# Move the binary to a standard location
+sudo mkdir -p /usr/local/bin/executor
+sudo mv executor-linux-$LATEST_VERSION/* /usr/local/bin/executor/
 
 echo "Binary downloaded and extracted successfully."
 echo

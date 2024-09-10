@@ -42,11 +42,22 @@ tar -xzvf $EXECUTOR_FILE
 rm -rf $EXECUTOR_FILE
 
 # Move the binary to a standard location
+sudo rm -rf /usr/local/bin/executor
 sudo mkdir -p /usr/local/bin/executor
 sudo mv executor-linux-$LATEST_VERSION/* /usr/local/bin/executor/
 
 echo "Binary downloaded and extracted successfully."
 echo
+
+# Find the executor binary
+EXECUTOR_PATH=$(find /usr/local/bin/executor -type f -executable)
+
+if [ -z "$EXECUTOR_PATH" ]; then
+    echo "Error: Executable file not found in /usr/local/bin/executor. Exiting..."
+    exit 1
+fi
+
+echo "Executor file found at: $EXECUTOR_PATH"
 
 # Set default Node Environment
 export NODE_ENV=testnet
@@ -68,19 +79,6 @@ export ENABLED_NETWORKS="arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn"
 echo "Enabled Networks set to: $ENABLED_NETWORKS"
 echo
 
-# Default to not setting custom RPC URLs
-SET_RPC="n"
-if [ "$SET_RPC" == "y" ]; then
-  for NETWORK in $(echo $ENABLED_NETWORKS | tr "," "\n"); do
-    read -p "Enter the RPC URLs for $NETWORK (comma-separated): " RPC_URLS
-    export EXECUTOR_${NETWORK^^}_RPC_URLS=$RPC_URLS
-    echo "RPC URLs set for $NETWORK"
-  done
-else
-  echo "Skipping custom RPC URL setup. Default URLs will be used."
-fi
-echo
-
 # Create a systemd service file
 echo "Creating executor service file..."
 sudo tee /etc/systemd/system/executor.service > /dev/null <<EOF
@@ -96,7 +94,7 @@ Environment="LOG_LEVEL=$LOG_LEVEL"
 Environment="LOG_PRETTY=$LOG_PRETTY"
 Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
 Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
-ExecStart=/usr/local/bin/executor/executor
+ExecStart=$EXECUTOR_PATH
 Restart=always
 RestartSec=3
 

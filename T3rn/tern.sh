@@ -44,8 +44,8 @@ sudo mv executor-linux-$LATEST_VERSION/* /usr/local/bin/executor/
 echo "Binary downloaded and extracted successfully."
 echo
 
-read -p "Enter your preferred Node Environment (e.g., testnet, mainnet): " NODE_ENV
-export NODE_ENV=${NODE_ENV:-testnet}
+# Set default Node Environment
+export NODE_ENV=testnet
 echo "Node Environment set to: $NODE_ENV"
 echo
 
@@ -59,12 +59,13 @@ export PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
 echo -e "\nPrivate key has been set."
 echo
 
-read -p "Enter the networks to operate on (comma-separated, e.g., arbitrum-sepolia,base-sepolia): " ENABLED_NETWORKS
-export ENABLED_NETWORKS=${ENABLED_NETWORKS:-arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn}
+# Set default enabled networks
+export ENABLED_NETWORKS="arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn"
 echo "Enabled Networks set to: $ENABLED_NETWORKS"
 echo
 
-read -p "Would you like to set custom RPC URLs? (y/n): " SET_RPC
+# Default to not setting custom RPC URLs
+SET_RPC="n"
 if [ "$SET_RPC" == "y" ]; then
   for NETWORK in $(echo $ENABLED_NETWORKS | tr "," "\n"); do
     read -p "Enter the RPC URLs for $NETWORK (comma-separated): " RPC_URLS
@@ -91,7 +92,7 @@ Environment="LOG_LEVEL=$LOG_LEVEL"
 Environment="LOG_PRETTY=$LOG_PRETTY"
 Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
 Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
-ExecStart=/usr/local/bin/executor/bin/executor
+ExecStart=/usr/local/bin/executor/executor
 Restart=always
 RestartSec=3
 

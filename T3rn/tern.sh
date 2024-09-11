@@ -47,7 +47,7 @@ download_and_extract_binary() {
 # Function to set environment variables
 set_environment_variables() {
     export NODE_ENV=testnet
-    export LOG_LEVEL=debug
+    export LOG_LEVEL=info
     export LOG_PRETTY=false
     echo "Environment variables set: NODE_ENV=$NODE_ENV, LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
 }
@@ -88,11 +88,11 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/root/executor/executor
-Environment=NODE_ENV=testnet
-Environment=LOG_LEVEL=debug
-Environment=LOG_PRETTY=false
-Environment=PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
-Environment=ENABLED_NETWORKS=$ENABLED_NETWORKS
+Environment="NODE_ENV=testnet"
+Environment="LOG_LEVEL=info"
+Environment="LOG_PRETTY=false"
+Environment="PRIVATE_KEY_LOCAL=0x$PRIVATE_KEY_LOCAL"
+Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
 ExecStart=/root/executor/executor/bin/executor
 Restart=always
 RestartSec=3

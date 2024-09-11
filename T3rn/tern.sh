@@ -2,6 +2,16 @@
 
 echo "Selamat datang di Setup t3rn Executor!"
 
+# Fungsi untuk menghentikan dan menghapus service lama
+remove_old_service() {
+    echo "Menghentikan dan menghapus service lama jika ada..."
+    sudo systemctl stop executor.service
+    sudo systemctl disable executor.service
+    sudo rm -f /etc/systemd/system/executor.service
+    sudo systemctl daemon-reload
+    echo "Service lama telah dihapus."
+}
+
 # Fungsi untuk update dan upgrade sistem
 update_system() {
     echo "Memperbarui dan meningkatkan sistem..."
@@ -107,6 +117,7 @@ display_log() {
 }
 
 # Menjalankan semua fungsi
+remove_old_service
 update_system
 download_and_extract_binary
 set_environment_variables

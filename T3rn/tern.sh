@@ -42,7 +42,7 @@ echo "Log settings configured: LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
 echo
 
 # Set Private Key
-read -s -p "Enter your Private Key from Metamask: " PRIVATE_KEY_LOCAL
+read -p "Enter your Private Key from Metamask: " PRIVATE_KEY_LOCAL
 # Hapus "0x" jika ada
 PRIVATE_KEY_LOCAL=${PRIVATE_KEY_LOCAL#0x}
 export PRIVATE_KEY_LOCAL

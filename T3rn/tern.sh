@@ -64,15 +64,6 @@ set_enabled_networks() {
     echo "Jaringan yang diaktifkan: $ENABLED_NETWORKS"
 }
 
-# Fungsi untuk mengatur jumlah transaksi acak
-set_transaction_amount() {
-    MIN_AMOUNT=0.01
-    MAX_AMOUNT=0.01111
-    TRANSACTION_AMOUNT=$(awk -v min=$MIN_AMOUNT -v max=$MAX_AMOUNT 'BEGIN{srand(); print min+rand()*(max-min)}')
-    export TRANSACTION_AMOUNT
-    echo "Jumlah transaksi diatur ke: $TRANSACTION_AMOUNT"
-}
-
 # Fungsi untuk membuat service systemd
 create_systemd_service() {
     SERVICE_FILE="/etc/systemd/system/executor.service"
@@ -89,7 +80,6 @@ Environment="LOG_LEVEL=debug"
 Environment="LOG_PRETTY=false"
 Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
 Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
-Environment="TRANSACTION_AMOUNT=$TRANSACTION_AMOUNT"
 ExecStart=/root/executor/executor/bin/executor
 Restart=always
 RestartSec=3
@@ -121,7 +111,6 @@ download_and_extract_binary
 set_environment_variables
 set_private_key
 set_enabled_networks
-set_transaction_amount
 create_systemd_service
 start_service
 display_log

@@ -59,7 +59,7 @@ set_private_key() {
 
 # Fungsi untuk mengatur jaringan yang diaktifkan
 set_enabled_networks() {
-    export ENABLED_NETWORKS='arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn'
+    export ENABLED_NETWORKS='arbitrum-sepolia,base-sepolia,blast-sepolia,optimism-sepolia,l1rn'
     echo "Jaringan yang diaktifkan: $ENABLED_NETWORKS"
 }
 

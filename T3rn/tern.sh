@@ -1,34 +1,18 @@
 #!/bin/bash
 
-# Stop and remove old executor service
-echo "Stopping and removing old executor service..."
-sudo systemctl stop executor
-sudo systemctl disable executor
-sudo rm -f /etc/systemd/system/executor.service
-sudo systemctl daemon-reload
-sudo systemctl reset-failed
+echo "Welcome to the t3rn Executor Setup!"
 
-# Stop and remove old Docker container named executor
-echo "Stopping and removing old Docker container named executor..."
-docker ps -a -q --filter "name=executor" | grep -q . && docker stop executor && docker rm executor
+# Update dan upgrade sistem
+echo "Updating and upgrading the system..."
+sudo apt update -q
+sudo apt upgrade -qy
 
-# Update and install dependencies
-cd $HOME
-rm -rf executor; rm -f t3rn.sh
-sudo apt -q update
-sudo apt -qy upgrade
+# Mendapatkan versi terbaru dari Executor
+LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | grep 'tag_name' | cut -d\" -f4)
+EXECUTOR_URL="https://github.com/t3rn/executor-release/releases/download/${LATEST_VERSION}/executor-linux-${LATEST_VERSION}.tar.gz"
+EXECUTOR_FILE="executor-linux-${LATEST_VERSION}.tar.gz"
 
-# Get the latest version of the executor
-echo "Fetching the latest executor version..."
-LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | jq -r .tag_name)
-if [ -z "$LATEST_VERSION" ]; then
-  echo "Error fetching the latest version. Exiting..."
-  exit 1
-fi
-
-EXECUTOR_URL="https://github.com/t3rn/executor-release/releases/download/$LATEST_VERSION/executor-linux-$LATEST_VERSION.tar.gz"
-EXECUTOR_FILE="executor-linux-$LATEST_VERSION.tar.gz"
-
+echo "Latest version detected: $LATEST_VERSION"
 echo "Downloading the Executor binary from $EXECUTOR_URL..."
 curl -L -o $EXECUTOR_FILE $EXECUTOR_URL
 
@@ -37,91 +21,76 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Extract the binary
 echo "Extracting the binary..."
 tar -xzvf $EXECUTOR_FILE
 rm -rf $EXECUTOR_FILE
+cd executor/executor/bin
 
-# Move the extracted contents to a standard location
-sudo rm -rf /usr/local/bin/executor
-sudo mkdir -p /usr/local/bin/executor
-sudo mv executor/* /usr/local/bin/executor/ 2>/dev/null
-sudo mv artifacts /usr/local/bin/executor/ 2>/dev/null
+echo "Binary downloaded and extracted successfully."
+echo
 
-echo "Contents moved to /usr/local/bin/executor"
-ls -la /usr/local/bin/executor
-
-# Find the executor binary
-EXECUTOR_PATH=$(find /usr/local/bin/executor -type f -executable | grep -v '\.so')
-
-if [ -z "$EXECUTOR_PATH" ]; then
-    echo "Error: Executable file not found in /usr/local/bin/executor. Exiting..."
-    exit 1
-fi
-
-echo "Executor file found at: $EXECUTOR_PATH"
-
-# Set default Node Environment
+# Set Node Environment
 export NODE_ENV=testnet
 echo "Node Environment set to: $NODE_ENV"
 echo
 
+# Set log settings
 export LOG_LEVEL=debug
 export LOG_PRETTY=false
 echo "Log settings configured: LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
 echo
 
+# Set Private Key
 read -s -p "Enter your Private Key from Metamask: " PRIVATE_KEY_LOCAL
-export PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
+# Hapus "0x" jika ada
+PRIVATE_KEY_LOCAL=${PRIVATE_KEY_LOCAL#0x}
+export PRIVATE_KEY_LOCAL
 echo -e "\nPrivate key has been set."
 echo
 
-# Set default enabled networks
-export ENABLED_NETWORKS="arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn"
+# Set enabled networks
+export ENABLED_NETWORKS='arbitrum-sepolia,base-sepolia,optimism-sepolia,l1rn'
 echo "Enabled Networks set to: $ENABLED_NETWORKS"
 echo
 
-# Create a systemd service file
-echo "Creating executor service file..."
-sudo tee /etc/systemd/system/executor.service > /dev/null <<EOF
+# Menambahkan pengaturan untuk jumlah (amount) acak dalam rentang 0.01 - 0.01111
+MIN_AMOUNT=0.01
+MAX_AMOUNT=0.01111
+TRANSACTION_AMOUNT=$(awk -v min=$MIN_AMOUNT -v max=$MAX_AMOUNT 'BEGIN{srand(); print min+rand()*(max-min)}')
+export TRANSACTION_AMOUNT
+echo "Transaction amount set to: $TRANSACTION_AMOUNT"
+echo
+
+# Membuat service systemd untuk executor
+SERVICE_FILE="/etc/systemd/system/executor.service"
+
+sudo bash -c "cat > $SERVICE_FILE" <<EOL
 [Unit]
-Description=Executor Service
+Description=t3rn Executor Service
 After=network.target
 
 [Service]
-User=root
-WorkingDirectory=/usr/local/bin/executor
-Environment="NODE_ENV=$NODE_ENV"
-Environment="LOG_LEVEL=$LOG_LEVEL"
-Environment="LOG_PRETTY=$LOG_PRETTY"
-Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
-Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
-ExecStart=$EXECUTOR_PATH
-Restart=always
-RestartSec=3
+Type=simple
+User=$USER
+WorkingDirectory=$HOME/executor/executor/bin
+Environment=NODE_ENV=$NODE_ENV
+Environment=LOG_LEVEL=$LOG_LEVEL
+Environment=LOG_PRETTY=$LOG_PRETTY
+Environment=PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
+Environment=ENABLED_NETWORKS=$ENABLED_NETWORKS
+Environment=TRANSACTION_AMOUNT=$TRANSACTION_AMOUNT
+ExecStart=$HOME/executor/executor/bin/executor
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-EOF
+EOL
 
-# Reload systemd and start the service
-echo "Reloading systemd daemon and enabling executor service..."
+# Reload systemd, enable and start the service
 sudo systemctl daemon-reload
-if [ $? -ne 0 ]; then
-  echo "Error reloading systemd daemon. Exiting..."
-  exit 1
-fi
-
 sudo systemctl enable executor
-if [ $? -ne 0 ]; then
-  echo "Error enabling executor service. Exiting..."
-  exit 1
-fi
-
 sudo systemctl start executor
-if [ $? -ne 0 ]; then
-  echo "Error starting executor service. Exiting..."
-  exit 1
-fi
 
-echo "Executor service started. Displaying logs..."
-journalctl -u executor -f
+echo "Setup complete! The Executor service has been created and started."
+echo "You can check the status of the service using: sudo systemctl status executor"

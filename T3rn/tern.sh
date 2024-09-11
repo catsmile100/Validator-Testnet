@@ -1,70 +1,73 @@
 #!/bin/bash
 
-echo "Selamat datang di Setup t3rn Executor!"
+# Remove the tern.sh file if it exists
+rm -rf tern.sh
 
-# Fungsi untuk menghentikan dan menghapus service lama
+echo "Welcome to the t3rn Executor Setup!"
+
+# Function to stop and remove the old service
 remove_old_service() {
-    echo "Menghentikan dan menghapus service lama jika ada..."
+    echo "Stopping and removing the old service if it exists..."
     sudo systemctl stop executor.service
     sudo systemctl disable executor.service
     sudo rm -f /etc/systemd/system/executor.service
     sudo systemctl daemon-reload
-    echo "Service lama telah dihapus."
+    echo "Old service has been removed."
 }
 
-# Fungsi untuk update dan upgrade sistem
+# Function to update and upgrade the system
 update_system() {
-    echo "Memperbarui dan meningkatkan sistem..."
+    echo "Updating and upgrading the system..."
     sudo apt update -q && sudo apt upgrade -qy
 }
 
-# Fungsi untuk mengunduh dan mengekstrak binary
+# Function to download and extract the binary
 download_and_extract_binary() {
     LATEST_VERSION=$(curl -s https://api.github.com/repos/t3rn/executor-release/releases/latest | grep 'tag_name' | cut -d\" -f4)
     EXECUTOR_URL="https://github.com/t3rn/executor-release/releases/download/${LATEST_VERSION}/executor-linux-${LATEST_VERSION}.tar.gz"
     EXECUTOR_FILE="executor-linux-${LATEST_VERSION}.tar.gz"
 
-    echo "Versi terbaru terdeteksi: $LATEST_VERSION"
-    echo "Mengunduh binary Executor dari $EXECUTOR_URL..."
+    echo "Latest version detected: $LATEST_VERSION"
+    echo "Downloading Executor binary from $EXECUTOR_URL..."
     curl -L -o $EXECUTOR_FILE $EXECUTOR_URL
 
     if [ $? -ne 0 ]; then
-        echo "Gagal mengunduh binary Executor. Silakan periksa koneksi internet Anda dan coba lagi."
+        echo "Failed to download Executor binary. Please check your internet connection and try again."
         exit 1
     fi
 
-    echo "Mengekstrak binary..."
+    echo "Extracting binary..."
     tar -xzvf $EXECUTOR_FILE
     rm -rf $EXECUTOR_FILE
     cd executor/executor/bin
 
-    echo "Binary berhasil diunduh dan diekstrak."
+    echo "Binary successfully downloaded and extracted."
 }
 
-# Fungsi untuk mengatur variabel lingkungan
+# Function to set environment variables
 set_environment_variables() {
     export NODE_ENV=testnet
     export LOG_LEVEL=debug
     export LOG_PRETTY=false
-    echo "Variabel lingkungan diatur: NODE_ENV=$NODE_ENV, LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
+    echo "Environment variables set: NODE_ENV=$NODE_ENV, LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
 }
 
-# Fungsi untuk mengatur private key
+# Function to set the private key
 set_private_key() {
-    read -p "Masukkan Private Key dari Metamask Anda (dengan atau tanpa awalan 0x): " PRIVATE_KEY_LOCAL
-    # Pastikan private key selalu dimulai dengan 0x
+    read -p "Enter your Metamask Private Key (with or without 0x prefix): " PRIVATE_KEY_LOCAL
+    # Ensure the private key always starts with 0x
     PRIVATE_KEY_LOCAL=$(echo $PRIVATE_KEY_LOCAL | sed 's/^0x//;s/^/0x/')
     export PRIVATE_KEY_LOCAL
-    echo "Private key telah diatur."
+    echo "Private key has been set."
 }
 
-# Fungsi untuk mengatur jaringan yang diaktifkan
+# Function to set enabled networks
 set_enabled_networks() {
     export ENABLED_NETWORKS='arbitrum-sepolia,base-sepolia,blast-sepolia,optimism-sepolia,l1rn'
-    echo "Jaringan yang diaktifkan: $ENABLED_NETWORKS"
+    echo "Enabled networks: $ENABLED_NETWORKS"
 }
 
-# Fungsi untuk membuat service systemd
+# Function to create systemd service
 create_systemd_service() {
     SERVICE_FILE="/etc/systemd/system/executor.service"
     sudo bash -c "cat > $SERVICE_FILE" <<EOL
@@ -89,22 +92,22 @@ WantedBy=multi-user.target
 EOL
 }
 
-# Fungsi untuk memulai service
+# Function to start the service
 start_service() {
     sudo systemctl daemon-reload
     sudo systemctl enable executor.service
     sudo systemctl start executor.service
-    echo "Setup selesai! Service Executor telah dibuat dan dijalankan."
-    echo "Anda dapat memeriksa status service menggunakan: sudo systemctl status executor.service"
+    echo "Setup complete! Executor service has been created and started."
+    echo "You can check the service status using: sudo systemctl status executor.service"
 }
 
-# Fungsi untuk menampilkan log
+# Function to display logs
 display_log() {
-    echo "Menampilkan log dari service executor:"
+    echo "Displaying logs from the executor service:"
     sudo journalctl -u executor.service -f
 }
 
-# Menjalankan semua fungsi
+# Running all functions
 remove_old_service
 update_system
 download_and_extract_binary

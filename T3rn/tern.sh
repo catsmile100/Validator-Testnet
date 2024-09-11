@@ -52,13 +52,23 @@ set_environment_variables() {
     echo "Environment variables set: NODE_ENV=$NODE_ENV, LOG_LEVEL=$LOG_LEVEL, LOG_PRETTY=$LOG_PRETTY"
 }
 
-# Function to set the private key
+# Function to set private key
 set_private_key() {
-    read -p "Enter your Metamask Private Key (with or without 0x prefix): " PRIVATE_KEY_LOCAL
-    # Ensure the private key always starts with 0x
-    PRIVATE_KEY_LOCAL=$(echo $PRIVATE_KEY_LOCAL | sed 's/^0x//;s/^/0x/')
-    export PRIVATE_KEY_LOCAL
-    echo "Private key has been set."
+    while true; do
+        read -p "Enter your Metamask Private Key (with or without 0x prefix): " PRIVATE_KEY_LOCAL
+        
+        # Remove 0x prefix if present
+        PRIVATE_KEY_LOCAL=${PRIVATE_KEY_LOCAL#0x}
+        
+        # Validate private key length
+        if [ ${#PRIVATE_KEY_LOCAL} -eq 64 ]; then
+            export PRIVATE_KEY_LOCAL
+            echo "Private key has been set."
+            break
+        else
+            echo "Invalid private key. It must be 64 characters long (without 0x prefix)."
+        fi
+    done
 }
 
 # Function to set enabled networks
@@ -78,11 +88,11 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/root/executor/executor
-Environment="NODE_ENV=testnet"
-Environment="LOG_LEVEL=debug"
-Environment="LOG_PRETTY=false"
-Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
-Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
+Environment=NODE_ENV=testnet
+Environment=LOG_LEVEL=debug
+Environment=LOG_PRETTY=false
+Environment=PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
+Environment=ENABLED_NETWORKS=$ENABLED_NETWORKS
 ExecStart=/root/executor/executor/bin/executor
 Restart=always
 RestartSec=3

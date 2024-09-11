@@ -3,7 +3,7 @@
 # Remove the tern.sh file if it exists
 rm -rf tern.sh
 
-echo "Welcome to the t3rn Executor Setup!"
+echo "T3rn Executor!"
 
 # Function to stop and remove the old service
 remove_old_service() {

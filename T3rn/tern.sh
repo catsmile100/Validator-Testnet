@@ -89,8 +89,13 @@ EOL
 
 # Reload systemd, enable and start the service
 sudo systemctl daemon-reload
-sudo systemctl enable executor
-sudo systemctl start executor
+sudo systemctl enable executor.service
+sudo systemctl start executor.service
 
 echo "Setup complete! The Executor service has been created and started."
-echo "You can check the status of the service using: sudo systemctl status executor"
+echo "You can check the status of the service using: sudo systemctl status executor.service"
+echo
+
+# Menampilkan log dari service executor
+echo "Displaying the log of the executor service:"
+sudo journalctl -u executor.service -f

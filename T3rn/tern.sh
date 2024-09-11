@@ -51,8 +51,9 @@ set_environment_variables() {
 
 # Fungsi untuk mengatur private key
 set_private_key() {
-    read -p "Masukkan Private Key dari Metamask Anda: " PRIVATE_KEY_LOCAL
-    PRIVATE_KEY_LOCAL=${PRIVATE_KEY_LOCAL#0x}
+    read -p "Masukkan Private Key dari Metamask Anda (dengan atau tanpa awalan 0x): " PRIVATE_KEY_LOCAL
+    # Pastikan private key selalu dimulai dengan 0x
+    PRIVATE_KEY_LOCAL=$(echo $PRIVATE_KEY_LOCAL | sed 's/^0x//;s/^/0x/')
     export PRIVATE_KEY_LOCAL
     echo "Private key telah diatur."
 }
@@ -77,24 +78,21 @@ create_systemd_service() {
     SERVICE_FILE="/etc/systemd/system/executor.service"
     sudo bash -c "cat > $SERVICE_FILE" <<EOL
 [Unit]
-Description=t3rn Executor Service
+Description=Executor Service
 After=network.target
 
 [Service]
-Type=simple
-User=$USER
-WorkingDirectory=$HOME/executor/executor/bin
-Environment=NODE_ENV=$NODE_ENV
-Environment=LOG_LEVEL=$LOG_LEVEL
-Environment=LOG_PRETTY=$LOG_PRETTY
-Environment=PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL
-Environment=ENABLED_NETWORKS=$ENABLED_NETWORKS
-Environment=TRANSACTION_AMOUNT=$TRANSACTION_AMOUNT
-ExecStart=$HOME/executor/executor/bin/executor
+User=root
+WorkingDirectory=/root/executor/executor
+Environment="NODE_ENV=testnet"
+Environment="LOG_LEVEL=debug"
+Environment="LOG_PRETTY=false"
+Environment="PRIVATE_KEY_LOCAL=$PRIVATE_KEY_LOCAL"
+Environment="ENABLED_NETWORKS=$ENABLED_NETWORKS"
+Environment="TRANSACTION_AMOUNT=$TRANSACTION_AMOUNT"
+ExecStart=/root/executor/executor/bin/executor
 Restart=always
-RestartSec=30
-StartLimitInterval=15min
-StartLimitBurst=10
+RestartSec=3
 
 [Install]
 WantedBy=multi-user.target

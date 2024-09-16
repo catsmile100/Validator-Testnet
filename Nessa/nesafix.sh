@@ -179,10 +179,42 @@ check_final_status() {
     fi
 }
 
+# Function to check if Docker is installed
+check_docker_installed() {
+    if command -v docker &> /dev/null; then
+        print_green "Docker is already installed."
+        return 0
+    else
+        print_green "Docker is not installed."
+        return 1
+    fi
+}
+
+# Function to install Docker
+install_docker() {
+    print_green "Installing Docker..."
+    sudo apt-get install ca-certificates curl -y
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+}
+
 # Main function
 main() {
     print_green "Starting NESA node check and repair..."
     get_node_info
+
+    # Check if Docker is installed, if not install it
+    if ! check_docker_installed; then
+        install_docker
+    fi
 
     # Check and fix IPFS connection
     for i in {1..3}; do

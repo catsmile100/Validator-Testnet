@@ -179,68 +179,6 @@ check_final_status() {
     fi
 }
 
-# Function to check if Docker is installed
-check_docker_installed() {
-    if command -v docker &> /dev/null; then
-        print_green "Docker is already installed."
-        return 0
-    else
-        print_green "Docker is not installed."
-        return 1
-    fi
-}
-
-# Function to install Docker
-install_docker() {
-    print_green "Installing Docker..."
-    sudo apt-get install ca-certificates curl -y
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-}
-
-# Function to reinstall NESA node
-reinstall_nesa_node() {
-    print_green "Reinstalling NESA node..."
-
-    # Backup NESA data
-    BACKUP_DIR="$HOME/nesa_backup_$(date +%Y%m%d_%H%M%S)"
-    mkdir -p "$BACKUP_DIR"
-    cp -r $HOME/.nesa "$BACKUP_DIR"
-    print_green "Backup completed. Backup directory: $BACKUP_DIR"
-
-    # Remove Docker and NESA data
-    docker-compose -f ~/.nesa/docker/compose.yml -f ~/.nesa/docker/compose.community.yml down
-    docker system prune -a --volumes -f
-    sudo apt-get remove --purge docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-    sudo apt-get autoremove -y
-    sudo rm -rf /var/lib/docker
-    sudo rm -rf /etc/docker
-    sudo rm -rf /var/run/docker.sock
-
-    # Install Docker if not already installed
-    if ! check_docker_installed; then
-        install_docker
-    else
-        print_green "Docker is already installed. Skipping installation."
-    fi
-
-    # Install NESA Miner
-    bash <(curl -s https://raw.githubusercontent.com/nesaorg/bootstrap/master/bootstrap.sh)
-
-    # Restore NESA data
-    cp -r "$BACKUP_DIR/.nesa" "$HOME/"
-
-    print_green "NESA node reinstallation completed."
-}
-
 # Main function
 main() {
     print_green "Starting NESA node check and repair..."
@@ -322,13 +260,7 @@ main() {
                 fi
             done
             if ! check_node_status; then
-                print_green "Failed to fix node after full reset. Do you want to reinstall NESA node? (yes/no)"
-                read answer
-                if [ "$answer" == "yes" ]; then
-                    reinstall_nesa_node
-                else
-                    print_green "Reinstallation aborted. Please check manually."
-                fi
+                print_green "Failed to fix node after full reset. Please check manually."
                 return 1
             fi
         fi

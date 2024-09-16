@@ -27,16 +27,16 @@ check_node_status() {
 # Function to check IPFS connection
 check_ipfs_connection() {
     print_green "Checking IPFS connection..."
-    if docker exec ipfs_node ipfs id >/dev/null 2>&1; then
+    if ipfs id >/dev/null 2>&1; then
         print_green "IPFS connected."
-        PEER_COUNT=$(docker exec ipfs_node ipfs swarm peers | wc -l)
+        PEER_COUNT=$(ipfs swarm peers | wc -l)
         print_green "Connected peers: $PEER_COUNT"
-        PEER_ID=$(docker exec ipfs_node ipfs id -f="<id>")
+        PEER_ID=$(ipfs id -f="<id>")
         print_green "Peer ID: $PEER_ID"
-        BANDWIDTH_INFO=$(docker exec ipfs_node ipfs stats bw)
+        BANDWIDTH_INFO=$(ipfs stats bw)
         print_green "Bandwidth info:"
         print_green "$BANDWIDTH_INFO"
-        REPO_SIZE=$(docker exec ipfs_node ipfs repo stat | grep "RepoSize" | awk '{print $2}')
+        REPO_SIZE=$(ipfs repo stat | grep "RepoSize" | awk '{print $2}')
         print_green "Hosted data size: $REPO_SIZE"
         return 0
     else
@@ -48,51 +48,40 @@ check_ipfs_connection() {
 # Function to fix IPFS
 fix_ipfs() {
     print_green "Fixing IPFS..."
-    cd ~/.nesa/docker
-
-    # Stop and remove existing IPFS container if it exists
-    if docker ps -a | grep -q ipfs_node; then
-        print_green "Stopping and removing existing IPFS container..."
-        docker stop ipfs_node
-        docker rm ipfs_node
-    fi
-
-    # Remove existing network if it exists
-    if docker network ls | grep -q docker_nesa; then
-        print_green "Stopping all containers connected to docker_nesa network..."
-        docker network inspect docker_nesa -f '{{range .Containers}}{{.Name}} {{end}}' | xargs -r docker stop
-        print_green "Removing existing docker_nesa network..."
-        docker network rm docker_nesa || true
-    fi
-
-    docker compose -f compose.community.yml down ipfs
-
-    # Remove volumes only if they exist
-    if docker volume ls | grep -q docker_ipfs-data; then
-        docker volume rm docker_ipfs-data
-    fi
-    if docker volume ls | grep -q docker_ipfs-staging; then
-        docker volume rm docker_ipfs-staging
-    fi
-
-    docker compose -f compose.community.yml up -d ipfs
-    sleep 30
     
+    # Stop IPFS daemon if running
+    if pgrep -x "ipfs" > /dev/null; then
+        print_green "Stopping IPFS daemon..."
+        killall ipfs
+    fi
+
+    # Start IPFS daemon
+    print_green "Starting IPFS daemon..."
+    ipfs daemon --enable-pubsub-experiment &
+    sleep 30
+
+    # Configure CORS for IPFS
     print_green "Configuring CORS for IPFS..."
-    docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://$IP_ADDRESS:5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
-    docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST", "GET"]'
+    ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://$IP_ADDRESS:5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
+    ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST", "GET"]'
     
     print_green "Enabling Experimental Pubsub..."
-    docker exec ipfs_node ipfs config --json Experimental.Pubsub true
+    ipfs config --json Experimental.Pubsub true
     
     print_green "Adding bootstrap nodes..."
-    docker exec ipfs_node ipfs bootstrap add --default
-    docker exec ipfs_node ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN
-    docker exec ipfs_node ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa
-    docker exec ipfs_node ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
+    ipfs bootstrap add --default
+    ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN
+    ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa
+    ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
     
-    print_green "Restarting IPFS node..."
-    docker restart ipfs_node
+    print_green "Adding peers..."
+    ipfs swarm connect /ip4/104.131.131.82/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
+    ipfs swarm connect /ip4/104.236.179.241/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
+    ipfs swarm connect /ip4/128.199.219.111/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
+    
+    print_green "Restarting IPFS daemon..."
+    killall ipfs
+    ipfs daemon --enable-pubsub-experiment &
     sleep 30
 }
 
@@ -142,13 +131,13 @@ full_reset() {
 
     # Run IPFS daemon with --enable-pubsub-experiment
     print_green "Enabling pubsub experiment for IPFS..."
-    docker exec ipfs_node ipfs daemon --enable-pubsub-experiment &
+    ipfs daemon --enable-pubsub-experiment &
     sleep 30
 
     # Configure CORS for IPFS
     print_green "Configuring CORS for IPFS..."
-    docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://$IP_ADDRESS:5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
-    docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST", "GET"]'
+    ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://$IP_ADDRESS:5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
+    ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST", "GET"]'
 
     # Open necessary ports
     print_green "Opening necessary ports..."
@@ -179,42 +168,10 @@ check_final_status() {
     fi
 }
 
-# Function to check if Docker is installed
-check_docker_installed() {
-    if command -v docker &> /dev/null; then
-        print_green "Docker is already installed."
-        return 0
-    else
-        print_green "Docker is not installed."
-        return 1
-    fi
-}
-
-# Function to install Docker
-install_docker() {
-    print_green "Installing Docker..."
-    sudo apt-get install ca-certificates curl -y
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-}
-
 # Main function
 main() {
     print_green "Starting NESA node check and repair..."
     get_node_info
-
-    # Check if Docker is installed, if not install it
-    if ! check_docker_installed; then
-        install_docker
-    fi
 
     # Check and fix IPFS connection
     for i in {1..3}; do

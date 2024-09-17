@@ -20,6 +20,35 @@ check_ipfs_status() {
     fi
 }
 
+restart_orchestrator() {
+    print_green "Restarting Orchestrator..."
+    docker stop orchestrator 2>/dev/null
+    docker rm orchestrator 2>/dev/null
+    docker run -d --name orchestrator --network docker_nesa -v $HOME/.nesa:/root/.nesa ghcr.io/nesaorg/orchestrator:devnet-latest
+    sleep 20
+    print_green "Orchestrator restarted."
+}
+
+check_node_status() {
+    if ! docker ps | grep -q orchestrator; then
+        print_green "Node status: Down (Orchestrator container is not running)"
+        restart_orchestrator
+        return 1
+    fi
+
+    local api_status=$(curl -s http://localhost:31333/status | jq -r '.status' 2>/dev/null)
+    local log_status=$(docker logs orchestrator --tail 100 2>/dev/null | grep "Node status" | tail -n 1)
+
+    if [[ "$api_status" == "UP" ]] || [[ $log_status == *"UP"* ]]; then
+        print_green "Node status: Up"
+        return 0
+    else
+        print_green "Node status: Down or Unknown"
+        restart_orchestrator
+        return 1
+    fi
+}
+
 fix_ipfs() {
     print_green "Starting IPFS fix process..."
     
@@ -52,19 +81,6 @@ fix_ipfs() {
     sudo ufw allow 4001
 }
 
-# Function to check node status
-check_node_status() {
-    local status=$(curl -s http://localhost:31333/status | jq -r '.status')
-    print_green "Node status from API: $status"  # Debug output
-    if [ "$status" != "UP" ]; then
-        print_green "Node status: Down"
-        return 1
-    else
-        print_green "Node status: Up"
-        return 0
-    fi
-}
-
 main() {
     print_green "Starting IPFS node check..."
     get_node_info
@@ -81,11 +97,11 @@ main() {
         fi
     fi
 
+    print_green "Checking node status..."
+    check_node_status
+
     print_green "IPFS WebUI: http://$IP_ADDRESS:5001/webui"
     print_green "Node status: https://node.nesa.ai/nodes/$NODE_ID"
-
-    # Check and display node status
-    check_node_status
 }
 
 main

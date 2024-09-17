@@ -55,6 +55,7 @@ fix_ipfs() {
 # Function to check node status
 check_node_status() {
     local status=$(curl -s http://localhost:31333/status | jq -r '.status')
+    print_green "Node status from API: $status"  # Debug output
     if [ "$status" != "UP" ]; then
         print_green "Node status: Down"
         return 1

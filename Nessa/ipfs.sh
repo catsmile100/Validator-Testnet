@@ -20,6 +20,28 @@ check_ipfs_connection() {
     fi
 }
 
+check_port_4001() {
+    if lsof -i :4001 > /dev/null 2>&1; then
+        PROCESS=$(lsof -i :4001 | tail -n 1 | awk '{print $1}')
+        PID=$(lsof -i :4001 | tail -n 1 | awk '{print $2}')
+        print_green "Port 4001 is in use by process $PROCESS (PID: $PID)"
+        return 1
+    else
+        print_green "Port 4001 is available"
+        return 0
+    fi
+}
+
+check_docker_status() {
+    if docker ps | grep -q "ipfs"; then
+        print_green "IPFS container is running"
+        return 0
+    else
+        print_green "IPFS container is not running"
+        return 1
+    fi
+}
+
 stop_port_4001() {
     print_green "Stopping process using port 4001..."
     sudo lsof -ti:4001 | xargs -r sudo kill -9
@@ -46,25 +68,33 @@ fix_ipfs() {
 }
 
 main() {
-    print_green "Starting IPFS node check..."
+    print_green "Starting comprehensive IPFS node check..."
     get_node_info
 
-    if check_ipfs_connection; then
-        print_green "IPFS is already connected and working properly."
-        print_green "No repairs needed."
+    print_green "Checking IPFS connection..."
+    check_ipfs_connection
+    
+    print_green "Checking port 4001..."
+    check_port_4001
+    
+    print_green "Checking Docker status..."
+    check_docker_status
+
+    if check_ipfs_connection && check_docker_status && ! check_port_4001; then
+        print_green "IPFS is already connected and working properly. No repairs needed."
     else
-        print_green "IPFS is not connected. Starting repair process..."
+        print_green "Issues detected. Starting repair process..."
         for i in {1..3}; do
             print_green "Attempt $i: Fixing IPFS..."
             fix_ipfs
             sleep 30
-            if check_ipfs_connection; then
+            if check_ipfs_connection && check_docker_status && ! check_port_4001; then
                 print_green "IPFS has been successfully repaired and is now connected."
                 break
             fi
         done
         
-        if ! check_ipfs_connection; then
+        if ! check_ipfs_connection || ! check_docker_status || check_port_4001; then
             print_green "Failed to fix IPFS after 3 attempts. Please check manually."
             print_green "Please check the IPFS WebUI at:"
             print_green "http://$IP_ADDRESS:5001/webui"

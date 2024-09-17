@@ -50,6 +50,7 @@ fix_ipfs() {
     # Stop and remove IPFS containers and volumes
     cd ~/.nesa/docker
     docker compose -f compose.community.yml down ipfs
+    docker rm -f ipfs_node 2>/dev/null
     docker volume rm docker_ipfs-data docker_ipfs-staging
 
     # Increase UDP buffer size if needed

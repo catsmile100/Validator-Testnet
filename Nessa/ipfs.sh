@@ -20,12 +20,21 @@ check_ipfs_status() {
     fi
 }
 
+stop_port_4001() {
+    print_green "Stopping process using port 4001..."
+    sudo lsof -ti:4001 | xargs -r sudo kill -9
+    sleep 5
+}
+
 fix_ipfs() {
     print_green "Starting IPFS fix process..."
     
     print_green "Stopping and removing existing IPFS container..."
     docker stop ipfs_node 2>/dev/null
     docker rm ipfs_node 2>/dev/null
+
+    print_green "Stopping process using port 4001..."
+    stop_port_4001
 
     print_green "Cleaning up IPFS volumes..."
     cd ~/.nesa/docker
@@ -34,6 +43,12 @@ fix_ipfs() {
 
     print_green "Starting IPFS container..."
     docker compose -f compose.community.yml up -d ipfs
+    sleep 30
+
+    if ! docker ps | grep -q ipfs_node; then
+        print_green "Failed to start IPFS container. Please check manually."
+        return 1
+    fi
 
     print_green "Configuring CORS for IPFS..."
     docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://'$IP_ADDRESS':5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'

@@ -55,10 +55,22 @@ fix_ipfs() {
         killall ipfs
     fi
 
+    # Ensure port 5001 is free
+    if lsof -i:5001 >/dev/null 2>&1; then
+        print_green "Port 5001 is in use. Freeing the port..."
+        fuser -k 5001/tcp
+    fi
+
     # Start IPFS daemon
     print_green "Starting IPFS daemon..."
     ipfs daemon --enable-pubsub-experiment &
     sleep 30
+
+    # Ensure IPFS is running in online mode
+    if ! ipfs swarm peers >/dev/null 2>&1; then
+        print_green "IPFS daemon is not running in online mode. Please check manually."
+        return 1
+    fi
 
     # Configure CORS for IPFS
     print_green "Configuring CORS for IPFS..."
@@ -154,7 +166,6 @@ open_ports() {
     sudo ufw allow 31333/tcp
     sudo ufw allow 4001/tcp
     sudo ufw allow 5001/tcp
-    sudo ufw allow 8080/tcp
     sudo ufw reload
 }
 

@@ -7,20 +7,25 @@ print_green() {
 get_node_info() {
     NODE_ID=$(cat $HOME/.nesa/identity/node_id.id)
     IP_ADDRESS=$(curl -s ifconfig.me)
+    print_green "Node ID and IP information retrieved successfully"
 }
 
 check_ipfs_status() {
     if docker ps | grep -q ipfs_node; then
+        print_green "IPFS is running."
         return 0
     else
+        print_green "IPFS is not running."
         return 1
     fi
 }
 
 fix_ipfs() {
+    print_green "Starting IPFS fix process..."
+    
     print_green "Stopping and removing existing IPFS container..."
-    docker stop ipfs_node
-    docker rm ipfs_node
+    docker stop ipfs_node 2>/dev/null
+    docker rm ipfs_node 2>/dev/null
 
     print_green "Cleaning up IPFS volumes..."
     cd ~/.nesa/docker
@@ -48,13 +53,19 @@ fix_ipfs() {
 }
 
 main() {
+    print_green "Starting IPFS node check..."
     get_node_info
 
     if check_ipfs_status; then
-        print_green "IPFS is running. No fixes needed."
+        print_green "IPFS is already running. No fixes needed."
     else
         print_green "IPFS is not running. Starting fix process..."
         fix_ipfs
+        if check_ipfs_status; then
+            print_green "IPFS has been successfully started."
+        else
+            print_green "Failed to start IPFS. Please check manually."
+        fi
     fi
 
     print_green "IPFS WebUI: http://$IP_ADDRESS:5001/webui"

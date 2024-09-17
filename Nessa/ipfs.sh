@@ -49,6 +49,14 @@ check_node_status() {
     fi
 }
 
+add_ipfs_peers() {
+    print_green "Adding IPFS peers..."
+    docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY
+    docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t
+    docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV
+    print_green "IPFS peers added."
+}
+
 fix_ipfs() {
     print_green "Starting IPFS fix process..."
     
@@ -79,6 +87,8 @@ fix_ipfs() {
     print_green "Opening firewall ports..."
     sudo ufw allow 5001
     sudo ufw allow 4001
+
+    add_ipfs_peers
 }
 
 main() {
@@ -87,6 +97,7 @@ main() {
 
     if check_ipfs_status; then
         print_green "IPFS is already running. No fixes needed."
+        add_ipfs_peers
     else
         print_green "IPFS is not running. Starting fix process..."
         fix_ipfs
@@ -98,7 +109,12 @@ main() {
     fi
 
     print_green "Checking node status..."
-    check_node_status
+    if ! check_node_status; then
+        print_green "Waiting for 1 minute before rechecking node status..."
+        sleep 60
+        print_green "Rechecking node status..."
+        check_node_status
+    fi
 
     print_green "IPFS WebUI: http://$IP_ADDRESS:5001/webui"
     print_green "Node status: https://node.nesa.ai/nodes/$NODE_ID"

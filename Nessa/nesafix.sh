@@ -15,10 +15,10 @@ get_node_info() {
 # Function to increase UDP buffer size
 increase_udp_buffer_size() {
     print_green "Increasing UDP buffer size..."
-    sudo sysctl -w net.core.rmem_max=2500000
-    sudo sysctl -w net.core.rmem_default=2500000
-    sudo sysctl -w net.core.wmem_max=2500000
-    sudo sysctl -w net.core.wmem_default=2500000
+    echo "net.core.rmem_max=2500000" | sudo tee -a /etc/sysctl.conf
+    echo "net.core.rmem_default=2500000" | sudo tee -a /etc/sysctl.conf
+    echo "net.core.wmem_max=2500000" | sudo tee -a /etc/sysctl.conf
+    echo "net.core.wmem_default=2500000" | sudo tee -a /etc/sysctl.conf
     sudo sysctl -p
 }
 
@@ -73,7 +73,7 @@ fix_ipfs() {
     ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
     
     print_green "Adding peers..."
-    ipfs swarm connect /ip4/104.131.131.82/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
+    ipfs swarm connect /ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
     ipfs swarm connect /ip4/104.236.179.241/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
     ipfs swarm connect /ip4/128.199.219.111/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
     
@@ -105,6 +105,9 @@ main() {
     
     if ! check_ipfs_connection; then
         print_green "Failed to fix IPFS after 3 attempts. Please check manually."
+        print_green "Node ID: $NODE_ID"
+        print_green "Node status link: https://node.nesa.ai/nodes/$NODE_ID"
+        print_green "❌ Node status: Down"
         return 1
     fi
     
@@ -112,6 +115,9 @@ main() {
     print_green "Please check the IPFS WebUI at:"
     print_green "http://$IP_ADDRESS:5001/webui"
     print_green "Make sure the reported status matches what you see on the dashboard."
+    print_green "Node ID: $NODE_ID"
+    print_green "Node status link: https://node.nesa.ai/nodes/$NODE_ID"
+    print_green "✅ Node status: Up"
 }
 
 # Run main function

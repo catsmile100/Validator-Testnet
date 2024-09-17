@@ -12,16 +12,6 @@ get_node_info() {
     print_green "Node ID and IP information retrieved successfully"
 }
 
-# Function to increase UDP buffer size
-increase_udp_buffer_size() {
-    print_green "Increasing UDP buffer size..."
-    echo "net.core.rmem_max=2500000" | sudo tee -a /etc/sysctl.conf
-    echo "net.core.rmem_default=2500000" | sudo tee -a /etc/sysctl.conf
-    echo "net.core.wmem_max=2500000" | sudo tee -a /etc/sysctl.conf
-    echo "net.core.wmem_default=2500000" | sudo tee -a /etc/sysctl.conf
-    sudo sysctl -p
-}
-
 # Function to check IPFS connection
 check_ipfs_connection() {
     print_green "Checking IPFS connection..."
@@ -70,7 +60,7 @@ fix_ipfs() {
     ipfs bootstrap add --default
     ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN
     ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa
-    ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
+    ipfs bootstrap add /dnsaddr.bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
     
     print_green "Adding peers..."
     ipfs swarm connect /ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
@@ -88,36 +78,33 @@ main() {
     print_green "Starting IPFS node check and repair..."
     get_node_info
 
-    # Increase UDP buffer size
-    increase_udp_buffer_size
-
     # Check and fix IPFS connection
-    for i in {1..3}; do
-        if check_ipfs_connection; then
-            print_green "IPFS is connected and working properly."
-            break
-        else
+    if check_ipfs_connection; then
+        print_green "IPFS is already connected and working properly."
+        print_green "Node ID: $NODE_ID"
+        print_green "✅ IPFS status: Connected"
+    else
+        for i in {1..3}; do
             print_green "Attempt $i: IPFS is not connected. Attempting to fix IPFS..."
             fix_ipfs
             sleep 30
+            if check_ipfs_connection; then
+                print_green "IPFS is connected and working properly."
+                print_green "Node ID: $NODE_ID"
+                print_green "✅ IPFS status: Connected"
+                break
+            fi
+        done
+        
+        if ! check_ipfs_connection; then
+            print_green "Failed to fix IPFS after 3 attempts. Please check manually."
+            print_green "Node ID: $NODE_ID"
+            print_green "❌ IPFS status: Disconnected"
         fi
-    done
-    
-    if ! check_ipfs_connection; then
-        print_green "Failed to fix IPFS after 3 attempts. Please check manually."
-        print_green "Node ID: $NODE_ID"
-        print_green "Node status link: https://node.nesa.ai/nodes/$NODE_ID"
-        print_green "❌ Node status: Down"
-        return 1
     fi
-    
-    print_green "✅ Repairs completed. IPFS is running well."
-    print_green "Please check the IPFS WebUI at:"
+
+    print_green "And check the IPFS WebUI at:"
     print_green "http://$IP_ADDRESS:5001/webui"
-    print_green "Make sure the reported status matches what you see on the dashboard."
-    print_green "Node ID: $NODE_ID"
-    print_green "Node status link: https://node.nesa.ai/nodes/$NODE_ID"
-    print_green "✅ Node status: Up"
 }
 
 # Run main function

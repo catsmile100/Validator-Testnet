@@ -27,7 +27,7 @@ check_node_status() {
 # Function to check IPFS connection
 check_ipfs_connection() {
     print_green "Checking IPFS connection..."
-    if ipfs id >/dev/null 2>&1; then
+    if ipfs swarm peers >/dev/null 2>&1; then
         print_green "IPFS connected."
         PEER_COUNT=$(ipfs swarm peers | wc -l)
         print_green "Connected peers: $PEER_COUNT"

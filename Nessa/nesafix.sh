@@ -1,130 +1,121 @@
 #!/bin/bash
 
-# Function to print message in green color
 print_green() {
     echo -e "\e[32m$1\e[0m"
 }
 
-# Function to get Node ID and IP
 get_node_info() {
     NODE_ID=$(cat $HOME/.nesa/identity/node_id.id)
     IP_ADDRESS=$(curl -s ifconfig.me)
     print_green "Node ID and IP information retrieved successfully"
 }
 
-# Function to increase UDP buffer size
-increase_udp_buffer_size() {
-    print_green "Increasing UDP buffer size..."
-    echo "net.core.rmem_max=2500000" | sudo tee -a /etc/sysctl.conf
-    echo "net.core.rmem_default=2500000" | sudo tee -a /etc/sysctl.conf
-    echo "net.core.wmem_max=2500000" | sudo tee -a /etc/sysctl.conf
-    echo "net.core.wmem_default=2500000" | sudo tee -a /etc/sysctl.conf
-    sudo sysctl -p
-}
-
-# Function to check IPFS connection
-check_ipfs_connection() {
-    print_green "Checking IPFS connection..."
-    if docker exec ipfs ipfs swarm peers >/dev/null 2>&1; then
-        print_green "IPFS connected."
-        PEER_COUNT=$(docker exec ipfs ipfs swarm peers | wc -l)
-        print_green "Connected peers: $PEER_COUNT"
-        PEER_ID=$(docker exec ipfs ipfs id -f="<id>")
-        print_green "Peer ID: $PEER_ID"
-        BANDWIDTH_INFO=$(docker exec ipfs ipfs stats bw)
-        print_green "Bandwidth info:"
-        print_green "$BANDWIDTH_INFO"
-        REPO_SIZE=$(docker exec ipfs ipfs repo stat | grep "RepoSize" | awk '{print $2}')
-        print_green "Hosted data size: $REPO_SIZE"
+check_ipfs_status() {
+    if docker ps | grep -q ipfs_node; then
+        print_green "IPFS is running."
         return 0
     else
-        print_green "IPFS not connected."
+        print_green "IPFS is not running."
         return 1
     fi
 }
 
-# Function to fix IPFS
+restart_orchestrator() {
+    print_green "Restarting Orchestrator..."
+    docker stop orchestrator 2>/dev/null
+    docker rm orchestrator 2>/dev/null
+    docker run -d --name orchestrator --network docker_nesa -v $HOME/.nesa:/root/.nesa ghcr.io/nesaorg/orchestrator:devnet-latest
+    print_green "Orchestrator restarted. Waiting for 1 minute before rechecking..."
+    sleep 60
+}
+
+check_node_status() {
+    if ! docker ps | grep -q orchestrator; then
+        print_green "Node status: Down (Orchestrator container is not running)"
+        restart_orchestrator
+        return 1
+    fi
+
+    local api_status=$(curl -s http://localhost:31333/status | jq -r '.status' 2>/dev/null)
+    local log_status=$(docker logs orchestrator --tail 100 2>/dev/null | grep "Node status" | tail -n 1)
+
+    if [[ "$api_status" == "UP" ]] || [[ $log_status == *"UP"* ]]; then
+        print_green "Node status: Up"
+        return 0
+    else
+        print_green "Node status: Down or Unknown"
+        restart_orchestrator
+        return 1
+    fi
+}
+
+add_ipfs_peers() {
+    print_green "Adding IPFS peers..."
+    docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY || print_green "Failed to connect to node-1"
+    docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t || print_green "Failed to connect to node-2"
+    docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV || print_green "Failed to connect to node-3"
+    print_green "IPFS peers addition attempt completed."
+}
+
 fix_ipfs() {
-    print_green "Fixing IPFS using Docker Compose..."
+    print_green "Starting IPFS fix process..."
     
-    # Stop and remove IPFS containers and volumes
+    print_green "Stopping and removing existing IPFS container..."
+    docker stop ipfs_node 2>/dev/null
+    docker rm ipfs_node 2>/dev/null
+
+    print_green "Cleaning up IPFS volumes..."
     cd ~/.nesa/docker
     docker compose -f compose.community.yml down ipfs
-    docker rm -f ipfs_node 2>/dev/null
     docker volume rm docker_ipfs-data docker_ipfs-staging
 
-    # Increase UDP buffer size if needed
-    if ! grep -q "net.core.rmem_max=2500000" /etc/sysctl.conf; then
-        increase_udp_buffer_size
-    fi
-
-    # Start IPFS container
+    print_green "Starting IPFS container..."
     docker compose -f compose.community.yml up -d ipfs
-    sleep 30
 
-    # Check if IPFS container started successfully
-    if ! docker ps | grep -q "ipfs"; then
-        print_green "Failed to start IPFS container. Please check manually."
-        return 1
-    fi
+    print_green "Configuring CORS for IPFS..."
+    docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://'$IP_ADDRESS':5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
+    docker exec ipfs_node ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST", "GET"]'
+
+    print_green "Enabling Pubsub and updating bootstrap nodes..."
+    docker exec ipfs_node ipfs config --json Experimental.Pubsub true
+    docker exec ipfs_node ipfs bootstrap add --default
+    docker exec ipfs_node ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN
+
+    print_green "Restarting IPFS container..."
+    docker restart ipfs_node
+
+    print_green "Opening firewall ports..."
+    sudo ufw allow 5001
+    sudo ufw allow 4001
+
+    add_ipfs_peers
 }
 
-# Function to check node status
-check_node_status() {
-    local status=$(curl -s http://localhost:31333/status | jq -r '.status')
-    if [ "$status" != "UP" ]; then
-        print_green "Node status: Down"
-        return 1
-    else
-        print_green "Node status: Up"
-        return 0
-    fi
-}
-
-# Main function
 main() {
-    print_green "Starting IPFS node check and repair..."
+    print_green "Starting IPFS node check..."
     get_node_info
 
-    # Check initial IPFS connection
-    if check_ipfs_connection; then
-        print_green "IPFS is already connected and working properly."
+    if check_ipfs_status; then
+        print_green "IPFS is already running. No fixes needed."
+        add_ipfs_peers
     else
-        # Attempt to fix IPFS connection
-        for i in {1..3}; do
-            print_green "Attempt $i: IPFS is not connected. Attempting to fix IPFS..."
-            fix_ipfs
-            sleep 30
-            if check_ipfs_connection; then
-                print_green "IPFS is connected and working properly."
-                break
-            fi
-        done
-        
-        if ! check_ipfs_connection; then
-            print_green "Failed to fix IPFS after 3 attempts. Please check manually."
-            print_green "Please check the IPFS WebUI at:"
-            print_green "http://$IP_ADDRESS:5001/webui"
-            return 1
+        print_green "IPFS is not running. Starting fix process..."
+        fix_ipfs
+        if check_ipfs_status; then
+            print_green "IPFS has been successfully started."
+        else
+            print_green "Failed to start IPFS. Please check manually."
         fi
     fi
-    
-    # Check node status
-    if check_node_status; then
-        print_green "Node status: Up"
-    else
-        print_green "Node status: Down"
-    fi
 
-    print_green "✅ Repairs completed. IPFS is running well."
-    print_green "Please check the IPFS WebUI at:"
-    print_green "http://$IP_ADDRESS:5001/webui"
-    print_green "Make sure the reported status matches what you see on the dashboard."
-    print_green "Node status link: https://node.nesa.ai/nodes/$NODE_ID"
+    print_green "Checking node status..."
+    check_node_status
+
+    print_green "Rechecking node status after potential restart..."
+    check_node_status
+
+    print_green "IPFS WebUI: http://$IP_ADDRESS:5001/webui"
+    print_green "Node status: https://node.nesa.ai/nodes/$NODE_ID"
 }
 
-# Run main function
 main
-
-print_green ""
-print_green "Script completed. Please check the IPFS status manually."

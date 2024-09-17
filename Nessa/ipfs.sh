@@ -20,8 +20,16 @@ check_ipfs_connection() {
     fi
 }
 
+stop_port_4001() {
+    print_green "Stopping process using port 4001..."
+    sudo lsof -ti:4001 | xargs -r sudo kill -9
+    sleep 5
+}
+
 fix_ipfs() {
     print_green "Fixing IPFS using Docker Compose..."
+    
+    stop_port_4001
     
     cd ~/.nesa/docker
     docker compose -f compose.community.yml down ipfs

@@ -12,6 +12,16 @@ get_node_info() {
     print_green "Node ID and IP information retrieved successfully"
 }
 
+# Function to increase UDP buffer size
+increase_udp_buffer_size() {
+    print_green "Increasing UDP buffer size..."
+    sudo sysctl -w net.core.rmem_max=2500000
+    sudo sysctl -w net.core.rmem_default=2500000
+    sudo sysctl -w net.core.wmem_max=2500000
+    sudo sysctl -w net.core.wmem_default=2500000
+    sudo sysctl -p
+}
+
 # Function to check IPFS connection
 check_ipfs_connection() {
     print_green "Checking IPFS connection..."
@@ -77,6 +87,9 @@ fix_ipfs() {
 main() {
     print_green "Starting IPFS node check and repair..."
     get_node_info
+
+    # Increase UDP buffer size
+    increase_udp_buffer_size
 
     # Check and fix IPFS connection
     for i in {1..3}; do

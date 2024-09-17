@@ -7,7 +7,7 @@ print_green() {
 get_node_info() {
     NODE_ID=$(cat $HOME/.nesa/identity/node_id.id)
     IP_ADDRESS=$(curl -s ifconfig.me)
-    print_green "Node ID and IP information retrieved successfully"
+    print_green "Node ID and IP information retrieved successfully."
 }
 
 check_ipfs_status() {
@@ -32,7 +32,6 @@ restart_orchestrator() {
 check_node_status() {
     if ! docker ps | grep -q orchestrator; then
         print_green "Node status: Down (Orchestrator container is not running)"
-        restart_orchestrator
         return 1
     fi
 
@@ -44,7 +43,6 @@ check_node_status() {
         return 0
     else
         print_green "Node status: Down or Unknown"
-        restart_orchestrator
         return 1
     fi
 }
@@ -54,7 +52,7 @@ add_ipfs_peers() {
     docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY || print_green "Failed to connect to node-1"
     docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t || print_green "Failed to connect to node-2"
     docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV || print_green "Failed to connect to node-3"
-    print_green "IPFS peers addition attempt completed."
+    print_green "IPFS peer addition attempts completed."
 }
 
 fix_ipfs() {
@@ -109,10 +107,12 @@ main() {
     fi
 
     print_green "Checking node status..."
-    check_node_status
-
-    print_green "Rechecking node status after potential restart..."
-    check_node_status
+    if ! check_node_status; then
+        print_green "Node is down. Attempting to restart Orchestrator..."
+        restart_orchestrator
+        print_green "Rechecking node status after restart..."
+        check_node_status
+    fi
 
     print_green "IPFS WebUI: http://$IP_ADDRESS:5001/webui"
     print_green "Node status: https://node.nesa.ai/nodes/$NODE_ID"

@@ -7,7 +7,7 @@ print_green() {
 get_node_info() {
     NODE_ID=$(cat $HOME/.nesa/identity/node_id.id)
     IP_ADDRESS=$(curl -s ifconfig.me)
-    print_green "Node ID and IP information retrieved successfully."
+    print_green "Node ID and IP information retrieved successfully"
 }
 
 check_ipfs_status() {
@@ -52,7 +52,7 @@ add_ipfs_peers() {
     docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY || print_green "Failed to connect to node-1"
     docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t || print_green "Failed to connect to node-2"
     docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV || print_green "Failed to connect to node-3"
-    print_green "IPFS peer addition attempts completed."
+    print_green "IPFS peers addition attempt completed."
 }
 
 fix_ipfs() {
@@ -89,18 +89,56 @@ fix_ipfs() {
     add_ipfs_peers
 }
 
+check_peer_count() {
+    local peer_count=$(docker exec ipfs_node ipfs swarm peers | wc -l)
+    print_green "Current peer count: $peer_count"
+    return $peer_count
+}
+
+add_more_peers() {
+    print_green "Adding more peers..."
+    docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY
+    docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t
+    docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV
+    docker exec ipfs_node ipfs swarm connect /dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN
+    docker exec ipfs_node ipfs swarm connect /dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa
+    docker exec ipfs_node ipfs swarm connect /dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
+    sleep 10
+}
+
 main() {
     print_green "Starting IPFS node check..."
     get_node_info
 
     if check_ipfs_status; then
-        print_green "IPFS is already running. No fixes needed."
-        add_ipfs_peers
+        print_green "IPFS is already running. Checking peer connections..."
+        check_peer_count
+        peer_count=$?
+        
+        if [ $peer_count -lt 3 ]; then
+            print_green "Peer count is low. Adding more peers..."
+            add_more_peers
+            check_peer_count
+        fi
+        
+        print_green "Current IPFS peers:"
+        docker exec ipfs_node ipfs swarm peers
     else
         print_green "IPFS is not running. Starting fix process..."
         fix_ipfs
         if check_ipfs_status; then
-            print_green "IPFS has been successfully started."
+            print_green "IPFS has been successfully started. Checking peer connections..."
+            check_peer_count
+            peer_count=$?
+            
+            if [ $peer_count -lt 3 ]; then
+                print_green "Peer count is low. Adding more peers..."
+                add_more_peers
+                check_peer_count
+            fi
+            
+            print_green "Current IPFS peers:"
+            docker exec ipfs_node ipfs swarm peers
         else
             print_green "Failed to start IPFS. Please check manually."
         fi

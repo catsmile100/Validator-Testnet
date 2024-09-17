@@ -10,16 +10,6 @@ get_node_info() {
     print_green "Node ID and IP information retrieved successfully"
 }
 
-check_ipfs_connection() {
-    if docker exec ipfs ipfs swarm peers >/dev/null 2>&1; then
-        print_green "IPFS is connected."
-        return 0
-    else
-        print_green "IPFS is not connected."
-        return 1
-    fi
-}
-
 check_port_4001() {
     if lsof -i :4001 > /dev/null 2>&1; then
         PROCESS=$(lsof -i :4001 | tail -n 1 | awk '{print $1}')
@@ -32,26 +22,26 @@ check_port_4001() {
     fi
 }
 
-check_docker_status() {
-    if docker ps | grep -q "ipfs"; then
-        print_green "IPFS container is running"
-        return 0
-    else
-        print_green "IPFS container is not running"
-        return 1
-    fi
-}
-
 stop_port_4001() {
-    print_green "Stopping process using port 4001..."
+    print_green "Attempting to stop process using port 4001..."
     sudo lsof -ti:4001 | xargs -r sudo kill -9
     sleep 5
+    if check_port_4001; then
+        print_green "Successfully freed port 4001"
+        return 0
+    else
+        print_green "Failed to free port 4001"
+        return 1
+    fi
 }
 
 fix_ipfs() {
     print_green "Fixing IPFS using Docker Compose..."
     
-    stop_port_4001
+    if ! stop_port_4001; then
+        print_green "Cannot proceed with IPFS fix due to port conflict. Please resolve manually."
+        return 1
+    fi
     
     cd ~/.nesa/docker
     docker compose -f compose.community.yml down ipfs
@@ -65,36 +55,40 @@ fix_ipfs() {
         print_green "Failed to start IPFS container. Please check manually."
         return 1
     fi
+    return 0
+}
+
+check_ipfs_connection() {
+    if docker exec ipfs ipfs swarm peers >/dev/null 2>&1; then
+        print_green "IPFS is connected."
+        return 0
+    else
+        print_green "IPFS is not connected."
+        return 1
+    fi
 }
 
 main() {
     print_green "Starting comprehensive IPFS node check..."
     get_node_info
 
-    print_green "Checking IPFS connection..."
-    check_ipfs_connection
-    
     print_green "Checking port 4001..."
     check_port_4001
-    
-    print_green "Checking Docker status..."
-    check_docker_status
 
-    if check_ipfs_connection && check_docker_status && ! check_port_4001; then
+    if check_ipfs_connection; then
         print_green "IPFS is already connected and working properly. No repairs needed."
     else
-        print_green "Issues detected. Starting repair process..."
+        print_green "IPFS is not connected. Starting repair process..."
         for i in {1..3}; do
             print_green "Attempt $i: Fixing IPFS..."
-            fix_ipfs
-            sleep 30
-            if check_ipfs_connection && check_docker_status && ! check_port_4001; then
+            if fix_ipfs && check_ipfs_connection; then
                 print_green "IPFS has been successfully repaired and is now connected."
                 break
             fi
+            sleep 30
         done
         
-        if ! check_ipfs_connection || ! check_docker_status || check_port_4001; then
+        if ! check_ipfs_connection; then
             print_green "Failed to fix IPFS after 3 attempts. Please check manually."
             print_green "Please check the IPFS WebUI at:"
             print_green "http://$IP_ADDRESS:5001/webui"

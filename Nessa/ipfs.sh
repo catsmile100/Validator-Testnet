@@ -25,8 +25,8 @@ restart_orchestrator() {
     docker stop orchestrator 2>/dev/null
     docker rm orchestrator 2>/dev/null
     docker run -d --name orchestrator --network docker_nesa -v $HOME/.nesa:/root/.nesa ghcr.io/nesaorg/orchestrator:devnet-latest
-    sleep 20
-    print_green "Orchestrator restarted."
+    print_green "Orchestrator restarted. Waiting for 1 minute before rechecking..."
+    sleep 60
 }
 
 check_node_status() {
@@ -51,10 +51,10 @@ check_node_status() {
 
 add_ipfs_peers() {
     print_green "Adding IPFS peers..."
-    docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY
-    docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t
-    docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV
-    print_green "IPFS peers added."
+    docker exec ipfs_node ipfs swarm connect /dns4/node-1.nesa.ai/tcp/4001/p2p/12D3KooWQYBPcvxFnnWzPGEx6JuBnrbBhMvzuQnVmgiRYy6AzwTY || print_green "Failed to connect to node-1"
+    docker exec ipfs_node ipfs swarm connect /dns4/node-2.nesa.ai/tcp/4001/p2p/12D3KooWRBYMuSKLbPLMKwwA4V4TEQ3qC4sB3wMhrzGXKfTNHo1t || print_green "Failed to connect to node-2"
+    docker exec ipfs_node ipfs swarm connect /dns4/node-3.nesa.ai/tcp/4001/p2p/12D3KooWNMVN9PbKXcoqHjj5QGvXCG9oS7yoTVz1jHbKFoSNhMZV || print_green "Failed to connect to node-3"
+    print_green "IPFS peers addition attempt completed."
 }
 
 fix_ipfs() {
@@ -109,12 +109,10 @@ main() {
     fi
 
     print_green "Checking node status..."
-    if ! check_node_status; then
-        print_green "Waiting for 1 minute before rechecking node status..."
-        sleep 60
-        print_green "Rechecking node status..."
-        check_node_status
-    fi
+    check_node_status
+
+    print_green "Rechecking node status after potential restart..."
+    check_node_status
 
     print_green "IPFS WebUI: http://$IP_ADDRESS:5001/webui"
     print_green "Node status: https://node.nesa.ai/nodes/$NODE_ID"

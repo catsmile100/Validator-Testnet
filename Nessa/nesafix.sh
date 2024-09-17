@@ -25,16 +25,16 @@ increase_udp_buffer_size() {
 # Function to check IPFS connection
 check_ipfs_connection() {
     print_green "Checking IPFS connection..."
-    if ipfs swarm peers >/dev/null 2>&1; then
+    if docker exec ipfs ipfs swarm peers >/dev/null 2>&1; then
         print_green "IPFS connected."
-        PEER_COUNT=$(ipfs swarm peers | wc -l)
+        PEER_COUNT=$(docker exec ipfs ipfs swarm peers | wc -l)
         print_green "Connected peers: $PEER_COUNT"
-        PEER_ID=$(ipfs id -f="<id>")
+        PEER_ID=$(docker exec ipfs ipfs id -f="<id>")
         print_green "Peer ID: $PEER_ID"
-        BANDWIDTH_INFO=$(ipfs stats bw)
+        BANDWIDTH_INFO=$(docker exec ipfs ipfs stats bw)
         print_green "Bandwidth info:"
         print_green "$BANDWIDTH_INFO"
-        REPO_SIZE=$(ipfs repo stat | grep "RepoSize" | awk '{print $2}')
+        REPO_SIZE=$(docker exec ipfs ipfs repo stat | grep "RepoSize" | awk '{print $2}')
         print_green "Hosted data size: $REPO_SIZE"
         return 0
     else
@@ -45,42 +45,27 @@ check_ipfs_connection() {
 
 # Function to fix IPFS
 fix_ipfs() {
-    print_green "Fixing IPFS..."
+    print_green "Fixing IPFS using Docker Compose..."
     
-    # Stop IPFS daemon if running
-    if pgrep -x "ipfs" > /dev/null; then
-        print_green "Stopping IPFS daemon..."
-        killall ipfs
+    # Stop and remove IPFS containers and volumes
+    cd ~/.nesa/docker
+    docker compose -f compose.community.yml down ipfs
+    docker volume rm docker_ipfs-data docker_ipfs-staging
+
+    # Increase UDP buffer size if needed
+    if ! grep -q "net.core.rmem_max=2500000" /etc/sysctl.conf; then
+        increase_udp_buffer_size
     fi
 
-    # Start IPFS daemon
-    print_green "Starting IPFS daemon..."
-    ipfs daemon --enable-pubsub-experiment &
+    # Start IPFS container
+    docker compose -f compose.community.yml up -d ipfs
     sleep 30
 
-    # Configure CORS for IPFS
-    print_green "Configuring CORS for IPFS..."
-    ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://$IP_ADDRESS:5001", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
-    ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST", "GET"]'
-    
-    print_green "Enabling Experimental Pubsub..."
-    ipfs config --json Experimental.Pubsub true
-    
-    print_green "Adding bootstrap nodes..."
-    ipfs bootstrap add --default
-    ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN
-    ipfs bootstrap add /dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa
-    ipfs bootstrap add /dnsaddr.bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb
-    
-    print_green "Adding peers..."
-    ipfs swarm connect /ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
-    ipfs swarm connect /ip4/104.236.179.241/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
-    ipfs swarm connect /ip4/128.199.219.111/tcp/4001/p2p/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm
-    
-    print_green "Restarting IPFS daemon..."
-    killall ipfs
-    ipfs daemon --enable-pubsub-experiment &
-    sleep 30
+    # Check if IPFS container started successfully
+    if ! docker ps | grep -q "ipfs"; then
+        print_green "Failed to start IPFS container. Please check manually."
+        return 1
+    fi
 }
 
 # Function to check node status
@@ -100,23 +85,27 @@ main() {
     print_green "Starting IPFS node check and repair..."
     get_node_info
 
-    # Check and fix IPFS connection
-    for i in {1..3}; do
-        if check_ipfs_connection; then
-            print_green "IPFS is connected and working properly."
-            break
-        else
+    # Check initial IPFS connection
+    if check_ipfs_connection; then
+        print_green "IPFS is already connected and working properly."
+    else
+        # Attempt to fix IPFS connection
+        for i in {1..3}; do
             print_green "Attempt $i: IPFS is not connected. Attempting to fix IPFS..."
             fix_ipfs
             sleep 30
+            if check_ipfs_connection; then
+                print_green "IPFS is connected and working properly."
+                break
+            fi
+        done
+        
+        if ! check_ipfs_connection; then
+            print_green "Failed to fix IPFS after 3 attempts. Please check manually."
+            print_green "Please check the IPFS WebUI at:"
+            print_green "http://$IP_ADDRESS:5001/webui"
+            return 1
         fi
-    done
-    
-    if ! check_ipfs_connection; then
-        print_green "Failed to fix IPFS after 3 attempts. Please check manually."
-        print_green "Please check the IPFS WebUI at:"
-        print_green "http://$IP_ADDRESS:5001/webui"
-        return 1
     fi
     
     # Check node status

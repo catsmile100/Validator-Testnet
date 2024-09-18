@@ -27,11 +27,12 @@ rm -rf bin
 mkdir bin
 cd bin
 wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/geth-public/geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
-wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.9.11-2a25df1.tar.gz
+wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.10.0-9603826.tar.gz
 tar -xvf geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
-tar -xvf story-linux-amd64-0.9.11-2a25df1.tar.gz
+tar -xzvf story-linux-amd64-0.10.0-9603826.tar.gz
 mv ~/bin/geth-linux-amd64-0.9.2-ea9f0d2/geth ~/go/bin/
-mv ~/bin/story-linux-amd64-0.9.11-2a25df1/story ~/go/bin/
+mv ~/bin/story-linux-amd64-0.10.0-9603826/story ~/go/bin/
+
 mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
 sleep 2

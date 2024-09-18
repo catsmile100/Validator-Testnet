@@ -7,9 +7,10 @@ sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -
 sleep 2
 
 # Install Go
+# Install Go
 echo "Installing Go..."
 cd $HOME
-VER="1.20.3"
+VER="1.22.0"
 wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
@@ -19,6 +20,9 @@ echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 sleep 2
+
+# Verify Go installation
+go version
 
 # Download binaries
 echo "Downloading binaries..."

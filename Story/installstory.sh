@@ -1,12 +1,13 @@
 #!/bin/bash
 
+# Set port prefix
+PORT_PREFIX="29"
+
 # Update and install dependencies
 echo "Updating and installing dependencies..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
-sleep 2
 
-# Install Go
 # Install Go
 echo "Installing Go..."
 cd $HOME
@@ -19,7 +20,6 @@ rm "go$VER.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
-sleep 2
 
 # Verify Go installation
 go version
@@ -39,23 +39,30 @@ mv ~/bin/story-linux-amd64-0.10.0-9603826/story ~/go/bin/
 
 mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
-sleep 2
 
 # Initialize the story client
 echo "Initializing the story client..."
 story init --moniker test --network iliad
-sleep 2
+
+# Modify config.toml to use custom ports
+echo "Modifying config.toml..."
+sed -i.bak -e "s/^proxy_app = \"tcp:\/\/127.0.0.1:26658\"/proxy_app = \"tcp:\/\/127.0.0.1:${PORT_PREFIX}658\"/" \
+    -e "s/^laddr = \"tcp:\/\/127.0.0.1:26657\"/laddr = \"tcp:\/\/127.0.0.1:${PORT_PREFIX}657\"/" \
+    -e "s/^pprof_laddr = \"localhost:6060\"/pprof_laddr = \"localhost:${PORT_PREFIX}060\"/" \
+    -e "s/^laddr = \"tcp:\/\/0.0.0.0:26656\"/laddr = \"tcp:\/\/0.0.0.0:${PORT_PREFIX}656\"/" \
+    -e "s/^prometheus_listen_addr = \":26660\"/prometheus_listen_addr = \":${PORT_PREFIX}660\"/" \
+    $HOME/.story/story/config/config.toml
 
 # Create geth service file
 echo "Creating geth service file..."
-sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth daemon
 After=network-online.target
 
 [Service]
-User=root
-ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port 8546
+User=$USER
+ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 0.0.0.0 --http.port ${PORT_PREFIX}45 --ws --ws.api eth,web3,net,txpool --ws.addr 0.0.0.0 --ws.port ${PORT_PREFIX}46 --port ${PORT_PREFIX}30
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -63,7 +70,6 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-sleep 2
 
 # Create story service file
 echo "Creating story service file..."
@@ -73,7 +79,7 @@ Description=Story Service
 After=network.target
 
 [Service]
-User=root
+User=$USER
 WorkingDirectory=$HOME/.story/story
 ExecStart=$(which story) run
 
@@ -83,26 +89,30 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-sleep 2
 
-# Enable and start geth
-echo "Enabling and starting geth service..."
+# Enable and start services
+echo "Enabling and starting services..."
 sudo systemctl daemon-reload
-sudo systemctl enable geth
-sudo systemctl restart geth
-sleep 2
-
-# Enable and start story
-echo "Enabling and starting story service..."
-sudo systemctl daemon-reload
+sudo systemctl enable story-geth
+sudo systemctl start story-geth
 sudo systemctl enable story
-sudo systemctl restart story
-sleep 2
-
-# Download and update snapshoot
-echo "Downloading and running update script..."
-wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/updatestory.sh
-chmod +x updatestory.sh && dos2unix updatestory.sh && ./updatestory.sh
-sleep 2
+sudo systemctl start story
 
 echo "Installation and setup complete."
+echo "To check the status of the services, use:"
+echo "sudo systemctl status story-geth"
+echo "sudo systemctl status story"
+echo "To view logs, use:"
+echo "sudo journalctl -u story-geth -f"
+echo "sudo journalctl -u story -f"
+
+# Pause for 30 seconds
+echo "Pausing for 30 seconds before stopping services..."
+sleep 30
+
+# Stop all services
+echo "Stopping all services..."
+sudo systemctl stop story-geth
+sudo systemctl stop story
+
+echo "All services have been stopped."

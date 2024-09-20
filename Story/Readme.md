@@ -33,34 +33,34 @@ dos2unix installstory.sh && chmod +x installstory.sh && ./installstory.sh && rm 
 
 #### Check Geth status
 ```
-sudo systemctl status geth
+sudo systemctl status story-geth
 ```
 #### Start Geth service
 ```
-sudo systemctl start geth
+sudo systemctl start story-geth
 ```
 
 #### Stop Geth service
 ```
-sudo systemctl stop geth
+sudo systemctl stop story-geth
 ```
 #### Restart Geth service
 ```
-sudo systemctl restart geth
+sudo systemctl restart story-geth
 ```
 #### Enable Geth service to start on boot
 ```
-sudo systemctl enable geth
+sudo systemctl enable story-geth
 ```
 
 #### Disable Geth service from starting on boot
 ```
-sudo systemctl disable geth
+sudo systemctl disable story-geth
 ```
 
 #### View Geth logs in real-time
 ```
-sudo journalctl -u geth -f
+sudo journalctl -u story-geth -f
 ```
 
 ## Story Service Management Commands

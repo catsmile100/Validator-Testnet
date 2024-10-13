@@ -71,7 +71,6 @@ fix_unused_import() {
         echo "File $PROVER_FILE tidak ditemukan."
     fi
 }
-}
 
 # Function to remove service and clean up
 cleanup() {

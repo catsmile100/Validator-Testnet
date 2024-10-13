@@ -55,15 +55,32 @@ EOF
 
 # Function to fix unused import warning
 fix_unused_import() {
-    PROVER_FILE="$HOME/.nexus/network-api/clients/cli/src/prover.rs"
+    PROVER_FILE="/root/.nexus/network-api/clients/cli/src/prover.rs"
     if [ -f "$PROVER_FILE" ]; then
-        echo "Memberikan izin penuh dan memperbaiki $PROVER_FILE..."
-        sudo chmod 777 "$PROVER_FILE"
-        sudo sed -i '/use std::env;/d' "$PROVER_FILE"
+        echo "Memperbaiki $PROVER_FILE..."
+        
+        # Backup file asli
+        cp "$PROVER_FILE" "${PROVER_FILE}.backup"
+        
+        # Hapus baris yang mengandung 'use std::env;'
+        sed -i '/use std::env;/d' "$PROVER_FILE"
+        
+        # Periksa apakah perubahan berhasil
+        if grep -q "use std::env;" "$PROVER_FILE"; then
+            echo "Peringatan: 'use std::env;' masih ditemukan dalam file."
+        else
+            echo "Baris 'use std::env;' berhasil dihapus."
+        fi
+        
+        # Atur izin file
+        chmod 644 "$PROVER_FILE"
+        
+        echo "Menjalankan cargo fix..."
+        cd "/root/.nexus"
+        cargo fix --bin prover
         
         echo "Mengompilasi ulang proyek..."
-        cd "$HOME/.nexus/network-api/clients/cli"
-        cargo clean && cargo build --release
+        cargo build --release
     else
         echo "File $PROVER_FILE tidak ditemukan."
     fi

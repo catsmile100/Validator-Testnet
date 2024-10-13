@@ -58,31 +58,19 @@ EOF
 
 # Function to fix unused import warning
 fix_unused_import() {
-    echo "Memperbaiki peringatan impor yang tidak digunakan..."
-    
-    # Mencari file prover.rs
     PROVER_FILE="$HOME/.nexus/network-api/clients/cli/src/prover.rs"
-    
     if [ -f "$PROVER_FILE" ]; then
-        # Memeriksa izin file
-        if [ ! -w "$PROVER_FILE" ]; then
-            echo "Mengubah izin file agar dapat ditulis..."
-            sudo chmod u+w "$PROVER_FILE"
-        fi
+        echo "Memberikan izin penuh dan memperbaiki $PROVER_FILE..."
+        sudo chmod 777 "$PROVER_FILE"
+        sed -i '/^use std::env;/d' "$PROVER_FILE"
         
-        # Menghapus baris 'use std::env;' dari file
-        sudo sed -i '/^use std::env;/d' "$PROVER_FILE"
-        
-        echo "Perubahan diterapkan ke $PROVER_FILE"
-        
-        # Mengompilasi ulang proyek
         echo "Mengompilasi ulang proyek..."
         cd "$HOME/.nexus/network-api/clients/cli"
-        cargo clean
-        cargo build --release
+        cargo clean && cargo build --release
     else
-        echo "File prover.rs tidak ditemukan di lokasi yang diharapkan."
+        echo "File $PROVER_FILE tidak ditemukan."
     fi
+}
 }
 
 # Function to remove service and clean up

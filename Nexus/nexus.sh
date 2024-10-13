@@ -6,18 +6,25 @@ install_nexus() {
     sudo apt update && sudo apt upgrade -y
 
     echo "Installing necessary packages..."
-    sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip
+    sudo apt install curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip -y
 
     if ! command -v rustc &> /dev/null; then
         echo "Installing Rust..."
-        curl https://sh.rustup.rs -sSf | sh -s -- -y
+        sudo curl https://sh.rustup.rs -sSf | sh -s -- -y
         source $HOME/.cargo/env
-        export PATH="$HOME/.cargo/bin:$PATH"
+        export PATH="$HOME/.cargo/env:$PATH"
+        rustup update
+    else
+        echo "Rust is already installed. Updating..."
+        rustup update
     fi
 
+    echo "Rust version:"
+    rustc --version
+
     echo "Installing Nexus Prover..."
-    curl https://cli.nexus.xyz/install.sh | sh -s -- -y
-    
+    sudo curl https://cli.nexus.xyz/install.sh | sh
+
     echo "Menyesuaikan kepemilikan file..."
     sudo chown -R $USER:$USER $HOME/.nexus
 

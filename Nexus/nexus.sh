@@ -20,6 +20,9 @@ install_nexus() {
     if [ ! -f "$HOME/.nexus/network-api/clients/cli/target/release/prover" ]; then
         echo "Installing Nexus Prover..."
         curl https://cli.nexus.xyz/install.sh | sh -s -- -y
+        
+        echo "Menyesuaikan kepemilikan file..."
+        sudo chown -R $USER:$USER $HOME/.nexus
     else
         echo "Nexus Prover is already installed."
     fi
@@ -55,8 +58,23 @@ EOF
 
 # Function to fix unused import warning
 fix_unused_import() {
-    echo "Fixing unused import warning..."
+    echo "Memperbaiki peringatan impor yang tidak digunakan..."
     sed -i 's/^use std::env;/\/\/ use std::env;/' $HOME/.nexus/network-api/clients/cli/src/prover.rs
+    
+    echo "Memastikan perubahan diterapkan..."
+    if grep -q "^use std::env;" $HOME/.nexus/network-api/clients/cli/src/prover.rs; then
+        echo "Perubahan gagal diterapkan. Mencoba cara lain..."
+        echo '// use std::env;' > tempfile
+        cat $HOME/.nexus/network-api/clients/cli/src/prover.rs | grep -v "^use std::env;" >> tempfile
+        mv tempfile $HOME/.nexus/network-api/clients/cli/src/prover.rs
+    else
+        echo "Perubahan berhasil diterapkan."
+    fi
+    
+    echo "Mengompilasi ulang proyek..."
+    cd $HOME/.nexus/network-api/clients/cli
+    cargo clean
+    cargo build --release
 }
 
 # Function to remove service and clean up
@@ -79,6 +97,7 @@ cleanup
 echo "Installing Nexus..."
 install_nexus
 
+echo "Fixing unused import warning and compiling again..."
 fix_unused_import
 
 echo "Installation complete. Checking service status..."

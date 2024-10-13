@@ -6,31 +6,28 @@ install_nexus() {
     sudo apt update && sudo apt upgrade -y
 
     echo "Installing necessary packages..."
-    sudo apt install curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip -y
+    sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev
 
     if ! command -v rustc &> /dev/null; then
         echo "Installing Rust..."
-        sudo curl https://sh.rustup.rs -sSf | sh -s -- -y
+        curl https://sh.rustup.rs -sSf | sh -s -- -y
         source $HOME/.cargo/env
-        export PATH="$HOME/.cargo/env:$PATH"
-        rustup update
+        export PATH="$HOME/.cargo/bin:$PATH"
     else
-        echo "Rust is already installed. Updating..."
-        rustup update
+        echo "Rust is already installed."
     fi
 
-    echo "Rust version:"
-    rustc --version
+    if [ ! -f "$HOME/.nexus/network-api/clients/cli/target/release/prover" ]; then
+        echo "Installing Nexus Prover..."
+        curl https://cli.nexus.xyz/install.sh | sh
+    else
+        echo "Nexus Prover is already installed."
+    fi
 
-    echo "Installing Nexus Prover..."
-    sudo curl https://cli.nexus.xyz/install.sh | sh
-
-    echo "Menyesuaikan kepemilikan file..."
-    sudo chown -R $USER:$USER $HOME/.nexus
-
-    SERVICE_FILE="/etc/systemd/system/nexus.service"
-    echo "Creating systemd service file for nexus..."
-    sudo tee $SERVICE_FILE > /dev/null <<EOF
+    SERVICE_FILE="/etc/systemd/system/nexusd.service"
+    if [ ! -f "$SERVICE_FILE" ]; then
+        echo "Creating systemd service file for nexusd..."
+        sudo tee $SERVICE_FILE > /dev/null <<EOF
 [Unit]
 Description=Nexus Network
 After=network-online.target
@@ -46,67 +43,45 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
+    else
+        echo "Systemd service file for nexusd already exists."
+    fi
 
-    echo "Reloading systemd daemon and starting nexus service..."
+    echo "Reloading systemd daemon and starting nexusd service..."
     sudo systemctl daemon-reload
-    sudo systemctl enable nexus
-    sudo systemctl start nexus
+    sudo systemctl start nexusd
+    sudo systemctl enable nexusd
 }
 
 # Function to fix unused import warning
 fix_unused_import() {
-    PROVER_FILE="/root/.nexus/network-api/clients/cli/src/prover.rs"
-    if [ -f "$PROVER_FILE" ]; then
-        echo "Memperbaiki $PROVER_FILE..."
-        
-        # Backup file asli
-        cp "$PROVER_FILE" "${PROVER_FILE}.backup"
-        
-        # Hapus baris yang mengandung 'use std::env;'
-        sed -i '/use std::env;/d' "$PROVER_FILE"
-        
-        # Periksa apakah perubahan berhasil
-        if grep -q "use std::env;" "$PROVER_FILE"; then
-            echo "Peringatan: 'use std::env;' masih ditemukan dalam file."
-        else
-            echo "Baris 'use std::env;' berhasil dihapus."
-        fi
-        
-        # Atur izin file
-        chmod 644 "$PROVER_FILE"
-        
-        echo "Menjalankan cargo fix..."
-        cd "/root/.nexus"
-        cargo fix --bin prover
-        
-        echo "Mengompilasi ulang proyek..."
-        cargo build --release
-    else
-        echo "File $PROVER_FILE tidak ditemukan."
-    fi
+    echo "Fixing unused import warning..."
+    sed -i 's/^use std::env;/\/\/ use std::env;/' /root/.nexus/network-api/clients/cli/src/prover.rs
 }
 
 # Function to remove service and clean up
 cleanup() {
-    sudo systemctl stop nexus
-    sudo systemctl disable nexus
-    sudo rm -f /etc/systemd/system/nexus.service
+    echo "Stopping and disabling nexusd service..."
+    sudo systemctl stop nexusd
+    sudo systemctl disable nexusd
+    echo "Removing service file..."
+    sudo rm -f /etc/systemd/system/nexusd.service
+    echo "Reloading systemd daemon..."
     sudo systemctl daemon-reload
-    rm -rf $HOME/.nexus
 }
 
 # Main script execution
-echo "Cleaning up old installation..."
-cleanup
-
-echo "Installing Nexus..."
-install_nexus
-
-echo "Memperbaiki peringatan impor yang tidak digunakan dan mengompilasi ulang..."
 fix_unused_import
 
-echo "Installation complete. Checking service status..."
-sudo systemctl status nexus
+# Try to run the prover and check for errors
+if ! cargo run --release --bin prover -- beta.orchestrator.nexus.xyz; then
+    echo "Error detected, cleaning up and reinstalling..."
+    cleanup
+    install_nexus
+else
+    echo "Prover ran successfully."
+fi
 
-echo "Following the logs for nexus service..."
-sudo journalctl -fu nexus -o cat
+# Follow the logs
+echo "Following the logs for nexusd service..."
+sudo journalctl -fu nexusd -o cat

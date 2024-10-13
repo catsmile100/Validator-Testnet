@@ -19,7 +19,7 @@ install_nexus() {
 
     if [ ! -f "$HOME/.nexus/network-api/clients/cli/target/release/prover" ]; then
         echo "Installing Nexus Prover..."
-        curl https://cli.nexus.xyz/install.sh | sh
+        curl https://cli.nexus.xyz/install.sh | sh -s -- -y
     else
         echo "Nexus Prover is already installed."
     fi
@@ -56,7 +56,7 @@ EOF
 # Function to fix unused import warning
 fix_unused_import() {
     echo "Fixing unused import warning..."
-    sed -i 's/^use std::env;/\/\/ use std::env;/' /root/.nexus/network-api/clients/cli/src/prover.rs
+    sed -i 's/^use std::env;/\/\/ use std::env;/' $HOME/.nexus/network-api/clients/cli/src/prover.rs
 }
 
 # Function to remove service and clean up

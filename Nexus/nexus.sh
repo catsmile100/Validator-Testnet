@@ -6,7 +6,7 @@ install_nexus() {
     sudo apt update && sudo apt upgrade -y
 
     echo "Installing necessary packages..."
-    sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev
+    sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev expect
 
     if ! command -v rustc &> /dev/null; then
         echo "Installing Rust..."
@@ -19,7 +19,12 @@ install_nexus() {
 
     if [ ! -f "$HOME/.nexus/network-api/clients/cli/target/release/prover" ]; then
         echo "Installing Nexus Prover..."
-        curl https://cli.nexus.xyz/install.sh | sh -s -- -y
+        expect -c '
+        spawn sh -c "curl https://cli.nexus.xyz/install.sh | sh"
+        expect "Do you agree to the Nexus Beta Terms of Use"
+        send "Y\r"
+        expect eof
+        '
     else
         echo "Nexus Prover is already installed."
     fi

@@ -59,22 +59,30 @@ EOF
 # Function to fix unused import warning
 fix_unused_import() {
     echo "Memperbaiki peringatan impor yang tidak digunakan..."
-    sed -i 's/^use std::env;/\/\/ use std::env;/' $HOME/.nexus/network-api/clients/cli/src/prover.rs
     
-    echo "Memastikan perubahan diterapkan..."
-    if grep -q "^use std::env;" $HOME/.nexus/network-api/clients/cli/src/prover.rs; then
-        echo "Perubahan gagal diterapkan. Mencoba cara lain..."
-        echo '// use std::env;' > tempfile
-        cat $HOME/.nexus/network-api/clients/cli/src/prover.rs | grep -v "^use std::env;" >> tempfile
-        mv tempfile $HOME/.nexus/network-api/clients/cli/src/prover.rs
+    # Mencari file prover.rs
+    PROVER_FILE="$HOME/.nexus/network-api/clients/cli/src/prover.rs"
+    
+    if [ -f "$PROVER_FILE" ]; then
+        # Memeriksa izin file
+        if [ ! -w "$PROVER_FILE" ]; then
+            echo "Mengubah izin file agar dapat ditulis..."
+            sudo chmod u+w "$PROVER_FILE"
+        fi
+        
+        # Menghapus baris 'use std::env;' dari file
+        sudo sed -i '/^use std::env;/d' "$PROVER_FILE"
+        
+        echo "Perubahan diterapkan ke $PROVER_FILE"
+        
+        # Mengompilasi ulang proyek
+        echo "Mengompilasi ulang proyek..."
+        cd "$HOME/.nexus/network-api/clients/cli"
+        cargo clean
+        cargo build --release
     else
-        echo "Perubahan berhasil diterapkan."
+        echo "File prover.rs tidak ditemukan di lokasi yang diharapkan."
     fi
-    
-    echo "Mengompilasi ulang proyek..."
-    cd $HOME/.nexus/network-api/clients/cli
-    cargo clean
-    cargo build --release
 }
 
 # Function to remove service and clean up
@@ -97,7 +105,7 @@ cleanup
 echo "Installing Nexus..."
 install_nexus
 
-echo "Fixing unused import warning and compiling again..."
+echo "Memperbaiki peringatan impor yang tidak digunakan dan mengompilasi ulang..."
 fix_unused_import
 
 echo "Installation complete. Checking service status..."

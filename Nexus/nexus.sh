@@ -24,9 +24,9 @@ install_nexus() {
         echo "Nexus Prover is already installed."
     fi
 
-    SERVICE_FILE="/etc/systemd/system/nexusd.service"
+    SERVICE_FILE="/etc/systemd/system/nexus.service"
     if [ ! -f "$SERVICE_FILE" ]; then
-        echo "Creating systemd service file for nexusd..."
+        echo "Creating systemd service file for nexus..."
         sudo tee $SERVICE_FILE > /dev/null <<EOF
 [Unit]
 Description=Nexus Network
@@ -44,13 +44,13 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
     else
-        echo "Systemd service file for nexusd already exists."
+        echo "Systemd service file for nexus already exists."
     fi
 
-    echo "Reloading systemd daemon and starting nexusd service..."
+    echo "Reloading systemd daemon and starting nexus service..."
     sudo systemctl daemon-reload
-    sudo systemctl start nexusd
-    sudo systemctl enable nexusd
+    sudo systemctl start nexus
+    sudo systemctl enable nexus
 }
 
 # Function to fix unused import warning
@@ -61,27 +61,28 @@ fix_unused_import() {
 
 # Function to remove service and clean up
 cleanup() {
-    echo "Stopping and disabling nexusd service..."
-    sudo systemctl stop nexusd
-    sudo systemctl disable nexusd
+    echo "Stopping and disabling nexus service..."
+    sudo systemctl stop nexus
+    sudo systemctl disable nexus
     echo "Removing service file..."
-    sudo rm -f /etc/systemd/system/nexusd.service
+    sudo rm -f /etc/systemd/system/nexus.service
     echo "Reloading systemd daemon..."
     sudo systemctl daemon-reload
+    echo "Removing Nexus installation..."
+    rm -rf $HOME/.nexus
 }
 
 # Main script execution
+echo "Cleaning up old installation..."
+cleanup
+
+echo "Installing Nexus..."
+install_nexus
+
 fix_unused_import
 
-# Try to run the prover and check for errors
-if ! cargo run --release --bin prover -- beta.orchestrator.nexus.xyz; then
-    echo "Error detected, cleaning up and reinstalling..."
-    cleanup
-    install_nexus
-else
-    echo "Prover ran successfully."
-fi
+echo "Installation complete. Checking service status..."
+sudo systemctl status nexus
 
-# Follow the logs
-echo "Following the logs for nexusd service..."
-sudo journalctl -fu nexusd -o cat
+echo "Following the logs for nexus service..."
+sudo journalctl -fu nexus -o cat

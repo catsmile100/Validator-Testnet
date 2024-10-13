@@ -12,7 +12,7 @@ install_nexus() {
         echo "Installing Rust..."
         sudo curl https://sh.rustup.rs -sSf | sh -s -- -y
         source $HOME/.cargo/env
-        export PATH="$HOME/.cargo/env:$PATH"
+        export PATH="$HOME/.cargo/bin:$PATH"
         rustup update
     else
         echo "Rust is already installed. Updating..."
@@ -26,7 +26,7 @@ install_nexus() {
     sudo curl https://cli.nexus.xyz/install.sh | sh
 
     echo "Menyesuaikan kepemilikan file..."
-    sudo chown -R $USER:$USER $HOME/.nexus
+    sudo chown -R root:root /root/.nexus
 
     SERVICE_FILE="/etc/systemd/system/nexus.service"
     echo "Creating systemd service file for nexus..."

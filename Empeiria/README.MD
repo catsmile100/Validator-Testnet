@@ -1,6 +1,7 @@
 <p align="center">
-  <img height="350" height="350" src="https://bafkreid6e5xvw5cjhm2vag5kfpg7hjb6vyhp427xsrujqn7uolrx6e4ley.ipfs.nftstorage.link">
+  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1575715887591612419/D2Aw6uNh_400x400.jpg">
 </p>
+
 
 <h1>
 <p align="center"> Empeiria </p>
@@ -23,8 +24,8 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 | Empe | 4          | 8         | 200 GB  | Ubuntu 22.04 LTS  |
 
 ## Installation
-1. **Install**
-	```
+**Install**
+```
 cd $HOME
 VER="1.22.3"
 wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
@@ -124,7 +125,8 @@ fi
 sudo systemctl daemon-reload
 sudo systemctl enable emped
 sudo systemctl restart emped && sudo journalctl -u emped -f
-	```
+```
+
 2. **Check Status**
 	```
 	sudo systemctl status tangle

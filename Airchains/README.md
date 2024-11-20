@@ -1,7 +1,6 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1689908960726245376/NSEHl_ga_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/5c185f56-6dcb-4b6c-acef-fa420ee91496">
 </p>
-
 
 </h2>
 <p align="center"> Airchains </p>

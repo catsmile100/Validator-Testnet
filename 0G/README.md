@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1762204546913468416/KBZhJfhC_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/b6405d54-9ea3-443f-b920-e2a717fdf499">
 </p>
 <h1>
 <p align="center"> 0G </p>

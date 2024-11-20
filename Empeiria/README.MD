@@ -4,7 +4,7 @@
 
 </h2>
 <p align="center"> Empeiria </p>
-<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+<p align="center"> Empeiria is the first End-to-End Verifiable Data Infrastructure (EVDI) that combines Self-Sovereign Identity (SSI), Decentralized Identifiers (DIDs), and Zero-Knowledge-Proofs (ZKPs) to ensure trusted and verifiable data management. It enhances AI model efficiency through structured data verification while enabling organizations and individuals to maintain complete control over their digital identity with seamless one-click deployment and passwordless authentication </p>
 </h2>
 
 <p align="center">

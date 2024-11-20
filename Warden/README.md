@@ -3,7 +3,7 @@
 </p>
 </h2>
 <p align="center"> Warden</p>
-<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+<p align="center"> Warden Protocol is a groundbreaking infrastructure that brings AI capabilities to Web3, enabling safe integration of artificial intelligence with dApps, protocols, and smart contracts across any blockchain. Through its verification and execution layers, it provides developers with simplified cryptography, abstracted interoperability, and AI-ready infrastructure while ensuring secure and verified AI results through blockchain consensus </p>
 </h2>
 
 <p align="center">

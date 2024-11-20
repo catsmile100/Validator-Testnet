@@ -2,9 +2,10 @@
   <img height="350" height="350" src="https://github.com/user-attachments/assets/036ac877-a23d-4904-adff-162bc9157016">
 </p>
 
-<h1>
+</h2>
 <p align="center"> Story </p>
-</h1>
+<p align="center"> Story is the World's IP Blockchain platform designed to onramp Programmable IP for powering next-generation AI, DeFi, and consumer applications through tokenization of intellectual property. Through its Proof of Creativity mechanism and EVM-compatible L1 blockchain, it enables creators to tokenize, monetize, and distribute their IP while ensuring proper attribution and compensation across collaborative scenarios and AI-powered remixes </p>
+</h2>
 
 <p align="center">
   <a href="https://www.story.foundation/">Official</a> |

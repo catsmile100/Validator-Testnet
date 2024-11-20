@@ -8,7 +8,7 @@
 
 
 <p align="center">
-  <a href="https://community.pwrlabs.io/projects">Official</a> |
+  <a href="https://www.pwrlabs.io/">Official</a> |
   <a href="https://x.com/pwrlabs">Twitter</a> |
   <a href="https://github.com/pwrlabs/PWR-Validator">Github</a> |
   <a href="https://discord.com/invite/DJkcuy9SAg">Discord</a> |

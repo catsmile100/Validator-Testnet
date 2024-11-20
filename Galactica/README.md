@@ -1,14 +1,17 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1674417594194079747/xWQbhp9N_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/069445ae-4fa5-4c52-a5d6-1613748ee3ae">
 </p>
-<h1>
+</h2>
 <p align="center"> Galactica </p>
-</h1>
+<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+</h2>
 
-### Documentation
-> - [Site](https://galactica.com/)
-> - [X](https://x.com/GalacticaNet)
-> - [Discord](https://discord.com/invite/galactica)
+<p align="center">
+  <a href="https://galactica.com/">Home</a> |
+  <a href="https://discord.com/invite/galactica">Discord</a> |
+  <a href="https://x.com/GalacticaNet">Twitter</a> 
+</p>
+
 
 ### Minimum Hardware :
 OS  | CPU     | RAM      | SSD     | 

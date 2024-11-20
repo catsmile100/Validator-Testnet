@@ -8,9 +8,12 @@
 
 
 <p align="center">
-  <a href="https://vipernet.xyz/">Official</a> |
-  <a href="https://x.com/viper_network_">Twitter</a> |
-  <a href="https://discord.com/invite/eBDYH4Zxek">Discord</a>
+  <a href="https://community.pwrlabs.io/projects">Official</a> |
+  <a href="https://x.com/pwrlabs">Twitter</a> |
+  <a href="https://github.com/pwrlabs/PWR-Validator">Github</a> |
+  <a href="https://discord.com/invite/DJkcuy9SAg">Discord</a> |
+  <a href="https://explorer.pwrlabs.io/">Explorer</a>
+  
 </p>
 
 <p align="center">
@@ -100,7 +103,9 @@ sudo systemctl stop pwr.service
 ```
 sudo systemctl stop pwr.service
 ```
+```
 sudo rm -rf validator.jar config.json blocks rocksdb
+```
 ```
 latest_version=$(curl -s https://api.github.com/repos/pwrlabs/PWR-Validator/releases/latest | grep -Po '"tag_name": "\K.?(?=")')
 wget "https://github.com/pwrlabs/PWR-Validator/releases/download/$latest_version/validator.jar"

@@ -1,14 +1,16 @@
 <p align="center">
-  <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/0bb521df-3ce0-404d-a58d-0d6d89c8a99c">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/41ba1e56-cfe1-47ea-8b65-4be5b6b89a3e">
 </p>
-<h1>
-<p align="center"> Warden </p>
-</h1>
+</h2>
+<p align="center"> Warden</p>
+<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+</h2>
 
-### Documentation
-> - [Site](https://wardenprotocol.org/)
-> - [X](https://x.com/wardenprotocol)
-> - [Discord](https://discord.com/invite/wardenprotocol)
+<p align="center">
+  <a href="https://wardenprotocol.org">Home</a> |
+  <a href="https://discord.com/invite/wardenprotocol">Discord</a> |
+  <a href="https://x.com/wardenprotocol">Twitter</a>
+</p>
 
 ### Minimum Hardware :
 OS  | CPU     | RAM      | SSD     | 

@@ -1,15 +1,20 @@
 <p align="center">
   <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1689908960726245376/NSEHl_ga_400x400.jpg">
 </p>
-<h1>
-<p align="center"> Airchains </p>
-</h1>
 
-### Documentation
-> - [Site](https://www.airchains.io/)
-> - [X](https://x.com/airchains_io)
-> - [Discord](https://discord.com/invite/airchains)
-> - [Docs](https://docs.airchains.io/)
+
+</h2>
+<p align="center"> Airchains </p>
+<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+</h2>
+
+
+<p align="center">
+  <a href="https://www.airchains.io/">Home</a> |
+  <a href="https://discord.com/invite/airchains">Discord</a> |
+  <a href="https://x.com/airchains_io">Twitter</a> |
+  <a href="https://docs.airchains.io/">Docs</a> 
+</p>
 
 ### Services
 > - [RPC] https://airchains-rpc.catsmile.tech

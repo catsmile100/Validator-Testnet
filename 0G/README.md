@@ -3,8 +3,10 @@
 </p>
 <h1>
 <p align="center"> 0G </p>
-<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
 </h1>
+</h2>
+<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+</h2>
 
 <p align="center">
   <a href="https://0g.ai/">Home</a> |

@@ -3,7 +3,7 @@
 </p>
 </h2>
 <p align="center"> Galactica </p>
-<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+<p align="center"> Galactica is pioneering the Identity Virtual Machine (IVM), a revolutionary omni-chain platform that transforms social capital in Web3 through encrypted identity management and reputation systems. Using advanced zkKYC technology and FHE-powered Reputation Root Contracts, it enables users to securely manage their digital identity while allowing dApps to provide reputation-based services without compromising privacy </p>
 </h2>
 
 <p align="center">

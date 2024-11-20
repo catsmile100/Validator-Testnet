@@ -5,7 +5,7 @@
 
 </h2>
 <p align="center"> Airchains </p>
-<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+<p align="center"> Airchains is a revolutionary multichain zkFHE privacy-focused modular framework that enables seamless interoperability between EVM, SVM, and Cosmwasm networks. It allows developers to build customizable zero-knowledge rollups with built-in privacy features and flexible data availability options through a low-code deployment process</p>
 </h2>
 
 

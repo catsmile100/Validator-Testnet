@@ -1,11 +1,10 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1726994057510199296/1-v6W-CJ_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/cc17213c-168f-41e8-a4e1-20e3a3ef636b">
 </p>
 
 <h1>
 <p align="center"> PWR </p>
 </h1>
-
 
 <p align="center">
   <a href="https://www.pwrlabs.io/">Official</a> |

@@ -5,17 +5,17 @@
 <p align="center"> 0G </p>
 </h1>
 
-### Documentation
-> - [Site](https://0g.ai/)
-> - [X](https://twitter.com/0G_labs)
-> - [Discord](https://discord.com/invite/0glabs)
-> - [Github](https://github.com/0glabs)
+<p align="center">
+  <a href="https://0g.ai/">Home</a> |
+  <a href="https://discord.com/invite/0glabs">Discord</a> |
+  <a href="https://twitter.com/0G_labs">Twitter</a> |
+  <a href="https://github.com/0glabs">Github</a> 
+</p>
 
 ### Minimum Hardware :
 OS  | CPU     | RAM      | SSD     | 
 | ------------- | ------------- | ------------- | -------- |
 | Ubuntu 22.04 | 8          | 64         | 1 TB  | 
-
 
 # Install required packages
 ```

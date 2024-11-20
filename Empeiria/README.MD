@@ -2,20 +2,15 @@
   <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1575715887591612419/D2Aw6uNh_400x400.jpg">
 </p>
 
-
-<h1>
+</h2>
 <p align="center"> Empeiria </p>
-</h1>
+<p align="center"> 0G is the first decentralized AI operating system designed to power the future of AI infrastructure. Built as the fastest modular AI blockchain, it provides unmatched scalability with 50,000x faster performance and 100x lower costs than competitors, enabling seamless integration of Web3 and AI applications </p>
+</h2>
 
 <p align="center">
   <a href="https://empe.io/">Official</a> |
   <a href="https://t.me/web3Empeiria">Telegram</a> |
   <a href="https://x.com/empe_io">Twitter</a> 
-
-</p>
-
-<p align="center">
-  <h1>Validator Installation</h1>
 </p>
 
 ## Minimum Spec Hardware

@@ -1,21 +1,28 @@
 <p align="center">
   <img height="350" height="350" src="https://github.com/catsmile100/Validator-Testnet/assets/85368621/d7cb2811-aea3-459a-9a04-c45b4f85bfc4">
 </p>
-<h1>
-<p align="center"> Analog </p>
-</h1>
 
-<p align="center">
-  <a href="https://www.analog.one/">Link</a> |
-  <a href="https://discord.com/invite/analog">Discord</a> |
-  <a href="https://x.com/OneAnalog">Twitter</a> |
-  <a href="https://docs.analog.one/documentation/node-operators/introduction">Docs</a> 
+<h2>
+<p align="center"> Analog </p>
+</h2>
+
+<p align="center" style="font-size: 14px; color: #c9d1d9; max-width: 800px; margin: 0 auto;">
+  Analog is an interoperability hub that enables cross-chain communication and development of multi-chain DApps across different blockchains (Ethereum, Polkadot, etc.). It offers three main products: Timechain (sovereign blockchain), Analog GMP (messaging protocol), and Analog Watch (data querying protocol)
 </p>
 
-Minimum Hardware :
-OS  | CPU     | RAM      | NVMe     | 
-| ------------- | ------------- | ------------- | -------- |
-| Ubuntu 22.04 | 8          | 16         | 300 GB  | 
+<p align="center">
+  <a href="https://www.analog.one/">Home</a> |
+  <a href="https://discord.com/invite/analog">Discord</a> |
+  <a href="href="https://x.com/OneAnalog">Twitter</a> |
+  <a href="href="https://docs.analog.one/documentation/node-operators/introduction">Docs</a> 
+</p>
+
+Minimum Hardware:
+
+| OS | CPU | RAM | SSD |
+|:---|:---|:---|:---|
+| Ubuntu 22.04 | 8 | 16 | 300 GB |
+
 
 ### - Complete the form  <a href="https://l5d87lam6fy.typeform.com/to/kwlADm6U">here</a>
 ### - Create a Polkadot wallet for stash account using the Subwallet extension

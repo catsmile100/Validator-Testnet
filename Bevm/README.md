@@ -1,22 +1,27 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1738138565874425856/xOG10LN0_400x400.jpg">
-
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/01b020ef-2373-4af6-8627-7ee0137a3494">
 </p>
-<h1>
+
+<h2>
 <p align="center"> BEVM </p>
-</h1>
+</h2>
 
-### Documentation
-> - [Documentation](https://documents.bevm.io/build/run-a-node)
-> - [Discord](https://discord.com/invite/uSXmqaEZDB)
-> - [Blog](https://medium.com/@BTClayer2/announcing-incentivized-bevm-testnet-fullnode-program-31cbc047b950)
-> - [Telemetry](https://telemetry.bevm.io/#/0x41cfeafc7177775a0e838b3725a0178b89ebf5dde1b5f766becbf975a24e297b)
+<p align="center" style="font-size: 14px; color: #c9d1d9; max-width: 800px; margin: 0 auto;">
+  BEVM (Bitcoin Ethereum Virtual Machine) is a Bitcoin Layer-2 Network built on Substrate that's fully compatible with Ethereum Virtual Machine, allowing developers to use both Ethereum and Substrate APIs while maintaining compatibility with Ethereum wallets like MetaMask
+</p>
+
+<p align="center">
+  <a href="https://documents.bevm.io/build/run-a-node">Home</a> |
+  <a href="https://discord.com/invite/uSXmqaEZDB">Discord</a> 
+</p>
 
 
-### Minimum Hardware :
-OS  | CPU     | RAM      | SSD     | 
-| ------------- | ------------- | ------------- | -------- |
-| Ubuntu 20.04 | 2          | 2         | 300 GB  | 
+Minimum Hardware:
+
+| OS | CPU | RAM | SSD |
+|:---|:---|:---|:---|
+| Ubuntu 22.04 | 2 | 2 | 200 GB |
+
 
 ### Install
 ```

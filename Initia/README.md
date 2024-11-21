@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1604751287618113536/ayyW6i94_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/ace7113e-8b8c-4267-a6b5-1939ae3ead7c">
 </p>
 <h1>
 <p align="center"> Initia </p>

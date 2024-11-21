@@ -1,11 +1,11 @@
 <p align="center">
-  <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1696539323590385664/gY9hSgaR_400x400.jpg">
+  <img height="350" height="350" src="https://github.com/user-attachments/assets/033d0d45-4e09-41ec-b806-1ee76c4fcb96">
 </p>
 <h1>
 <p align="center"> Aleo </p>
 </h1>
 
-## Requirements Provers
+Requirements Provers
 
 | No. | Requirements                                 | Specifications                                      |
 |----:|----------------------------------------------|-----------------------------------------------------|
@@ -13,48 +13,48 @@
 |  2. | CPU                                          | 32-cores (64-cores preferred)                       |
 |  3. | RAM                                          | 32GB of memory (64GB or larger preferred)           |
 |  4. | Storage                                      | 128GB of disk space                                 |
-|  5. | Network Bandwidth                            | 250Mbps of upload and download bandwidth           |
+|  5. | Network Bandwidth                            | 250Mbps of upload and download bandwidth            |
 |  6. | GPU (optional)                               | CUDA-enabled GPU (optional)                         |
 
-1. **Install Dependency**
+Install Dependency
 ```
 sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install ufw
 ```
 ```
 sudo apt install git -y && sudo apt install screen -y
 ```
-2. **Open Port**
+Open Port
 ```
 sudo ufw allow 4133/tcp && sudo ufw allow 3033/tcp && sudo ufw allow 22
 ```
 ```
 sudo ufw enable && sudo ufw status
 ```
-3. **Cloning Repository**
+Cloning Repository
 ```
 git clone https://github.com/AleoHQ/snarkOS.git --depth 1
 ```
-4. **Directory**
+Directory
 ```
 cd snarkOS
 ```
-5. **Build**
+Build
 ```
 ./build_ubuntu.sh
 ```
-6. **Setting Screen**
+Setting Screen
 ```
 screen -S aleo
 ```
-7. **Install**
+Install
 ```
 cargo install --path .
 ```
-8. **Run an Aleo Client**
+Run an Aleo Client
 ```
 ./run-client.sh
 ```
-9. **Wait For Synchronize**
+Wait For Synchronize
 ```
 2023-12-05T00:50:50.779308Z  INFO Synced up to block 36299 of 803850 - 4% complete (est. 374 minutes remaining)
 2023-12-05T00:50:50.779506Z DEBUG Requesting blocks 42650 to 42700 (of 803850)
@@ -63,27 +63,26 @@ cargo install --path .
 2023-12-05T00:50:52.136740Z  INFO Synced up to block 36399 of 803850 - 4% complete (est. 374 minutes remaining)
 2023-12-05T00:50:52.136872Z DEBUG Requesting blocks 42750 to 42800 (of 803850)
 ```
-10. **Create Account**
+Create Account
 ```
 snarkos account new
 ```
-11. **Save**
+Save
 ```
- Attention - Remember to store this account private key and view key.
-
-  Private Key  APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me And Use In The Next Step
-     View Key  AViewKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
-      Address  aleo1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
+Attention - Remember to store this account private key and view key.
+Private Key  APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me And Use In The Next Step
+View Key  AViewKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
+Address  aleo1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  <-- Save Me
 ```
-12. **Run Prover**
+Run Prover
 ```
 ./run-prover.sh
 ```
-13. **Input Privatekey**
+Input Privatekey
 ```
 Enter the Aleo Prover account private key: APrivateKey1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-14. **Check Prover**
+Check Prover
 ```
 https://explorer.hamp.app/address?a=<wallet_aleo>
 ```
@@ -95,36 +94,14 @@ Back Screen
 ```
 screen -r aleo
 ```
-
-
-## DELETE
-```
-CTRL+A D
-```
-```
-CTRL C
-```
+DELETE
 ```
 cd ~
-```
-```
 rm -rf snarkOS
-```
-```
 sudo apt-get remove --purge ufw
-```
-```
 sudo apt-get remove --purge git
-```
-```
 sudo apt-get remove --purge screen
-```
-```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --uninstall
-```
-```
 sudo rm -rf /etc/ufw
-```
-```
 rm -rf ~/.gitconfig
 ```

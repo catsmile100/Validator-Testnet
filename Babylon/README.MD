@@ -2,9 +2,13 @@
   <img height="350" height="350" src="https://pbs.twimg.com/profile_images/1781168613661274112/DVPEQLrM_400x400.jpg">
 </p>
 
-<h1>
+<h2>
 <p align="center"> Babylon </p>
-</h1>
+</h2>
+
+<p align="center" style="font-size: 14px; color: #c9d1d9; max-width: 800px; margin: 0 auto;">
+  Babylon is the world's first self-custodial Bitcoin staking platform that allows BTC holders to earn altcoin yields while maintaining full control of their Bitcoin without bridging or wrapping
+</p>
 
 <p align="center">
   <a href="https://babylonchain.io/">Official</a> |

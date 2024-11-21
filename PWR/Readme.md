@@ -21,9 +21,9 @@ PWR Chain is a blockchain platform offering unlimited interoperable virtual mach
 </p>
 
 ## Minimum Spec Hardware
-NODE  | CPU     | RAM      | SSD     | OS     |
+OS  | CPU     | RAM      | SSD     | 
 | ------------- | ------------- | ------------- | -------- | -------- |
-| PWR | 2          | 4         | 200 MB  | Ubuntu 22.04 LTS  |
+| Ubuntu 22.04 LTS | 2          | 4         | 200 MB  |
 
 ### Install Dependencies
 ```

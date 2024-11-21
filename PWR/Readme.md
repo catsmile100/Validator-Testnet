@@ -20,7 +20,7 @@ PWR Chain is a blockchain platform offering unlimited interoperable virtual mach
   
 </p>
 
-Minimum Spec Hardware
+Minimum Spec
 
 | OS | CPU | RAM | SSD |
 |----|-----|-----|-----|

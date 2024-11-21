@@ -20,16 +20,17 @@ PWR Chain is a blockchain platform offering unlimited interoperable virtual mach
   
 </p>
 
-## Minimum Spec Hardware
-OS  | CPU     | RAM      | SSD     | 
-| ------------- | ------------- | ------------- | -------- | -------- |
-| Ubuntu 22.04 LTS | 2          | 4         | 200 MB  |
+Minimum Spec Hardware
 
-### Install Dependencies
+| OS | CPU | RAM | SSD |
+|----|-----|-----|-----|
+| Ubuntu 22.04 LTS | 2 Cores | 4 GB | 200 MB |
+
+Install Dependencies
 ```
 sudo apt install curl wget ufw openjdk-19-jre-headless -y
 ```
-### Configure Firewall
+Configure Firewall
 ```
 sudo ufw allow 22/tcp
 sudo ufw allow 8231/tcp
@@ -37,24 +38,24 @@ sudo ufw allow 8085/tcp
 sudo ufw allow 7621/udp
 sudo ufw enable
 ```
-### Binary
+Binary
 ```
 latest_version=$(curl -s https://api.github.com/repos/pwrlabs/PWR-Validator/releases/latest | grep -Po '"tag_name": "\K.?(?=")')
 wget "https://github.com/pwrlabs/PWR-Validator/releases/download/$latest_version/validator.jar"
 wget "https://github.com/pwrlabs/PWR-Validator/raw/refs/heads/main/config.json"
 ```
 
-### Create Password File
+Create Password File
 ```
 echo "YOUR_PASSWORD" > password
 chmod 600 password
 ```
-### Import Private Key
+Import Private Key
 ```
 java -jar validator.jar --import-key YOUR_PRIVATE_KEY password YOUR_SERVER_IP --compression-level 0
 ```
 
-### Create Systemd Service
+Create Systemd Service
 ```
 sudo tee /etc/systemd/system/pwr.service > /dev/null <<EOF
 [Unit]
@@ -74,7 +75,7 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 ```
-### Start Service  
+Start Service  
 ```
 sudo systemctl daemon-reload
 ```
@@ -83,23 +84,23 @@ sudo systemctl enable pwr.service
 sudo systemctl start pwr.service
 ```
 
-### Check Status
+Check Status
 ```
 sudo systemctl status pwr
 ```
-### View Logs
+View Logs
 ```
 sudo journalctl -u pwr -f
 ```
-### Restart Service
+Restart Service
 ```
 sudo systemctl restart pwr
 ```
-### Stop service
+Stop service
 ```
 sudo systemctl stop pwr.service
 ```
-### Upgrade
+Upgrade
 ```
 sudo systemctl stop pwr.service
 ```

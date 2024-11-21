@@ -17,10 +17,6 @@
   <a href="https://testnet.itrocket.net/babylon/staking">Explorer</a>
 </p>
 
-<p align="center">
-  <h1>Validator Installation</h1>
-</p>
-
 ## Minimum Spec Hardware
 NODE  | CPU     | RAM      | SSD     | OS     |
 | ------------- | ------------- | ------------- | -------- | -------- |

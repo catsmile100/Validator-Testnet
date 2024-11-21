@@ -4,8 +4,11 @@
 
 <h1>
 <p align="center"> PWR </p>
-PWR Chain is a blockchain platform offering unlimited interoperable virtual machines with multi-language support, capable of processing 300,000+ TPS with quantum-resistant security. It enables universal development through customizable External Virtual Machines while maintaining low operational costs and high efficiency through its POP consensus mechanism
 </h1>
+
+<p align="center" style="font-size: 14px">
+PWR Chain is a blockchain platform offering unlimited interoperable virtual machines with multi-language support, capable of processing 300,000+ TPS with quantum-resistant security. It enables universal development through customizable External Virtual Machines while maintaining low operational costs and high efficiency through its POP consensus mechanism
+</p>
 
 
 <p align="center">

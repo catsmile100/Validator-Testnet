@@ -15,11 +15,6 @@
   <a href="https://faucet.nubit.org/">Faucet</a>
   </p>
 
-Minimum Hardware :
-OS  | CPU     | RAM      | SSD     | 
-| ------------- | ------------- | ------------- | -------- |
-| Ubuntu 22.04 | 2          | 2         | 500 GB  | 
-
 ### Update 
 ```
 sudo apt update && sudo apt upgrade -y

@@ -30,28 +30,8 @@ sudo apt install curl -y && curl -o tangle-install.sh https://raw.githubusercont
 chmod +x tangle-install.sh
 ./tangle-install.sh
 ```
-Check Status
-```
-sudo systemctl status tangle
-```
-Restart
-```
-sudo systemctl restart tangle
-```
-Check Logs
-```
-sudo journalctl -u tangle -f -o cat
-```
 Check node
 ```
 https://telemetry.polkadot.io/#list/0x3d22af97d919611e03bbcbda96f65988758865423e89b2d99547a6bb61452db3
 ```
-Delete
-```
-systemctl stop tangle
-systemctl disable tangle 
-rm /etc/systemd/system/tangle.service 
-systemctl daemon-reload 
-cd 
-rm -r .tangle
-```
+

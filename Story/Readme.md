@@ -53,11 +53,9 @@ mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/p
 rm -rf $HOME/.story/geth/odyssey/geth/chaindata
 curl https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story/geth/odyssey/geth
 
-# Start services and check logs
-sudo systemctl daemon-reload
-sudo systemctl start story-geth story
-sudo systemctl enable story-geth story
-sudo journalctl -u story-geth -f
+# restart node and check logs
+sudo systemctl restart story story-geth
+sudo journalctl -u story-geth -u story -f
 ```
 # Auto Install
 ```

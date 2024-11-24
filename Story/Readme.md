@@ -234,7 +234,7 @@ ls -l /root/.story/story/cosmovisor/current
 $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story version
 ```
 ```
-# Check the new binary version in upgrade folder. It should be new version v0.13.0
+# Check the binary version in upgrade folder
 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story version
 ```
 ```

@@ -185,3 +185,16 @@ story validator stake \
    --stake 1024000000000000000000 \
    --private-key xxxxxxxxxxxxxx
 ```
+# Delete node
+```
+sudo systemctl stop story-geth
+sudo systemctl stop story
+sudo systemctl disable story-geth
+sudo systemctl disable story
+sudo rm /etc/systemd/system/story-geth.service
+sudo rm /etc/systemd/system/story.service
+sudo systemctl daemon-reload
+sudo rm -rf $HOME/.story
+sudo rm $HOME/go/bin/story-geth
+sudo rm $HOME/go/bin/story
+```

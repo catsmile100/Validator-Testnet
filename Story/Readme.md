@@ -26,11 +26,11 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 # Service
 ## RPC
 ```
-https://rpc-story.catsmile.tech/
+https://rpc-story.catsmile.tech
 ```
 ## API
 ```
-https://api-story.catsmile.tech/
+https://api-story.catsmile.tech
 ```
 ## peers 
 ```
@@ -77,7 +77,7 @@ sudo journalctl -u story-geth -u story -f
 ```
 # Auto Install
 ```
-curl -O https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh && chmod +x installstory.sh && ./installstory.sh
+curl -O https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh && sed -i 's/\r$//' installstory.sh && chmod +x installstory.sh && ./installstory.sh
 ```
 
 # Manual Install

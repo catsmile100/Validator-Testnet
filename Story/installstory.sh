@@ -189,7 +189,7 @@ function check_sync() {
 function delete_node() {
     clear
     echo -e "\e[31m╔══════════════════════════════════════╗"
-    echo "║         DELETE STORY NODE            ║"
+    echo "║         DELETE STORY NODE                ║"
     echo "╚═════════════════════════���════════════╝\e[0m"
     
     echo -e "\n\e[31mWarning: This will completely remove Story node from your system!\e[0m"
@@ -224,7 +224,7 @@ function upgrade_node() {
     clear
     echo "╔══════════════════════════════════════╗"
     echo "║        STORY NODE UPGRADE            ║"
-    echo "║          catsmile.tech              ║"
+    echo "║          catsmile.tech               ║"
     echo "╚══════════════════════════════════════╝"
 
     echo -e "\n\e[33mPreparing Cosmovisor upgrade to v0.13.0...\e[0m"
@@ -291,7 +291,7 @@ function restart_services() {
     clear
     echo "╔══════════════════════════════════════╗"
     echo "║        STORY NODE RESTART            ║"
-    echo "║          catsmile.tech              ║"
+    echo "║          catsmile.tech               ║"
     echo "╚══════════════════════════════════════╝"
 
     echo -e "\n\e[33mStopping Story services...\e[0m"

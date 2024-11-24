@@ -37,7 +37,7 @@ udo apt update
 sudo apt-get update
 sudo apt install curl git make jq build-essential gcc unzip wget lz4 aria2 -y
 ```
-## Story-Geth binary `v0.10.1`
+## Story-Geth binary v0.10.1
 ```
 cd $HOME
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
@@ -50,7 +50,7 @@ mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
 source $HOME/.bash_profile
 story-geth version
 ```
-## Story binary 'v0.12.1'
+## Story binary v0.12.1
 ```
 cd $HOME
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
@@ -129,20 +129,18 @@ lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/odyssey/geth/ > 
 # restore priv_validator_state.json
 cp ~/.story/priv_validator_state.json.backup ~/.story/story/data/priv_validator_state.json
 ```
-
 ## Restart story-geth
 ```
-sudo systemctl daemon-reload && \
-sudo systemctl start story-geth && \
-sudo systemctl enable story-geth && \
+sudo systemctl daemon-reload
+sudo systemctl start story-geth
+sudo systemctl enable story-geth
 sudo systemctl status story-geth
 ```
-
 ## Restart story
 ```
-sudo systemctl daemon-reload && \
-sudo systemctl start story && \
-sudo systemctl enable story && \
+sudo systemctl daemon-reload 
+sudo systemctl start story
+sudo systemctl enable story
 sudo systemctl status story
 ```
 ## Check logs story-geth
@@ -198,7 +196,7 @@ sudo rm -rf $HOME/.story
 sudo rm $HOME/go/bin/story-geth
 sudo rm $HOME/go/bin/story
 ```
-## Countdown Block upgrade Story 'v0.13.0'
+## Countdown Block upgrade Story v0.13.0
 ```
 https://odyssey.storyscan.xyz/block/countdown/858000
 ```

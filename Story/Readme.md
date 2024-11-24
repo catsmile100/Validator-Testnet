@@ -37,7 +37,7 @@ udo apt update
 sudo apt-get update
 sudo apt install curl git make jq build-essential gcc unzip wget lz4 aria2 -y
 ```
-Download Story-Geth binary 'v0.10.1'
+# Download Story-Geth binary `v0.10.1`
 ```
 cd $HOME
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64

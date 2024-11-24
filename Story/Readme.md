@@ -34,27 +34,29 @@ https://api-story.catsmile.tech/
 ```
 ## Snapshot
 ```
-# Snapshot
+# Install dependencies and disable statesync
 sudo apt install curl jq lz4 unzip -y
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.story/story/config/config.toml
 
-# Stop node dan backup priv_validator_state.json
+# Stop node and backup priv_validator_state.json
 sudo systemctl stop story-geth story
 cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
 
-# Hapus data lama dan unpack Story snapshot
+# Remove old data and unpack Story snapshot
 rm -rf $HOME/.story/story/data
 curl https://files-story.catsmile.tech/story/story-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story/story
 
 # Restore priv_validator_state.json
 mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
 
-# Hapus data geth dan unpack Geth snapshot
+# Remove geth data and unpack Geth snapshot
 rm -rf $HOME/.story/geth/odyssey/geth/chaindata
 curl https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story/geth/odyssey/geth
 
-# Restart node dan check logs
-sudo systemctl restart story-geth story
+# Start services and check logs
+sudo systemctl daemon-reload
+sudo systemctl start story-geth story
+sudo systemctl enable story-geth story
 sudo journalctl -u story-geth -f
 ```
 # Auto Install

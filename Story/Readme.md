@@ -32,6 +32,16 @@ https://rpc-story.catsmile.tech/
 ```
 https://api-story.catsmile.tech/
 ```
+## peers 
+```
+PEERS=$(curl -s -X POST https://rpc-story.catsmile.tech -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net_info","params":[],"id":1}' | jq -r '.result.peers[] | select(.connection_status.SendMonitor.Active == true) | "\(.node_info.id)@\(if .node_info.listen_addr | contains("0.0.0.0") then .remote_ip + ":" + (.node_info.listen_addr | sub("tcp://0.0.0.0:"; "")) else .node_info.listen_addr | sub("tcp://"; "") end)"' | tr '\n' ',' | sed 's/,$//' | awk '{print "\"" $0 "\""}')
+sed -i "s/^persistent_peers *=.*/persistent_peers = $PEERS/" "$HOME/.story/story/config/config.toml"
+    if [ $? -eq 0 ]; then
+echo -e "\033[1;32mPeers updated successfully in config.toml\033[0m"
+    else
+echo -e "\033[1;31mError: Failed to update peers in config.toml\033[0m"
+fi
+```
 ## Snapshot
 ```
 # Install dependencies and disable statesync

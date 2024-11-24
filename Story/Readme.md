@@ -21,7 +21,7 @@
 Minimum Spec Hardware
 NODE  | CPU     | RAM      | SSD     | OS     |
 | ------------- | ------------- | ------------- | -------- | -------- |
-| Story | 4          | 8         | 200 GB  | Ubuntu 22.04 LTS  |
+| Story | 4          | 16         | 400 GB  | Ubuntu 22.04 LTS  |
 
 # Auto Installation
 ```

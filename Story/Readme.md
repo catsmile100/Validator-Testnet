@@ -34,6 +34,10 @@ https://api-story.catsmile.tech/
 ```
 ## peers 
 ```
+dc4211675509d898f1b0acd39b532ba30f0d6bd3@peer-story.catsmile.tech:26656
+```
+## live peers 
+```
 PEERS=$(curl -s -X POST https://rpc-story.catsmile.tech -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net_info","params":[],"id":1}' | jq -r '.result.peers[] | select(.connection_status.SendMonitor.Active == true) | "\(.node_info.id)@\(if .node_info.listen_addr | contains("0.0.0.0") then .remote_ip + ":" + (.node_info.listen_addr | sub("tcp://0.0.0.0:"; "")) else .node_info.listen_addr | sub("tcp://"; "") end)"' | tr '\n' ',' | sed 's/,$//' | awk '{print "\"" $0 "\""}')
 sed -i "s/^persistent_peers *=.*/persistent_peers = $PEERS/" "$HOME/.story/story/config/config.toml"
     if [ $? -eq 0 ]; then

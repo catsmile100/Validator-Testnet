@@ -224,7 +224,7 @@ function delete_node() {
 # Tambahkan fungsi upgrade
 function upgrade_node() {
     clear
-    echo "╔═══════════════════════════════╗"
+    echo "╔══════════════════════════════╗"
     echo "║        STORY NODE UPGRADE     ║"
     echo "║          catsmile.tech        ║"
     echo "╚═══════════════════════════════╝"
@@ -407,6 +407,48 @@ function create_validator() {
     read
 }
 
+function create_staking() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY CREATE STAKING          ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
+
+    # Get validator public key and check balance first
+    if [ -f "$HOME/.story/story/config/private_key.txt" ]; then
+        VALIDATOR_PUBKEY=$(story validator export --export-evm-key 2>/dev/null | grep "Compressed Public Key (hex):" | cut -d: -f2 | tr -d ' ')
+        PRIVATE_KEY=$(cat $HOME/.story/story/config/private_key.txt | grep -oP 'PRIVATE_KEY=\K.*')
+        EVM_ADDRESS=$(story validator export --export-evm-key 2>/dev/null | grep "EVM Address:" | cut -d: -f2 | tr -d ' ')
+        BALANCE=$(story-geth --exec "eth.getBalance('$EVM_ADDRESS')" attach ~/.story/geth/odyssey/geth.ipc)
+        
+        echo -e "\n\e[1;33mWallet Info:\e[0m"
+        echo -e "EVM Address: $EVM_ADDRESS"
+        echo -e "Current Balance: $BALANCE wei"
+        echo -e "Required Balance: 1024000000000000000000 wei\n"
+        
+        if [ "$BALANCE" -lt 1024000000000000000000 ]; then
+            echo -e "\e[31mError: Insufficient balance. Need at least 1024 IP to create staking\e[0m"
+        else
+            echo -e "\e[1;33mCreating staking with:\e[0m"
+            echo -e "Validator Public Key: $VALIDATOR_PUBKEY"
+            echo -e "Stake Amount: 1024 IP (1024000000000000000000 wei)\n"
+            
+            story validator stake \
+                --validator-pubkey "$VALIDATOR_PUBKEY" \
+                --stake 1024000000000000000000 \
+                --private-key "$PRIVATE_KEY" \
+                --chain-id 1516
+
+            echo -e "\n\e[32mStaking creation completed!\e[0m"
+        fi
+    else
+        echo -e "\e[31mError: Private key file not found\e[0m"
+    fi
+
+    echo -e "\nPress Enter to return to menu"
+    read
+}
+
 # Update main menu
 while true; do
     clear
@@ -424,8 +466,9 @@ while true; do
     echo -e "\e[1;35m6)\e[0m Restart Services"
     echo -e "\e[1;34m7)\e[0m Check Balance"
     echo -e "\e[1;33m8)\e[0m Create Validator"
-    echo -e "\e[1;32m9)\e[0m Exit\n"
-    read -p "Enter your choice (1-9): " choice
+    echo -e "\e[1;32m9)\e[0m Create Staking"
+    echo -e "\e[1;31m10)\e[0m Exit\n"
+    read -p "Enter your choice (1-10): " choice
 
     case $choice in
         1)
@@ -453,6 +496,9 @@ while true; do
             create_validator
             ;;
         9)
+            create_staking
+            ;;
+        10)
             echo -e "\n\e[1;31mExiting...\e[0m"
             exit 0
             ;;

@@ -199,7 +199,7 @@ sudo rm $HOME/go/bin/story-geth
 sudo rm $HOME/go/bin/story
 ```
 
-# Cosmovisor tool upgrade
+# Cosmovisor tool upgrade 
 ```
 # upgrade latest cosmovisor version v1.7.0
 source $HOME/.bash_profile

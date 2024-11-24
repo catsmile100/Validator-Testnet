@@ -71,8 +71,19 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 
+# Enable and start services
+echo "Enabling and starting services..."
+sudo systemctl daemon-reload
+sudo systemctl enable story-geth
+sudo systemctl start story-geth
+sudo systemctl enable story
+sudo systemctl start story
+
 # Download and apply snapshots
 echo "Downloading and applying snapshots..."
+
+# Stop services for snapshot
+sudo systemctl stop story-geth story
 
 # Story snapshot
 cd $HOME
@@ -98,8 +109,9 @@ lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/odyssey/geth/ > 
 # Restore priv_validator_state.json
 cp ~/.story/priv_validator_state.json.backup ~/.story/story/data/priv_validator_state.json
 
-echo "Installation and snapshot setup complete!"
-echo "Start services with:"
-echo "sudo systemctl start story-geth story"
+# Restart services
+sudo systemctl restart story-geth story
+
+echo "Installation complete!"
 echo "Check logs with:"
 echo "sudo journalctl -u story-geth -f"

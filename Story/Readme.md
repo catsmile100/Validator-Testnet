@@ -144,12 +144,12 @@ EOF
 # Story snapshot
 cd $HOME
 rm -f Story_snapshot.lz4
-aria2c -x 16 -s 16 -k 1M https://story.josephtran.co/Story_snapshot.lz4
+curl -o Story_snapshot.lz4 https://files-story.catsmile.tech/story/story-snapshot.tar.lz4
 
-# Geth  snapshot
+# Geth snapshot
 cd $HOME
 rm -f Geth_snapshot.lz4
-aria2c -x 16 -s 16 -k 1M https://story.josephtran.co/Geth_snapshot.lz4
+curl -o Geth_snapshot.lz4 https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4
 
 # backup
 cp ~/.story/story/data/priv_validator_state.json ~/.story/priv_validator_state.json.backup

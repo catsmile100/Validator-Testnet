@@ -46,6 +46,10 @@ echo -e "\033[1;32mPeers updated successfully in config.toml\033[0m"
 echo -e "\033[1;31mError: Failed to update peers in config.toml\033[0m"
 fi
 ```
+## enode
+```
+enode://419ac3c5e1e5039525777d650ae98c6b782f63d9895c764defa59c5607bcc17c01f55e3c43fe5ea08c8d61131009df53f872804caf023c1063309a4fd346a219@209.126.11.54:30303
+```
 ## Snapshot
 ```
 # Install dependencies and disable statesync

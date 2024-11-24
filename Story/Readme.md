@@ -198,3 +198,50 @@ sudo rm -rf $HOME/.story
 sudo rm $HOME/go/bin/story-geth
 sudo rm $HOME/go/bin/story
 ```
+
+# Cosmovisor tool upgrade
+```
+# upgrade latest cosmovisor version v1.7.0
+source $HOME/.bash_profile
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+cosmovisor version
+```
+```
+mkdir -p $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin
+echo '{"name":"v0.13.0","time":"0001-01-01T00:00:00Z","height":858000}' > $HOME/.story/story/cosmovisor/upgrades/v0.13.0/upgrade-info.json
+```
+```
+sudo apt install tree
+tree $HOME/.story/story/cosmovisor
+```
+```
+# download binay v0.13.0
+cd $HOME
+rm story-linux-amd64
+wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64
+chmod +x story-linux-amd64
+```
+```
+# binary to upgrade folder
+sudo cp $HOME/story-linux-amd64 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story
+```
+```
+# Check current symlink
+ls -l /root/.story/story/cosmovisor/current
+```
+```
+# Check the story version in current folder. It should be old version is v0.12.1
+$HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story version
+```
+```
+# Check the new binary version in upgrade folder. It should be new version v0.13.0
+$HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story version
+```
+```
+# Check upgrade info
+cat $HOME/.story/story/cosmovisor/upgrades/v0.13.0/upgrade-info.json
+```
+```
+source $HOME/.bash_profile
+cosmovisor add-upgrade v0.13.0 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story --force --upgrade-height 858000
+```

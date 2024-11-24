@@ -48,6 +48,8 @@ curl https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4 | lz4 -dc - | 
 sudo systemctl restart story story-geth
 sudo journalctl -u story-geth -u story -f
 ```
+# Auto Install
+```
 rm -f installstory.sh && wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh
 ```
 ```

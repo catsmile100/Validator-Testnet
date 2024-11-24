@@ -37,7 +37,7 @@ udo apt update
 sudo apt-get update
 sudo apt install curl git make jq build-essential gcc unzip wget lz4 aria2 -y
 ```
-## Download Story-Geth binary `v0.10.1`
+## Story-Geth binary `v0.10.1`
 ```
 cd $HOME
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
@@ -49,4 +49,121 @@ chmod +x geth-linux-amd64
 mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
 source $HOME/.bash_profile
 story-geth version
+```
+## Story binary 'v0.12.1'
+```
+cd $HOME
+wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
+[ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
+if ! grep -q "$HOME/go/bin" $HOME/.bash_profile; then
+  echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
+fi
+chmod +x geth-linux-amd64
+mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
+source $HOME/.bash_profile
+story-geth version
+```
+## Init Story
+```
+story init --network odyssey --moniker "moniker"
+```
+## Create story-geth
+```
+sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
+[Unit]
+Description=Story Geth Client
+After=network.target
+
+[Service]
+User=root
+ExecStart=/root/go/bin/story-geth --odyssey --syncmode full
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+## Create story
+```
+sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
+[Unit]
+Description=Story Consensus Client
+After=network.target
+
+[Service]
+User=root
+ExecStart=/root/go/bin/story run
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+## snapshot
+```
+# Story snapshot
+cd $HOME
+rm -f Story_snapshot.lz4
+aria2c -x 16 -s 16 -k 1M https://story.josephtran.co/Story_snapshot.lz4
+
+# Geth  snapshot
+cd $HOME
+rm -f Geth_snapshot.lz4
+aria2c -x 16 -s 16 -k 1M https://story.josephtran.co/Geth_snapshot.lz4
+
+# backup
+cp ~/.story/story/data/priv_validator_state.json ~/.story/priv_validator_state.json.backup
+
+# remove old data
+rm -rf ~/.story/story/data
+rm -rf ~/.story/geth/odyssey/geth/chaindata
+
+# decompress Geth snapshot
+sudo mkdir -p /root/.story/geth/odyssey/geth/chaindata
+lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/odyssey/geth/ > /dev/null
+
+# restore priv_validator_state.json
+cp ~/.story/priv_validator_state.json.backup ~/.story/story/data/priv_validator_state.json
+```
+
+## Restart story-geth
+```
+sudo systemctl daemon-reload && \
+sudo systemctl start story-geth && \
+sudo systemctl enable story-geth && \
+sudo systemctl status story-geth
+```
+
+## Restart story
+```
+sudo systemctl daemon-reload && \
+sudo systemctl start story && \
+sudo systemctl enable story && \
+sudo systemctl status story
+```
+## Check logs story-geth
+```
+sudo journalctl -u story-geth -f -o cat
+```
+## Check logs story
+```
+sudo journalctl -u story -f -o cat
+```
+## Check sync
+```
+curl localhost:26657/status | jq
+```
+## block sync left
+```
+while true; do
+    local_height=$(curl -s localhost:26657/status | jq -r '.result.sync_info.latest_block_height');
+    network_height=$(curl -s https://odyssey.storyrpc.io/status | jq -r '.result.sync_info.latest_block_height');
+    blocks_left=$((network_height - local_height));
+    echo -e "\033[1;38mYour node height:\033[0m \033[1;34m$local_height\033[0m | \033[1;35mNetwork height:\033[0m \033[1;36m$network_height\033[0m | \033[1;29mBlocks left:\033[0m \033[1;31m$blocks_left\033[0m";
+    sleep 5;
+done
 ```

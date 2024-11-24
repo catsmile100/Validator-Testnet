@@ -24,6 +24,15 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 | Story | 4          | 16         | 400 GB  | Ubuntu 22.04 LTS  |
 
 # Service
+## RPC
+```
+https://rpc-story.catsmile.tech/
+```
+## API
+```
+https://api-story.catsmile.tech/
+```
+## Snapshot
 ```
 # Snapshot
 sudo apt install curl jq lz4 unzip -y

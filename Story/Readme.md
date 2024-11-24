@@ -226,6 +226,12 @@ story validator export --export-evm-key
 ```
 cat /root/.story/story/config/private_key.txt
 ```
+
+## Check Balance
+```
+EVM_ADDRESS=$(story validator export --export-evm-key 2>/dev/null | grep "EVM Address:" | cut -d: -f2 | tr -d ' ')
+story-geth --exec "eth.getBalance('$EVM_ADDRESS')" attach ~/.story/geth/odyssey/geth.ipc
+```
 ## Create validator
 ```
 story validator create --stake 1024000000000000000000 --private-key "private_key" --moniker "moniker"

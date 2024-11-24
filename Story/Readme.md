@@ -198,11 +198,11 @@ sudo rm -rf $HOME/.story
 sudo rm $HOME/go/bin/story-geth
 sudo rm $HOME/go/bin/story
 ```
-# Countdown Block upgrade Story 'v0.13.0'
+## Countdown Block upgrade Story 'v0.13.0'
 ```
 https://odyssey.storyscan.xyz/block/countdown/858000
 ```
-# Cosmovisor tool upgrade 
+## Cosmovisor tool upgrade 
 ```
 # upgrade latest cosmovisor version v1.7.0
 source $HOME/.bash_profile

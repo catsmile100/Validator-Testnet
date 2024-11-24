@@ -225,9 +225,9 @@ function delete_node() {
 function upgrade_node() {
     clear
     echo "╔══════════════════════════════╗"
-    echo "║        STORY NODE UPGRADE     ║"
-    echo "║          catsmile.tech        ║"
-    echo "╚═══════════════════════════════╝"
+    echo "║        STORY NODE UPGRADE    ║"
+    echo "║          catsmile.tech       ║"
+    echo "╚══════════════════════════════╝"
 
     echo -e "\n\e[33mPreparing Cosmovisor upgrade to v0.13.0...\e[0m"
     

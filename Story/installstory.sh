@@ -167,8 +167,11 @@ EOF
 function check_sync() {
     clear
     echo "Checking sync status..."
+    
+    RPC_PORT=$(cat $HOME/.story/story/config/config.toml | grep "laddr = \"tcp" | head -n1 | cut -d: -f3 | tr -d '"')
+    
     while true; do
-        local_height=$(curl -s localhost:26657/status | jq -r '.result.sync_info.latest_block_height' 2>/dev/null)
+        local_height=$(curl -s localhost:$RPC_PORT/status | jq -r '.result.sync_info.latest_block_height' 2>/dev/null)
         network_height=$(curl -s https://odyssey.storyrpc.io/status | jq -r '.result.sync_info.latest_block_height' 2>/dev/null)
         
         if [ -z "$local_height" ] || [ -z "$network_height" ]; then
@@ -177,9 +180,7 @@ function check_sync() {
         fi
         
         blocks_left=$((network_height - local_height))
-        echo -e "\033[1;38mYour node height:\033[0m \033[1;34m$local_height\033[0m"
-        echo -e "\033[1;35mNetwork height:\033[0m \033[1;36m$network_height\033[0m"
-        echo -e "\033[1;29mBlocks left:\033[0m \033[1;31m$blocks_left\033[0m"
+        echo -e "\033[1;38mYour node height:\033[0m \033[1;34m$local_height\033[0m | \033[1;35mNetwork height:\033[0m \033[1;36m$network_height\033[0m | \033[1;29mBlocks left:\033[0m \033[1;31m$blocks_left\033[0m"
         echo -e "\nPress Ctrl+C to return to menu"
         sleep 5
         clear
@@ -188,9 +189,10 @@ function check_sync() {
 
 function delete_node() {
     clear
-    echo -e "\e[31m╔══════════════════════════════════════╗"
-    echo "║         DELETE STORY NODE                ║"
-    echo "╚═════════════════════════���════════════╝\e[0m"
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY NODE DELETE             ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
     
     echo -e "\n\e[31mWarning: This will completely remove Story node from your system!\e[0m"
     echo -e "\e[33mAre you sure you want to continue? (y/n)\e[0m"
@@ -222,10 +224,10 @@ function delete_node() {
 # Tambahkan fungsi upgrade
 function upgrade_node() {
     clear
-    echo "╔══════════════════════════════════════╗"
-    echo "║        STORY NODE UPGRADE            ║"
-    echo "║          catsmile.tech               ║"
-    echo "╚══════════════════════════════════════╝"
+    echo "╔═══════════════════════════════╗"
+    echo "║        STORY NODE UPGRADE     ║"
+    echo "║          catsmile.tech        ║"
+    echo "╚═══════════════════════════════╝"
 
     echo -e "\n\e[33mPreparing Cosmovisor upgrade to v0.13.0...\e[0m"
     
@@ -315,6 +317,96 @@ function restart_services() {
     read
 }
 
+# Add version check function
+function check_version() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY VERSION CHECK           ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
+
+    echo -e "\n\e[1;33mStory-Geth Version:\e[0m"
+    if command -v story-geth &> /dev/null; then
+        story-geth version
+    else
+        echo -e "\e[31mStory-Geth is not installed\e[0m"
+    fi
+
+    echo -e "\n\e[1;33mStory Version:\e[0m"
+    if command -v story &> /dev/null; then
+        story version
+    else
+        echo -e "\e[31mStory is not installed\e[0m"
+    fi
+
+    echo -e "\nPress Enter to return to menu"
+    read
+}
+
+# Add balance check function
+function check_balance() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY BALANCE CHECK           ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
+
+    # Get EVM Address
+    EVM_ADDRESS=$(story validator export --export-evm-key 2>/dev/null | grep "EVM Address:" | cut -d: -f2 | tr -d ' ')
+    
+    if [ ! -z "$EVM_ADDRESS" ]; then
+        echo -e "\n\e[1;33mEVM Address:\e[0m $EVM_ADDRESS"
+        BALANCE=$(story-geth --exec "eth.getBalance('$EVM_ADDRESS')" attach ~/.story/geth/odyssey/geth.ipc)
+        echo -e "\e[1;33mBalance:\e[0m $BALANCE wei"
+    else
+        echo -e "\e[31mError: Could not get EVM address\e[0m"
+    fi
+
+    echo -e "\nPress Enter to return to menu"
+    read
+}
+
+function create_validator() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY CREATE VALIDATOR        ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
+
+    # Get private key and check balance first
+    if [ -f "$HOME/.story/story/config/private_key.txt" ]; then
+        PRIVATE_KEY=$(cat $HOME/.story/story/config/private_key.txt | grep -oP 'PRIVATE_KEY=\K.*')
+        MONIKER=$(story status | jq -r .NodeInfo.moniker)
+        EVM_ADDRESS=$(story validator export --export-evm-key 2>/dev/null | grep "EVM Address:" | cut -d: -f2 | tr -d ' ')
+        BALANCE=$(story-geth --exec "eth.getBalance('$EVM_ADDRESS')" attach ~/.story/geth/odyssey/geth.ipc)
+        
+        echo -e "\n\e[1;33mWallet Info:\e[0m"
+        echo -e "EVM Address: $EVM_ADDRESS"
+        echo -e "Current Balance: $BALANCE wei"
+        echo -e "Required Balance: 1024000000000000000000 wei\n"
+        
+        if [ "$BALANCE" -lt 1024000000000000000000 ]; then
+            echo -e "\e[31mError: Insufficient balance. Need at least 1024 IP to create validator\e[0m"
+        else
+            echo -e "\e[1;33mCreating validator with:\e[0m"
+            echo -e "Moniker: $MONIKER"
+            echo -e "Stake Amount: 1024 IP (1024000000000000000000 wei)\n"
+            
+            story validator create --stake 1024000000000000000000 \
+                --private-key "$PRIVATE_KEY" \
+                --moniker "$MONIKER" \
+                --chain-id 1516
+
+            echo -e "\n\e[32mValidator creation completed!\e[0m"
+        fi
+    else
+        echo -e "\e[31mError: Private key file not found\e[0m"
+    fi
+
+    echo -e "\nPress Enter to return to menu"
+    read
+}
+
 # Update main menu
 while true; do
     clear
@@ -330,8 +422,10 @@ while true; do
     echo -e "\e[1;33m4)\e[0m Upgrade Node"
     echo -e "\e[1;36m5)\e[0m Check Version"
     echo -e "\e[1;35m6)\e[0m Restart Services"
-    echo -e "\e[1;32m7)\e[0m Exit\n"
-    read -p "Enter your choice (1-7): " choice
+    echo -e "\e[1;34m7)\e[0m Check Balance"
+    echo -e "\e[1;33m8)\e[0m Create Validator"
+    echo -e "\e[1;32m9)\e[0m Exit\n"
+    read -p "Enter your choice (1-9): " choice
 
     case $choice in
         1)
@@ -353,6 +447,12 @@ while true; do
             restart_services
             ;;
         7)
+            check_balance
+            ;;
+        8)
+            create_validator
+            ;;
+        9)
             echo -e "\n\e[1;31mExiting...\e[0m"
             exit 0
             ;;

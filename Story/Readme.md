@@ -169,6 +169,8 @@ done
 ```
 ## Export validator Public Key & Private key
 ```
-story validator export
+story validator export --export-evm-key
+```
+```
 cat /root/.story/story/config/private_key.txt
 ```

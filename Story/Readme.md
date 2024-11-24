@@ -23,21 +23,21 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 | ------------- | ------------- | ------------- | -------- | -------- |
 | Story | 4          | 8         | 200 GB  | Ubuntu 22.04 LTS  |
 
-Auto Installation
+# Auto Installation
 ```
 rm -f installstory.sh && wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh
 ```
 ```
 dos2unix installstory.sh && chmod +x installstory.sh && ./installstory.sh && rm -rf installstory.sh
 ```
-Manual Install
-Install dependencies
+# Manual Install
+## Install dependencies
 ```
 udo apt update
 sudo apt-get update
 sudo apt install curl git make jq build-essential gcc unzip wget lz4 aria2 -y
 ```
-# Download Story-Geth binary `v0.10.1`
+## Download Story-Geth binary `v0.10.1`
 ```
 cd $HOME
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64

@@ -1,5 +1,35 @@
 #!/bin/bash
 
+# Stop and cleanup existing installation
+echo "Checking for existing installation..."
+if systemctl is-active --quiet story-geth || systemctl is-active --quiet story; then
+    echo "Stopping existing Story services..."
+    sudo systemctl stop story-geth story
+    sudo systemctl disable story-geth story
+    sudo rm /etc/systemd/system/story-geth.service
+    sudo rm /etc/systemd/system/story.service
+    sudo systemctl daemon-reload
+fi
+
+if [ -d "$HOME/.story" ]; then
+    echo "Removing old Story data..."
+    rm -rf $HOME/.story
+fi
+
+if [ -d "/usr/local/go" ]; then
+    echo "Removing old Go installation..."
+    sudo rm -rf /usr/local/go
+fi
+
+# Get moniker from user input
+echo -e "\n=== STORY NODE SETUP ===\n"
+read -p "Enter your moniker name: " MONIKER
+if [ -z "$MONIKER" ]; then
+    echo "Moniker cannot be empty. Exiting..."
+    exit 1
+fi
+echo -e "\nUsing moniker: $MONIKER\n"
+
 # Update and install dependencies
 echo "Updating and installing dependencies..."
 sudo apt update && sudo apt upgrade -y
@@ -35,7 +65,7 @@ mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
 
 # Init Story
-story init --network odyssey --moniker "moniker"
+story init --network odyssey --moniker "$MONIKER"
 
 # Create story-geth service
 sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF

@@ -1,74 +1,91 @@
 #!/bin/bash
 
-# Stop and cleanup existing installation
-echo "Checking for existing installation..."
-if systemctl is-active --quiet story-geth || systemctl is-active --quiet story; then
-    echo "Stopping existing Story services..."
-    sudo systemctl stop story-geth story
-    sudo systemctl disable story-geth story
-    sudo rm /etc/systemd/system/story-geth.service
-    sudo rm /etc/systemd/system/story.service
-    sudo systemctl daemon-reload
-fi
+function install_node() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY NODE INSTALLER          ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
 
-if [ -d "$HOME/.story" ]; then
-    echo "Removing old Story data..."
-    rm -rf $HOME/.story
-fi
+    # Stop and cleanup existing installation
+    echo "Checking for existing installation..."
+    if systemctl is-active --quiet story-geth || systemctl is-active --quiet story; then
+        echo "Stopping existing Story services..."
+        sudo systemctl stop story-geth story
+        sudo systemctl disable story-geth story
+        sudo rm /etc/systemd/system/story-geth.service
+        sudo rm /etc/systemd/system/story.service
+        sudo systemctl daemon-reload
+    fi
 
-if [ -d "/usr/local/go" ]; then
-    echo "Removing old Go installation..."
+    if [ -d "$HOME/.story" ]; then
+        echo "Removing old Story data..."
+        rm -rf $HOME/.story
+    fi
+
+    if [ -d "/usr/local/go" ]; then
+        echo "Removing old Go installation..."
+        sudo rm -rf /usr/local/go
+    fi
+
+    # Get moniker from user input
+    echo -e "\n\e[35m=== Please set your Story validator name ===\e[0m"
+    echo -e "\e[32mNote: Use only letters, numbers, and underscore\e[0m"
+    read -p "Enter validator name: " MONIKER
+
+    # Validate moniker
+    if [ -z "$MONIKER" ]; then
+        echo -e "\e[31mError: Validator name cannot be empty\e[0m"
+        exit 1
+    fi
+
+    if [[ ! $MONIKER =~ ^[a-zA-Z0-9_]+$ ]]; then
+        echo -e "\e[31mError: Validator name can only contain letters, numbers, and underscore\e[0m"
+        exit 1
+    fi
+
+    echo -e "\n\e[32mValidator Name: $MONIKER\e[0m\n"
+    sleep 2
+
+    # Update and install dependencies
+    echo "Updating and installing dependencies..."
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip pv -y
+
+    # Install Go
+    echo "Installing Go..."
+    cd $HOME
+    VER="1.22.0"
+    wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
     sudo rm -rf /usr/local/go
-fi
+    sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+    rm "go$VER.linux-amd64.tar.gz"
+    [ ! -f ~/.bash_profile ] && touch ~/.bash_profile
+    echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
+    source $HOME/.bash_profile
+    [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 
-# Get moniker from user input
-echo -e "\n=== STORY NODE SETUP ===\n"
-read -p "Enter your moniker name: " MONIKER
-if [ -z "$MONIKER" ]; then
-    echo "Moniker cannot be empty. Exiting..."
-    exit 1
-fi
-echo -e "\nUsing moniker: $MONIKER\n"
+    # Install Story-Geth binary v0.10.1
+    cd $HOME
+    wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
+    chmod +x geth-linux-amd64
+    mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
 
-# Update and install dependencies
-echo "Updating and installing dependencies..."
-sudo apt update && sudo apt upgrade -y
-sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip pv -y
+    # Install Story binary v0.12.1
+    cd $HOME
+    wget https://github.com/piplabs/story/releases/download/v0.12.1/story-linux-amd64
+    chmod +x story-linux-amd64
+    mv $HOME/story-linux-amd64 $HOME/go/bin/story
 
-# Install Go
-echo "Installing Go..."
-cd $HOME
-VER="1.22.0"
-wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
-sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
-rm "go$VER.linux-amd64.tar.gz"
-[ ! -f ~/.bash_profile ] && touch ~/.bash_profile
-echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
-source $HOME/.bash_profile
-[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
+    # Create directories
+    mkdir -p ~/.story/story
+    mkdir -p ~/.story/geth
 
-# Install Story-Geth binary v0.10.1
-cd $HOME
-wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
-chmod +x geth-linux-amd64
-mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
+    # Init Story
+    story init --network odyssey --moniker "$MONIKER"
 
-# Install Story binary v0.12.1
-cd $HOME
-wget https://github.com/piplabs/story/releases/download/v0.12.1/story-linux-amd64
-chmod +x story-linux-amd64
-mv $HOME/story-linux-amd64 $HOME/go/bin/story
-
-# Create directories
-mkdir -p ~/.story/story
-mkdir -p ~/.story/geth
-
-# Init Story
-story init --network odyssey --moniker "$MONIKER"
-
-# Create story-geth service
-sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
+    # Create story-geth service
+    sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth Client
 After=network.target
@@ -84,8 +101,8 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 
-# Create story service
-sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
+    # Create story service
+    sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
 Description=Story Consensus Client
 After=network.target
@@ -101,47 +118,247 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 
-# Enable and start services
-echo "Enabling and starting services..."
-sudo systemctl daemon-reload
-sudo systemctl enable story-geth
-sudo systemctl start story-geth
-sudo systemctl enable story
-sudo systemctl start story
+    # Enable and start services
+    echo "Enabling and starting services..."
+    sudo systemctl daemon-reload
+    sudo systemctl enable story-geth
+    sudo systemctl start story-geth
+    sudo systemctl enable story
+    sudo systemctl start story
 
-# Download and apply snapshots
-echo "Downloading and applying snapshots..."
+    # Download and apply snapshots
+    echo "Downloading and applying snapshots..."
 
-# Stop services for snapshot
-sudo systemctl stop story-geth story
+    # Stop services for snapshot
+    sudo systemctl stop story-geth story
 
-# Story snapshot
-cd $HOME
-rm -f Story_snapshot.lz4
-curl -o Story_snapshot.lz4 https://files-story.catsmile.tech/story/story-snapshot.tar.lz4
+    # Story snapshot
+    cd $HOME
+    rm -f Story_snapshot.lz4
+    curl -o Story_snapshot.lz4 https://files-story.catsmile.tech/story/story-snapshot.tar.lz4
 
-# Geth snapshot
-cd $HOME
-rm -f Geth_snapshot.lz4
-curl -o Geth_snapshot.lz4 https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4
+    # Geth snapshot
+    cd $HOME
+    rm -f Geth_snapshot.lz4
+    curl -o Geth_snapshot.lz4 https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4
 
-# Backup
-cp ~/.story/story/data/priv_validator_state.json ~/.story/priv_validator_state.json.backup
+    # Backup
+    cp ~/.story/story/data/priv_validator_state.json ~/.story/priv_validator_state.json.backup
 
-# Remove old data
-rm -rf ~/.story/story/data
-rm -rf ~/.story/geth/odyssey/geth/chaindata
+    # Remove old data
+    rm -rf ~/.story/story/data
+    rm -rf ~/.story/geth/odyssey/geth/chaindata
 
-# Decompress Geth snapshot
-sudo mkdir -p /root/.story/geth/odyssey/geth/chaindata
-lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/odyssey/geth/ > /dev/null
+    # Decompress Geth snapshot
+    sudo mkdir -p /root/.story/geth/odyssey/geth/chaindata
+    lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/odyssey/geth/ > /dev/null
 
-# Restore priv_validator_state.json
-cp ~/.story/priv_validator_state.json.backup ~/.story/story/data/priv_validator_state.json
+    # Restore priv_validator_state.json
+    cp ~/.story/priv_validator_state.json.backup ~/.story/story/data/priv_validator_state.json
 
-# Restart services
-sudo systemctl restart story-geth story
+    # Restart services
+    sudo systemctl restart story-geth story
 
-echo "Installation complete!"
-echo "Check logs with:"
-echo "sudo journalctl -u story-geth -f"
+    echo "Installation complete!"
+    echo "Check logs with:"
+    echo "sudo journalctl -u story-geth -f"
+}
+
+function check_sync() {
+    clear
+    echo "Checking sync status..."
+    while true; do
+        local_height=$(curl -s localhost:26657/status | jq -r '.result.sync_info.latest_block_height' 2>/dev/null)
+        network_height=$(curl -s https://odyssey.storyrpc.io/status | jq -r '.result.sync_info.latest_block_height' 2>/dev/null)
+        
+        if [ -z "$local_height" ] || [ -z "$network_height" ]; then
+            echo -e "\e[31mError: Node is not running or cannot connect to RPC\e[0m"
+            break
+        fi
+        
+        blocks_left=$((network_height - local_height))
+        echo -e "\033[1;38mYour node height:\033[0m \033[1;34m$local_height\033[0m"
+        echo -e "\033[1;35mNetwork height:\033[0m \033[1;36m$network_height\033[0m"
+        echo -e "\033[1;29mBlocks left:\033[0m \033[1;31m$blocks_left\033[0m"
+        echo -e "\nPress Ctrl+C to return to menu"
+        sleep 5
+        clear
+    done
+}
+
+function delete_node() {
+    clear
+    echo -e "\e[31m╔══════════════════════════════════════╗"
+    echo "║         DELETE STORY NODE            ║"
+    echo "╚═════════════════════════���════════════╝\e[0m"
+    
+    echo -e "\n\e[31mWarning: This will completely remove Story node from your system!\e[0m"
+    echo -e "\e[33mAre you sure you want to continue? (y/n)\e[0m"
+    read -p "" choice
+
+    if [[ "$choice" =~ ^[Yy]$ ]]; then
+        echo -e "\n\e[33mStopping and removing Story services...\e[0m"
+        sudo systemctl stop story-geth
+        sudo systemctl stop story
+        sudo systemctl disable story-geth
+        sudo systemctl disable story
+        sudo rm /etc/systemd/system/story-geth.service
+        sudo rm /etc/systemd/system/story.service
+        sudo systemctl daemon-reload
+
+        echo -e "\e[33mRemoving Story directories and binaries...\e[0m"
+        sudo rm -rf $HOME/.story
+        sudo rm $HOME/go/bin/story-geth
+        sudo rm $HOME/go/bin/story
+
+        echo -e "\n\e[32mStory node has been completely removed!\e[0m"
+        sleep 3
+    else
+        echo -e "\n\e[33mOperation cancelled.\e[0m"
+        sleep 2
+    fi
+}
+
+# Tambahkan fungsi upgrade
+function upgrade_node() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY NODE UPGRADE            ║"
+    echo "║          catsmile.tech              ║"
+    echo "╚══════════════════════════════════════╝"
+
+    echo -e "\n\e[33mPreparing Cosmovisor upgrade to v0.13.0...\e[0m"
+    
+    # Confirmation
+    echo -e "\n\e[31mWarning: Please make sure your node is fully synced before upgrading!\e[0m"
+    echo -e "\e[33mDo you want to continue? (y/n)\e[0m"
+    read -p "" choice
+
+    if [[ ! "$choice" =~ ^[Yy]$ ]]; then
+        echo -e "\n\e[33mUpgrade cancelled.\e[0m"
+        sleep 2
+        return
+    fi
+
+    echo -e "\n\e[32mStarting upgrade process...\e[0m"
+    
+    # Install/upgrade Cosmovisor
+    source $HOME/.bash_profile
+    go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+    
+    # Create upgrade directory
+    mkdir -p $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin
+    
+    # Create upgrade info
+    echo '{"name":"v0.13.0","time":"0001-01-01T00:00:00Z","height":858000}' > $HOME/.story/story/cosmovisor/upgrades/v0.13.0/upgrade-info.json
+    
+    # Install tree and show structure
+    sudo apt install tree -y
+    tree $HOME/.story/story/cosmovisor
+    
+    # Download and prepare new binary
+    cd $HOME
+    rm -f story-linux-amd64
+    wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64
+    chmod +x story-linux-amd64
+    sudo cp $HOME/story-linux-amd64 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story
+    
+    # Show version info
+    echo -e "\n\e[32mChecking versions:\e[0m"
+    echo -e "\nCurrent symlink:"
+    ls -l /root/.story/story/cosmovisor/current
+    
+    echo -e "\nCurrent version (should be v0.12.1):"
+    $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story version
+    
+    echo -e "\nNew version in upgrade folder:"
+    $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story version
+    
+    echo -e "\nUpgrade info:"
+    cat $HOME/.story/story/cosmovisor/upgrades/v0.13.0/upgrade-info.json
+    
+    # Add upgrade to Cosmovisor
+    source $HOME/.bash_profile
+    cosmovisor add-upgrade v0.13.0 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story --force --upgrade-height 858000
+    
+    echo -e "\n\e[32mUpgrade preparation completed!\e[0m"
+    echo -e "\e[33mNode will automatically upgrade at block height 858000\e[0m"
+    sleep 3
+}
+
+# Add restart function
+function restart_services() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY NODE RESTART            ║"
+    echo "║          catsmile.tech              ║"
+    echo "╚══════════════════════════════════════╝"
+
+    echo -e "\n\e[33mStopping Story services...\e[0m"
+    sudo systemctl stop story-geth
+    sudo systemctl stop story
+    sleep 2
+
+    echo -e "\n\e[33mStarting Story services...\e[0m"
+    sudo systemctl start story-geth
+    sudo systemctl start story
+    sleep 2
+
+    echo -e "\n\e[32mChecking services status:\e[0m"
+    echo -e "\nStory-Geth status:"
+    sudo systemctl status story-geth | grep "Active:"
+    echo -e "\nStory status:"
+    sudo systemctl status story | grep "Active:"
+
+    echo -e "\n\e[32mServices have been restarted!\e[0m"
+    echo -e "Press Enter to return to menu"
+    read
+}
+
+# Update main menu
+while true; do
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║        STORY NODE INSTALLER          ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
+
+    echo -e "\n\e[1;35mSelect an option:\e[0m"
+    echo -e "\e[1;32m1)\e[0m Install Story Node"
+    echo -e "\e[1;32m2)\e[0m Check Sync Status"
+    echo -e "\e[1;31m3)\e[0m Delete Node"
+    echo -e "\e[1;33m4)\e[0m Upgrade Node"
+    echo -e "\e[1;36m5)\e[0m Check Version"
+    echo -e "\e[1;35m6)\e[0m Restart Services"
+    echo -e "\e[1;32m7)\e[0m Exit\n"
+    read -p "Enter your choice (1-7): " choice
+
+    case $choice in
+        1)
+            install_node
+            ;;
+        2)
+            check_sync
+            ;;
+        3)
+            delete_node
+            ;;
+        4)
+            upgrade_node
+            ;;
+        5)
+            check_version
+            ;;
+        6)
+            restart_services
+            ;;
+        7)
+            echo -e "\n\e[1;31mExiting...\e[0m"
+            exit 0
+            ;;
+        *)
+            echo -e "\n\e[1;31mInvalid option. Please try again.\e[0m"
+            sleep 2
+            ;;
+    esac
+done

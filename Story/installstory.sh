@@ -224,10 +224,10 @@ function delete_node() {
 # Tambahkan fungsi upgrade
 function upgrade_node() {
     clear
-    echo "╔══════════════════════════════╗"
-    echo "║        STORY NODE UPGRADE    ║"
-    echo "║          catsmile.tech       ║"
-    echo "╚══════════════════════════════╝"
+    echo "╔═══════════════════════════════╗"
+    echo "║        STORY NODE UPGRADE     ║"
+    echo "║          catsmile.tech        ║"
+    echo "╚═══════════════════════════════╝"
 
     echo -e "\n\e[33mPreparing Cosmovisor upgrade to v0.13.0...\e[0m"
     
@@ -449,6 +449,93 @@ function create_staking() {
     read
 }
 
+function install_cosmovisor() {
+    clear
+    echo "╔══════════════════════════════════════╗"
+    echo "║      STORY COSMOVISOR SETUP          ║"
+    echo "║          catsmile.tech               ║"
+    echo "╚══════════════════════════════════════╝"
+
+    echo -e "\n\e[33mChecking Go version...\e[0m"
+    GO_VERSION=$(go version | cut -d " " -f 3)
+    if [[ "${GO_VERSION}" < "go1.22" ]]; then
+        echo -e "\e[31mError: Go version must be 1.22 or higher\e[0m"
+        return
+    fi
+
+    echo -e "\n\e[33m1. Installing Cosmovisor v1.7...\e[0m"
+    source $HOME/.bash_profile
+    go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+    
+    echo -e "\n\e[33m2. Setting up environment variables...\e[0m"
+    export DAEMON_NAME=story
+    echo "export DAEMON_NAME=story" >> $HOME/.bash_profile
+    export DAEMON_HOME=$HOME/.story/story
+    echo "export DAEMON_HOME=$HOME/.story/story" >> $HOME/.bash_profile
+    
+    echo -e "\n\e[33m3. Initializing Cosmovisor...\e[0m"
+    cosmovisor init $(which story)
+    
+    echo -e "\n\e[33m4. Creating backup directory...\e[0m"
+    mkdir -p $DAEMON_HOME/cosmovisor/backup
+    echo "export DAEMON_DATA_BACKUP_DIR=$DAEMON_HOME/cosmovisor/backup" >> $HOME/.bash_profile
+    echo "export DAEMON_ALLOW_DOWNLOAD_BINARIES=false" >> $HOME/.bash_profile
+    
+    echo -e "\n\e[33m5. Creating upgrade directories...\e[0m"
+    mkdir -p $HOME/.story/story/cosmovisor/genesis/bin
+    mkdir -p $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin
+    
+    echo -e "\n\e[33m6. Stopping Story service...\e[0m"
+    sudo systemctl stop story
+    
+    echo -e "\n\e[33m7. Downloading and setting up v0.13.0 binary...\e[0m"
+    cd $HOME
+    rm -f story-linux-amd64
+    wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64
+    chmod +x story-linux-amd64
+    sudo cp $HOME/story-linux-amd64 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story
+    
+    echo -e "\n\e[33m8. Adding upgrade information...\e[0m"
+    echo '{"name":"v0.13.0","time":"0001-01-01T00:00:00Z","height":858000}' > $HOME/.story/story/cosmovisor/upgrades/v0.13.0/upgrade-info.json
+    
+    echo -e "\n\e[33m9. Updating service file...\e[0m"
+    sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
+[Unit]
+Description=Story Consensus Client
+After=network.target
+
+[Service]
+User=root
+Environment="DAEMON_NAME=story"
+Environment="DAEMON_HOME=/root/.story/story"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="DAEMON_DATA_BACKUP_DIR=/root/.story/story/data"
+Environment="UNSAFE_SKIP_BACKUP=true"
+ExecStart=/root/go/bin/cosmovisor run run
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    echo -e "\n\e[33m10. Reloading and starting service...\e[0m"
+    sudo systemctl daemon-reload
+    sudo systemctl start story
+    
+    echo -e "\n\e[33m11. Setting upgrade schedule...\e[0m"
+    source $HOME/.bash_profile
+    cosmovisor add-upgrade v0.13.0 $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story --force --upgrade-height 858000
+
+    echo -e "\n\e[32mCosmovisor setup completed!\e[0m"
+    echo -e "\e[33mIMPORTANT: Do not stop or restart node before block 858,000\e[0m"
+    
+    echo -e "\nPress Enter to return to menu"
+    read
+}
+
 # Update main menu
 while true; do
     clear
@@ -467,8 +554,9 @@ while true; do
     echo -e "\e[1;34m7)\e[0m Check Balance"
     echo -e "\e[1;33m8)\e[0m Create Validator"
     echo -e "\e[1;32m9)\e[0m Create Staking"
-    echo -e "\e[1;31m10)\e[0m Exit\n"
-    read -p "Enter your choice (1-10): " choice
+    echo -e "\e[1;31m10)\e[0m Install Cosmovisor"
+    echo -e "\e[1;31m11)\e[0m Exit\n"
+    read -p "Enter your choice (1-11): " choice
 
     case $choice in
         1)
@@ -499,6 +587,9 @@ while true; do
             create_staking
             ;;
         10)
+            install_cosmovisor
+            ;;
+        11)
             echo -e "\n\e[1;31mExiting...\e[0m"
             exit 0
             ;;

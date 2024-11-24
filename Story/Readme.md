@@ -77,7 +77,7 @@ sudo journalctl -u story-geth -u story -f
 ```
 # Auto Install
 ```
-curl -O https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh && sed -i -e 's/\r//g' installstory.sh && chmod +x installstory.sh && ./installstory.sh
+curl -O https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh && sed -i "s/\r//g" installstory.sh && chmod +x installstory.sh && ./installstory.sh
 ```
 
 # Manual Install

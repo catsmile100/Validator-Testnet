@@ -174,3 +174,14 @@ story validator export --export-evm-key
 ```
 cat /root/.story/story/config/private_key.txt
 ```
+## Create validator
+```
+story validator create --stake 1024000000000000000000 --private-key "private_key" --moniker "moniker"
+```
+## Create Staking
+```
+story validator stake \
+   --validator-pubkey "VALIDATOR_PUB_KEY_IN_HEX" \
+   --stake 1024000000000000000000 \
+   --private-key xxxxxxxxxxxxxx
+```

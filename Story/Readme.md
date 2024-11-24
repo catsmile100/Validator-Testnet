@@ -167,3 +167,8 @@ while true; do
     sleep 5;
 done
 ```
+## Export validator Public Key & Private key
+```
+story validator export
+cat /root/.story/story/config/private_key.txt
+```

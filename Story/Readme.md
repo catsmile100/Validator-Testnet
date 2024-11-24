@@ -23,7 +23,30 @@ NODE  | CPU     | RAM      | SSD     | OS     |
 | ------------- | ------------- | ------------- | -------- | -------- |
 | Story | 4          | 16         | 400 GB  | Ubuntu 22.04 LTS  |
 
-# Auto Installation
+# Service
+```
+# Snapshot
+sudo apt install curl jq lz4 unzip -y
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.story/story/config/config.toml
+
+# Stop node dan backup priv_validator_state.json
+sudo systemctl stop story story-geth
+cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
+
+# Hapus data lama dan unpack Story snapshot
+rm -rf $HOME/.story/story/data
+curl https://files-story.catsmile.tech/story/story-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story/story
+
+# Restore priv_validator_state.json
+mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
+
+# Hapus data geth dan unpack Geth snapshot
+rm -rf $HOME/.story/geth/odyssey/geth/chaindata
+curl https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story/geth/odyssey/geth
+
+# Restart node dan check logs
+sudo systemctl restart story story-geth
+sudo journalctl -u story-geth -u story -f
 ```
 rm -f installstory.sh && wget https://raw.githubusercontent.com/catsmile100/Validator-Testnet/main/Story/installstory.sh
 ```

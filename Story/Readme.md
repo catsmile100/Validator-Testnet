@@ -204,7 +204,8 @@ sudo journalctl -u story -f -o cat
 ```
 ## Check sync
 ```
-curl localhost:26657/status | jq
+RPC_PORT=$(cat $HOME/.story/story/config/config.toml | grep "laddr = \"tcp" | head -n1 | cut -d: -f3 | tr -d '"')
+curl localhost:$RPC_PORT/status | jq
 ```
 ## block sync left
 ```

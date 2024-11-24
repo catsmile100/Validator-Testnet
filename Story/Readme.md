@@ -30,7 +30,7 @@ sudo apt install curl jq lz4 unzip -y
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.story/story/config/config.toml
 
 # Stop node dan backup priv_validator_state.json
-sudo systemctl stop story story-geth
+sudo systemctl stop story-geth story
 cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup
 
 # Hapus data lama dan unpack Story snapshot
@@ -45,8 +45,8 @@ rm -rf $HOME/.story/geth/odyssey/geth/chaindata
 curl https://files-story.catsmile.tech/geth/geth-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.story/geth/odyssey/geth
 
 # Restart node dan check logs
-sudo systemctl restart story story-geth
-sudo journalctl -u story-geth -u story -f
+sudo systemctl restart story-geth story
+sudo journalctl -u story-geth -f
 ```
 # Auto Install
 ```

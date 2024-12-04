@@ -50,7 +50,14 @@ git clone https://github.com/piplabs/story
 cd story
 git checkout v0.13.0
 go mod tidy
-make install
+go install ./client    # Perubahan di sini
+
+# Verifikasi instalasi
+which story
+if [ $? -ne 0 ]; then
+    echo "Story installation failed!"
+    exit 1
+fi
 
 # Init
 story init $MONIKER --chain-id $CHAIN_ID
@@ -60,6 +67,9 @@ SNAP_RPC="https://story-testnet-rpc.itrocket.net:443"
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000))
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+# Create config directory if it doesn't exist
+mkdir -p $HOME/.story/story/config
 
 # Configure
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \

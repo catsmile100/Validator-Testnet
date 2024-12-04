@@ -50,7 +50,7 @@ git clone https://github.com/piplabs/story
 cd story
 git checkout v0.13.0
 go mod tidy
-go install ./client    # Perubahan di sini
+go install ./client    
 
 # Verifikasi instalasi
 which story

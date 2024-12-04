@@ -1,60 +1,82 @@
 #!/bin/bash
 
+echo "Cleaning up old installation..."
+
+# Stop services if they exist
+sudo systemctl stop story story-geth 2>/dev/null
+sudo systemctl disable story story-geth 2>/dev/null
+
+# Remove old services
+sudo rm -f /etc/systemd/system/story.service
+sudo rm -f /etc/systemd/system/story-geth.service
+sudo systemctl daemon-reload
+
+# Remove old directories and files
+rm -rf $HOME/.story
+rm -rf $HOME/story
+rm -rf $HOME/go/bin/story
+rm -rf $HOME/go/bin/geth
+
+# Remove old Go installation
+sudo rm -rf /usr/local/go
+
+echo "Cleanup completed. Starting fresh installation..."
+
 # Vars
 MONIKER="test"
 CHAIN_ID="odyssey-0"
-PORT="52"
 
-# Quick Install
-sudo apt update && sudo apt install curl git wget jq lz4 -y
+# Install dependencies
+sudo apt update
+sudo apt install curl git wget htop tmux build-essential jq make gcc unzip -y
 
-# Install Go & Binary
+# Install Go v1.21.5
 cd $HOME
-wget "https://golang.org/dl/go1.22.3.linux-amd64.tar.gz"
-sudo tar -C /usr/local -xzf "go1.22.3.linux-amd64.tar.gz"
+VER="1.21.5"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm "go$VER.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source ~/.bash_profile
+[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 
 # Install Story
+cd $HOME
 wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
-chmod +x geth && mv geth ~/go/bin/
+chmod +x geth
+sudo mv geth /usr/local/bin/
 
 git clone https://github.com/piplabs/story
-cd story && git checkout v0.13.0
-go build -o story ./client && mv story ~/go/bin/
+cd story
+git checkout v0.13.0
+go mod tidy
+make install
 
 # Init
-story init --moniker $MONIKER --network odyssey
+story init $MONIKER --chain-id $CHAIN_ID
 
-# State Sync Config
+# State Sync
 SNAP_RPC="https://story-testnet-rpc.itrocket.net:443"
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000))
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-# Backup & Configure
-cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup 2>/dev/null
-rm -rf $HOME/.story/story/data
-mkdir -p $HOME/.story/story/data
-mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json 2>/dev/null
-
-# Update config.toml
+# Configure
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
 s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
-s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.story/story/config/config.toml
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.story/story/config/config.toml
 
-# Create Services
+# Create services
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
-Description=Story Service
-After=network.target
+Description=Story Node
+After=network-online.target
 
 [Service]
 User=$USER
 ExecStart=$(which story) run
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=65535
 
@@ -65,12 +87,12 @@ EOF
 sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth
-After=network.target
+After=network-online.target
 
 [Service]
 User=$USER
 ExecStart=$(which geth) --odyssey --syncmode full --http
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=65535
 
@@ -78,10 +100,10 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-# Start
+# Start services
 sudo systemctl daemon-reload
 sudo systemctl enable story story-geth
-sudo systemctl restart story story-geth
+sudo systemctl start story story-geth
 
-echo "Checking logs... (Ctrl+C to exit)"
-sudo journalctl -u story -f
+echo "Installation completed!"
+echo "Check logs with: sudo journalctl -u story -f"

@@ -62,13 +62,12 @@ wget -O geth "https://github.com/piplabs/story-geth/releases/download/$GETH_LATE
 chmod +x geth
 sudo mv geth /usr/local/bin/
 
-# Get latest Story
-echo "Installing Story..."
+# Get specific version of Story
+echo "Installing Story v0.13.0..."
 cd $HOME
 git clone https://github.com/piplabs/story
 cd story
-STORY_LATEST=$(git describe --tags $(git rev-list --tags --max-count=1))
-git checkout $STORY_LATEST
+git checkout v0.13.0
 go build -o story ./client
 sudo mv story /usr/local/bin/
 

@@ -101,12 +101,13 @@ enable = true
 rpc_servers = "$SNAP_RPC,$SNAP_RPC"
 trust_height = $BLOCK_HEIGHT
 trust_hash = "$TRUST_HASH"
+trust_period = "168h"
 
 [p2p]
 persistent_peers = "$PEERS"
 seeds = "$SEEDS"
-max_num_inbound_peers = 40
-max_num_outbound_peers = 10
+max_num_inbound_peers = 100
+max_num_outbound_peers = 50
 persistent_peers_max_dial_period = "0s"
 allow_duplicate_ip = true
 
@@ -196,3 +197,17 @@ echo "JSON-RPC Port: $JSON_RPC_PORT"
 echo "WebSocket Port: $WS_PORT"
 echo "Check Story logs: sudo journalctl -u story -f"
 echo "Check Geth logs: sudo journalctl -u story-geth -f"
+
+# Check sync status
+echo "Waiting for sync to start..."
+sleep 10
+
+check_sync() {
+    echo "Moniker: $(curl -s localhost:$RPC_PORT/status | jq -r .result.node_info.moniker) | Story: v0.13.0-stable | Geth: v0.10.1 | $(echo "Sync: $(curl -s localhost:$RPC_PORT/status | jq -r .result.sync_info.catching_up) | Local: $(curl -s localhost:$RPC_PORT/status | jq -r .result.sync_info.latest_block_height) | Remote: $(curl -s https://story-testnet-rpc.itrocket.net/status | jq -r .result.sync_info.latest_block_height) | Behind: $(($(curl -s https://odyssey.storyrpc.io/status | jq -r .result.sync_info.latest_block_height) - $(curl -s localhost:$RPC_PORT/status | jq -r .result.sync_info.latest_block_height)))")"
+}
+
+# Check sync status every 30 seconds for 2 minutes
+for i in {1..4}; do
+    check_sync
+    sleep 30
+done

@@ -30,8 +30,8 @@ git checkout $STORY_LATEST
 go build -o story ./client
 sudo mv story /usr/local/bin/
 
-# Init Story
-story init test --chain-id odyssey-0
+# Init Story (perubahan di sini)
+story init --moniker test --network odyssey
 
 # State Sync
 SNAP_RPC="https://story-testnet-rpc.itrocket.net:443"
@@ -41,10 +41,20 @@ TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.bloc
 
 # Configure
 mkdir -p $HOME/.story/story/config
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.story/story/config/config.toml
+
+# Download genesis dan addrbook
+wget -O $HOME/.story/story/config/genesis.json https://server-3.itrocket.net/testnet/story/genesis.json
+wget -O $HOME/.story/story/config/addrbook.json https://server-3.itrocket.net/testnet/story/addrbook.json
+
+# Configure state sync
+cat > $HOME/.story/story/config/config.toml << EOF
+# State sync configuration
+[statesync]
+enable = true
+rpc_servers = "$SNAP_RPC,$SNAP_RPC"
+trust_height = $BLOCK_HEIGHT
+trust_hash = "$TRUST_HASH"
+EOF
 
 # Create services
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF

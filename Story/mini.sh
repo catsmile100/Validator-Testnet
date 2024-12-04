@@ -11,9 +11,22 @@ rm -rf $HOME/story
 rm -rf $HOME/go/bin/story
 rm -rf $HOME/go/bin/geth
 
-# Install dependencies
+# Function to check if a package is installed
+is_installed() {
+    dpkg -l "$1" &> /dev/null
+}
+
+# Install dependencies if not already installed
 sudo apt update
-sudo apt install curl wget jq lz4 -y
+
+for pkg in curl wget jq lz4; do
+    if ! is_installed $pkg; then
+        echo "Installing $pkg..."
+        sudo apt install -y $pkg
+    else
+        echo "$pkg is already installed."
+    fi
+done
 
 # Get latest release for Story Geth
 GETH_LATEST=$(curl -s https://api.github.com/repos/piplabs/story-geth/releases/latest | jq -r .tag_name)
@@ -30,7 +43,7 @@ git checkout $STORY_LATEST
 go build -o story ./client
 sudo mv story /usr/local/bin/
 
-# Init Story (perubahan di sini)
+# Init Story
 story init --moniker test --network odyssey
 
 # State Sync
